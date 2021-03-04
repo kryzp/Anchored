@@ -3,9 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
-using System.Reflection.Metadata;
 
 // note to anyone reading:
 // there is undoubtedly some spaghetti code here but for the most part i think it gets the job done

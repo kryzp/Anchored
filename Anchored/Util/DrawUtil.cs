@@ -38,7 +38,7 @@ namespace Anchored.Util
 			if (spriteBatch == null)
 				spriteBatch = Game1.SpriteBatch;
 			var distance = Vector2.Distance(point1, point2);
-			var angle = (float)Math.Atan2(point2.Y - point1.Y, point2.X - point1.X);
+			var angle = MathF.Atan2(point2.Y - point1.Y, point2.X - point1.X);
 			DrawLine(point1, distance, angle, color, thickness, Layer, spriteBatch);
 		}
 

@@ -47,7 +47,7 @@ namespace Anchored.World.Components.Physics
 			{
 				var pushoutNormal = hit.Pushout.NormalizedCopy();
 				var velocityNormal = Velocity.NormalizedCopy();
-				var dot = MathF.Min(0f, Vector2.Dot(velocityNormal, pushoutNormal));
+				var dot = Math.Min(0f, Vector2.Dot(velocityNormal, pushoutNormal));
 				var amount = pushoutNormal * Velocity.Length() * dot;
 				Velocity -= amount;
 			}
@@ -104,7 +104,7 @@ namespace Anchored.World.Components.Physics
 			{
 				if (Collider.IsValid())
 				{
-					var maxStep = MathF.Min(
+					var maxStep = Math.Min(
 						Collider.GetWorldBounds().Width,
 						Collider.GetWorldBounds().Height
 					) / 4f;
@@ -114,7 +114,7 @@ namespace Anchored.World.Components.Physics
 
 					while (distance > 0)
 					{
-						var stepDist = MathF.Min(distance, maxStep);
+						var stepDist = Math.Min(distance, maxStep);
 						var step = normal * stepDist;
 						distance -= stepDist;
 

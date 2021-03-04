@@ -1,6 +1,8 @@
-﻿using Anchored.GameStates;
+﻿using Anchored.Debug.DearImGui;
+using Anchored.GameStates;
 using Anchored.World;
 using Anchored.World.Components;
+using ImGuiNET;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -8,13 +10,19 @@ using Microsoft.Xna.Framework.Input;
 using System;
 
 // Project-Wide TODO List:
-// [ ] * Basic Components
-//    [ ] * Animator
 // [ ] * Debugging Tools
-//    [ ] * Console?
-//    [ ] * ImGui?
-//    [ ] * Entity Editor (Components)?
-//    [ ] * Animation Editor?
+//    [ ] * ImGui
+//    [ ] * Entity Editor (Components)
+//       [ ] * Debug window (Opens when you select a component on an entity)
+//    [ ] * Animation Editor
+//    [ ] * Dialog Editor
+//    [ ] * Particle Editor
+//    [ ] * Locale Editor (Language/Localization)
+//    [ ] * Area Debug View
+//       [ ] * Move the camera around and stuff
+//    [ ] * Console
+//    [ ] * Save File Explorer/Editor
+//    [ ] * Item Editor
 // [ ] * Basic UI (ThinMatrix did some cool stuff copy that lol)
 // [ ] * Serialization System
 // [ ] * Localization System
@@ -36,6 +44,8 @@ namespace Anchored
 {
 	public class Game1 : Game
 	{
+		private static ImGuiRenderer imGuiRenderer;
+
 		public static GraphicsDeviceManager Graphics;
 		public static SpriteBatch SpriteBatch;
 		public static new GraphicsDevice GraphicsDevice;
@@ -79,6 +89,9 @@ namespace Anchored
 			Graphics.ApplyChanges();
 
 			Window.TextInput += TextInputHandler;
+
+			imGuiRenderer = new ImGuiRenderer(this);
+			imGuiRenderer.RebuildFontAtlas();
 
 			base.Initialize();
 		}
@@ -147,6 +160,14 @@ namespace Anchored
 			SpriteBatch.Begin(SpriteSortMode.Immediate, samplerState: SamplerState.PointClamp);
 			SpriteBatch.Draw(AppRenderTarget, new Rectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT), Color.White);
 			SpriteBatch.End();
+
+			imGuiRenderer.BeforeLayout(gt);
+			{
+				ImGui.Begin("Test");
+				ImGui.Text("Hello, World!");
+				ImGui.End();
+			}
+			imGuiRenderer.AfterLayout();
 			
 			base.Draw(gt);
 		}

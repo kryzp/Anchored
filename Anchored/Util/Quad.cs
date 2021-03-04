@@ -41,16 +41,16 @@ namespace Anchored.Util
 			max = dot;
 			
 			dot = Vector2.Dot(B, axis);
-			min = MathF.Min(dot, min);
-			max = MathF.Max(dot, max);
+			min = Math.Min(dot, min);
+			max = Math.Max(dot, max);
 
 			dot = Vector2.Dot(C, axis);
-			min = MathF.Min(dot, min);
-			max = MathF.Max(dot, max);
+			min = Math.Min(dot, min);
+			max = Math.Max(dot, max);
 			
 			dot = Vector2.Dot(D, axis);
-			min = MathF.Min(dot, min);
-			max = MathF.Max(dot, max);
+			min = Math.Min(dot, min);
+			max = Math.Max(dot, max);
 		}
 	}
 }

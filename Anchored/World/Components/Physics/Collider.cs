@@ -232,7 +232,7 @@ namespace Anchored.World.Components.Physics
 			a.Project(axis, ref min0, ref max0);
 			b.Project(axis, ref min1, ref max1);
 
-			if (MathF.Abs(min1 - max0) < MathF.Abs(max1 - min0))
+			if (Math.Abs(min1 - max0) < Math.Abs(max1 - min0))
 				amount = min1 - max0;
 			else
 				amount = max1 - min0;
@@ -335,10 +335,10 @@ namespace Anchored.World.Components.Physics
 				if (!AxisOverlaps(a, b, axis, ref amount))
 					return false;
 
-				if (ii == 0 || MathF.Abs(amount) < distance)
+				if (ii == 0 || Math.Abs(amount) < distance)
 				{
 					pushout = axis * amount;
-					distance = MathF.Abs(amount);
+					distance = Math.Abs(amount);
 				}
 			}
 
@@ -350,10 +350,10 @@ namespace Anchored.World.Components.Physics
 				if (!AxisOverlaps(a, b, axis, ref amount))
 					return false;
 
-				if (ii == 0 || MathF.Abs(amount) < distance)
+				if (ii == 0 || Math.Abs(amount) < distance)
 				{
 					pushout = axis * amount;
-					distance = MathF.Abs(amount);
+					distance = Math.Abs(amount);
 				}
 			}
 
@@ -378,10 +378,10 @@ namespace Anchored.World.Components.Physics
 				if (!AxisOverlaps(a, b, axis, ref amount))
 					return false;
 
-				if (ii == 0 || MathF.Abs(amount) < distance)
+				if (ii == 0 || Math.Abs(amount) < distance)
 				{
 					pushout = axis * amount;
-					distance = MathF.Abs(amount);
+					distance = Math.Abs(amount);
 				}
 			}
 
@@ -393,10 +393,10 @@ namespace Anchored.World.Components.Physics
 				if (!AxisOverlaps(a, b, axis, ref amount))
 					return false;
 
-				if (ii == 0 || MathF.Abs(amount) < distance)
+				if (ii == 0 || Math.Abs(amount) < distance)
 				{
 					pushout = axis * amount;
-					distance = MathF.Abs(amount);
+					distance = Math.Abs(amount);
 				}
 			}
 
@@ -442,10 +442,10 @@ namespace Anchored.World.Components.Physics
 				points[3] = WorldBox.D;
 				pointCount = 4;
 
-				worldBounds.X = MathF.Min(WorldBox.A.X, MathF.Min(WorldBox.B.X, MathF.Min(WorldBox.C.X, WorldBox.D.X)));
-				worldBounds.Y = MathF.Min(WorldBox.A.Y, MathF.Min(WorldBox.B.Y, MathF.Min(WorldBox.C.Y, WorldBox.D.Y)));
-				worldBounds.Width = MathF.Max(WorldBox.A.X, MathF.Max(WorldBox.B.X, MathF.Max(WorldBox.C.X, WorldBox.D.X))) - worldBounds.X;
-				worldBounds.Height = MathF.Max(WorldBox.A.Y, MathF.Max(WorldBox.B.Y, MathF.Max(WorldBox.C.Y, WorldBox.D.Y))) - worldBounds.Y;
+				worldBounds.X = Math.Min(WorldBox.A.X, Math.Min(WorldBox.B.X, Math.Min(WorldBox.C.X, WorldBox.D.X)));
+				worldBounds.Y = Math.Min(WorldBox.A.Y, Math.Min(WorldBox.B.Y, Math.Min(WorldBox.C.Y, WorldBox.D.Y)));
+				worldBounds.Width = Math.Max(WorldBox.A.X, Math.Max(WorldBox.B.X, Math.Max(WorldBox.C.X, WorldBox.D.X))) - worldBounds.X;
+				worldBounds.Height = Math.Max(WorldBox.A.Y, Math.Max(WorldBox.B.Y, Math.Max(WorldBox.C.Y, WorldBox.D.Y))) - worldBounds.Y;
 			}
 		}
 
@@ -507,10 +507,10 @@ namespace Anchored.World.Components.Physics
 				points[1] = WorldLine.B;
 				pointCount = 2;
 
-				worldBounds.X = MathF.Min(WorldLine.A.X, WorldLine.B.X);
-				worldBounds.Y = MathF.Min(WorldLine.A.Y, WorldLine.B.Y);
-				worldBounds.Width = MathF.Max(WorldLine.A.X, WorldLine.B.X) - worldBounds.X;
-				worldBounds.Height = MathF.Max(WorldLine.A.Y, WorldLine.B.Y) - worldBounds.Y;
+				worldBounds.X = Math.Min(WorldLine.A.X, WorldLine.B.X);
+				worldBounds.Y = Math.Min(WorldLine.A.Y, WorldLine.B.Y);
+				worldBounds.Width = Math.Max(WorldLine.A.X, WorldLine.B.X) - worldBounds.X;
+				worldBounds.Height = Math.Max(WorldLine.A.Y, WorldLine.B.Y) - worldBounds.Y;
 			}
 		}
 	}

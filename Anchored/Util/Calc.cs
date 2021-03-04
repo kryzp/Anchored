@@ -8,7 +8,7 @@ namespace Anchored.Util
 	{
 		public static float Approach(float from, float to, float amount)
 		{
-			return (from < to) ? (MathF.Min(from + amount, to)) : (MathF.Max(from - amount, to));
+			return (from < to) ? (Math.Min(from + amount, to)) : (Math.Max(from - amount, to));
 		}
 	}
 }

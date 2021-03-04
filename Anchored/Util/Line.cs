@@ -13,7 +13,7 @@ namespace Anchored.Util
 		{
 			get
 			{
-				return MathF.Atan2(A.Y - B.Y, A.X - B.X) + (180f * (MathF.PI / 180f));
+				return (float)(Math.Atan2(A.Y - B.Y, A.X - B.X) + (180f * (Math.PI / 180f)));
 			}
 		}
 
@@ -22,7 +22,7 @@ namespace Anchored.Util
 			get
 			{
 				// engineer gaming
-				return (MathF.Atan2(A.Y - B.Y, A.X - B.X) + (180f * (MathF.PI / 180f))) * (180f / MathF.PI);
+				return (float)((Math.Atan2(A.Y - B.Y, A.X - B.X) + (180f * (Math.PI / 180f))) * (180f / Math.PI));
 			}
 		}
 
@@ -42,12 +42,12 @@ namespace Anchored.Util
 
 		public RectangleF Bounds()
 		{
-			Vector2 position = new Vector2(MathF.Min(A.X, B.X), MathF.Min(A.Y, B.Y));
+			Vector2 position = new Vector2(Math.Min(A.X, B.X), Math.Min(A.Y, B.Y));
 			return new RectangleF(
 				position.X,
 				position.Y,
-				MathF.Max(A.X, B.X) - position.X,
-				MathF.Max(A.Y, B.Y) - position.Y
+				Math.Max(A.X, B.X) - position.X,
+				Math.Max(A.Y, B.Y) - position.Y
 			);
 		}
 
@@ -58,8 +58,8 @@ namespace Anchored.Util
 			max = dot;
 
 			dot = (B.X * axis.X) + (B.Y * axis.Y);
-			min = MathF.Min(dot, min);
-			max = MathF.Max(dot, max);
+			min = Math.Min(dot, min);
+			max = Math.Max(dot, max);
 		}
 	}
 }
