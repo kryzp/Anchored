@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace Anchored.World
 {
@@ -9,10 +10,10 @@ namespace Anchored.World
 		public Entity Entity;
 
 		public EntityWorld World => Entity.World;
-		public Type Type;
 
 		public bool Enabled;
 		public Masks Mask;
+		public Type Type;
 
 		public Component()
 		{

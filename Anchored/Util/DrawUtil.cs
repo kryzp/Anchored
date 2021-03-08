@@ -5,8 +5,17 @@ using System;
 
 namespace Anchored.Util
 {
-	public class DrawUtil
+	public static class DrawUtil
 	{
+		public static Color BlendColours(Color a, Color b, float factorA, float factorB)
+		{
+			return new Color(
+				(byte)MathHelper.Clamp(((a.R * factorA) + (b.R * factorB)), 0, 255),
+				(byte)MathHelper.Clamp(((a.G * factorA) + (b.G * factorB)), 0, 255),
+				(byte)MathHelper.Clamp(((a.B * factorA) + (b.B * factorB)), 0, 255)
+			);
+		}
+
 		public static Texture2D GetWhitePixel(SpriteBatch spriteBatch = null)
 		{
 			if (spriteBatch == null)
@@ -61,6 +70,50 @@ namespace Anchored.Util
 				data[pixel] = paint(pixel);
 			texture.SetData(data);
 			return texture;
+		}
+
+		public static void DrawRoundedRectangle(
+			RectangleF rectangle,
+			float r,
+			Color colour,
+			float layer = 0.95f,
+			int sides = 15,
+			SpriteBatch sb = null
+		)
+		{
+			float d = r * 2;
+
+			int x0 = (int)(rectangle.X + r);
+			int y0 = (int)(rectangle.Y + r);
+			int x1 = (int)(x0 + rectangle.Width);
+			int y1 = (int)(y0 + rectangle.Height);
+
+			RectangleF horiRect = new RectangleF(x0-r, y0, rectangle.Width+r, rectangle.Height-r);
+			RectangleF vertRect = new RectangleF(x0, y0-r, rectangle.Width-r, rectangle.Height+r);
+
+			// Draw Rectangles
+			DrawRectangle(horiRect, colour, layer, sb);
+			DrawRectangle(vertRect, colour, layer, sb);
+
+			// Draw Circles
+			int variableThatFixesThingsLmao = 1;
+			ShapeExtensions.DrawCircle(sb, x0+variableThatFixesThingsLmao, y0+variableThatFixesThingsLmao, r, sides, colour, d, layer);
+			ShapeExtensions.DrawCircle(sb, x1-r-variableThatFixesThingsLmao, y0, r, sides, colour, d, layer);
+			ShapeExtensions.DrawCircle(sb, x0, y1-r-variableThatFixesThingsLmao, r, sides, colour, d, layer);
+			ShapeExtensions.DrawCircle(sb, x1-r-variableThatFixesThingsLmao, y1-r-variableThatFixesThingsLmao, r, sides, colour, d, layer);
+		}
+
+		public static void DrawOutlinedRoundedRectangle(
+			RectangleF rectangle,
+			float r,
+			float t,
+			Color colour,
+			float layer = 0.95f,
+			int sides = 15,
+			SpriteBatch sb = null
+		)
+		{
+			// todo
 		}
 	}
 }

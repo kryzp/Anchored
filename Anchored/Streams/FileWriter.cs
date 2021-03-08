@@ -103,7 +103,7 @@ namespace Anchored.Streams
 
 				WriteByte((byte)str.Length);
 
-				for (var i = 0; i < Math.Min(255, str.Length); i++)
+				for (var i = 0; i < MathF.Min(255, str.Length); i++)
 				{
 					WriteByte((byte)str[i]);
 				}

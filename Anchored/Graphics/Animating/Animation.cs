@@ -9,9 +9,6 @@ namespace Anchored.Graphics.Animating
 
 	public class Animation
 	{
-		public AnimationData Data;
-		public AnimationCallback OnEnd;
-
 		private AnimationFrame frame;
 
 		private uint currentFrame;
@@ -35,7 +32,7 @@ namespace Anchored.Graphics.Animating
 				if (v != currentFrame)
 				{
 					currentFrame = v;
-					ReadFrame();
+					UpdateFrame();
 				}
 			}
 		}
@@ -53,7 +50,7 @@ namespace Anchored.Graphics.Animating
 					return;
 
 				layer = value;
-				ReadFrame();
+				UpdateFrame();
 			}
 		}
 
@@ -67,7 +64,7 @@ namespace Anchored.Graphics.Animating
 				tag = value;
 				Paused = false;
 
-				ReadFrame();
+				UpdateFrame();
 			}
 		}
 
@@ -87,15 +84,15 @@ namespace Anchored.Graphics.Animating
 
 					if (!AutoStop || currentFrame < EndFrame - StartFrame)
 					{
-						Frame++;
+						Frame += 1;
 
 						if (SkipNextFrame)
 						{
 							SkipNextFrame = false;
-							Frame++;
+							Frame += 1;
 						}
 
-						ReadFrame();
+						UpdateFrame();
 					}
 					else
 					{
@@ -109,6 +106,9 @@ namespace Anchored.Graphics.Animating
 		public bool PingGoingForward;
 		public bool SkipNextFrame;
 
+		public AnimationData Data;
+		public AnimationCallback OnEnd;
+
 		public Animation(AnimationData data, string layer = null)
 		{
 			Data = data;
@@ -116,7 +116,7 @@ namespace Anchored.Graphics.Animating
 			if (layer != null)
 				Layer = layer;
 			else
-				ReadFrame(true);
+				UpdateFrame(true);
 		}
 
 		public void Update()
@@ -132,15 +132,17 @@ namespace Anchored.Graphics.Animating
 			}
 		}
 
-		public void Draw(SpriteBatch sb, Vector2 position, Vector2 origin, float rotation, float layer, Vector2 scale, Color colour)
+		public void Draw(SpriteBatch sb, Vector2 position, Vector2 origin, float rotation, float layer, Vector2 scale, Color colour, SpriteEffects flip = SpriteEffects.None)
 		{
-			frame.Texture.Draw(
+			sb.Draw(
+				frame.Texture.Texture,
 				position,
-				origin,
+				frame.Bounds,
 				colour,
 				rotation,
+				origin,
 				scale,
-				sb,
+				flip,
 				layer
 			);
 		}
@@ -169,7 +171,7 @@ namespace Anchored.Graphics.Animating
 			return Data.Tags.ContainsKey(tag);
 		}
 
-		private void ReadFrame(bool rand = false)
+		private void UpdateFrame(bool rand = false)
 		{
 			var nullableTag = Data.GetTag(tag);
 
@@ -187,10 +189,7 @@ namespace Anchored.Graphics.Animating
 			var frame = Data.GetFrame(layer, currentTag.Direction.GetFrameId(this, Reverse));
 
 			if (frame != null)
-			{
-				((AnimationFrame)frame).Texture.Source = ((AnimationFrame)frame).Bounds;
 				this.frame = (AnimationFrame)frame;
-			}
 		}
 
 		public TextureRegion GetFrame(string tag, int frame)

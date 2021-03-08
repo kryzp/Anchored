@@ -1,4 +1,4 @@
-﻿using Anchored.World.Components.Physics;
+﻿using Anchored.Physics;
 using Microsoft.Xna.Framework;
 
 namespace Anchored.World.Components

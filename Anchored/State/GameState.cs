@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Anchored.GameStates
+namespace Anchored.State
 {
 	public abstract class GameState
 	{
@@ -10,5 +10,6 @@ namespace Anchored.GameStates
 		public abstract void Update();
 		public abstract void Draw(SpriteBatch sb);
 		public abstract void DrawUI(SpriteBatch sb);
+		public abstract void DrawDebug();
 	}
 }

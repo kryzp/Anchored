@@ -1,4 +1,6 @@
-﻿using Anchored.World.Components.Physics;
+﻿using Anchored.Math;
+using Anchored.Physics;
+using Anchored.Util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
@@ -6,6 +8,7 @@ using MonoGame.Extended.Tiled;
 using MonoGame.Extended.Tiled.Renderers;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Anchored.World.Components
 {
@@ -13,8 +16,10 @@ namespace Anchored.World.Components
 	{
 		private TiledMap map;
 		private TiledMapRenderer renderer;
-		private TiledMapTileLayer collisionLayer;
+		private TiledMapObjectLayer collisionLayer;
 		private List<Collider> colliders;
+
+		private Camera camera;
 
 		public Effect Effect = null;
 		public float LayerDepth = 0f;
@@ -26,12 +31,13 @@ namespace Anchored.World.Components
 		{
 		}
 
-		public TileMap(TiledMap map)
+		public TileMap(TiledMap map, Camera camera)
 		{
 			this.map = map;
-			renderer = new TiledMapRenderer(Game1.GraphicsDevice, map);
-			collisionLayer = map.GetLayer<TiledMapTileLayer>("Collisions");
-			colliders = new List<Collider>();
+			this.camera = camera;
+			this.renderer = new TiledMapRenderer(Game1.GraphicsDevice, map);
+			this.collisionLayer = map.GetLayer<TiledMapObjectLayer>("CollisionsObj");
+			this.colliders = new List<Collider>();
 		}
 
 		public void Update()
@@ -41,7 +47,13 @@ namespace Anchored.World.Components
 
 		public void Draw(SpriteBatch sb)
 		{
-			renderer.Draw(Game1.Camera.GetViewMatrix(), effect: Effect, depth: LayerDepth);
+			Game1.GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
+
+			renderer.Draw(
+				camera.GetViewMatrix(),
+				effect: Effect,
+				depth: LayerDepth
+			);
 		}
 
 		public void LoadColliders()
@@ -49,24 +61,39 @@ namespace Anchored.World.Components
 			if (collisionLayer == null)
 				return;
 
-			int tileCountX = collisionLayer.Width;
-			int tileCountY = collisionLayer.Height;
+			var colliderList = collisionLayer.Objects;
 
-			for (UInt16 yy = 0; yy < tileCountY; yy++)
+			foreach (TiledMapPolygonObject collider in colliderList.Where(x => x is TiledMapPolygonObject))
 			{
-				for (UInt16 xx = 0; xx < tileCountX; xx++)
+				Point2[] points = collider.Points;
+
+				for (int ii = 0; ii < points.Length; ii++)
 				{
-					if (collisionLayer.TryGetTile(xx, yy, out TiledMapTile? tt))
-					{
-						if (!tt.Value.IsBlank)
-						{
-							var collider = Entity.AddComponent(new Collider());
-							collider.MakeRect(new RectangleF(0, 0, 16, 16));
-							collider.Transform.Position = new Vector2(xx*16, yy*16);
-							collider.Mask = Masks.Solid;
-							colliders.Add(collider);
-						}
-					}
+					Point2 point = points[ii];
+					Point2 nextPoint = points[0];
+
+					if (ii < points.Length-1)
+						nextPoint = points[ii+1];
+
+					Collider lineCollider = Entity.AddComponent(new Collider());
+
+					lineCollider.MakeLine(
+						new LineF(
+							new Vector2(
+								point.X,
+								point.Y
+							),
+							new Vector2(
+								nextPoint.X,
+								nextPoint.Y
+							)
+						)
+					);
+
+					lineCollider.Transform.Position = collider.Position;
+					lineCollider.Mask = Masks.Solid;
+
+					colliders.Add(lineCollider);
 				}
 			}
 		}

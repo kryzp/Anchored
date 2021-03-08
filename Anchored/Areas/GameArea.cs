@@ -1,5 +1,6 @@
 ﻿using Anchored.World;
 using Anchored.World.Components;
+using Anchored.World.Types;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.Tiled;
 
@@ -8,14 +9,21 @@ namespace Anchored.Areas
 	public class GameArea
 	{
 		protected EntityWorld world;
+		protected Entity cameraEntity;
+		protected Camera camera => (Camera)cameraEntity.GetComponent<Camera>();
 
-		public GameArea()
+		public Camera Camera => camera;
+
+		public GameArea(EntityWorld world)
 		{
+			this.world = world;
+
+			cameraEntity = world.AddEntity("Camera");
+			new CameraType().Create(cameraEntity, 0);
 		}
 
 		public virtual void Load(SpriteBatch sb)
 		{
-			world = new EntityWorld();
 		}
 
 		public virtual void Unload()
@@ -38,10 +46,9 @@ namespace Anchored.Areas
 
 		protected Entity SetupTileMap(TiledMap map, bool loadColliders = true)
 		{
-			var tileMapEntity = world.AddEntity();
-			var tileMap = tileMapEntity.AddComponent(new TileMap(map));
-			if (loadColliders)
-				tileMap.LoadColliders();
+			var tileMapEntity = world.AddEntity("Tile Map");
+			var tileMap = tileMapEntity.AddComponent(new TileMap(map, camera));
+			if (loadColliders) tileMap.LoadColliders();
 			return tileMapEntity;
 		}
 	}

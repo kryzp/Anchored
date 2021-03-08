@@ -1,16 +1,16 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 
-namespace Anchored.Util
+namespace Anchored.Math
 {
-	public class Quad
+	public class QuadF
 	{
 		public Vector2 A;
 		public Vector2 B;
 		public Vector2 C;
 		public Vector2 D;
 
-		public Quad()
+		public QuadF()
 		{
 			this.A = Vector2.Zero;
 			this.B = Vector2.Zero;
@@ -18,7 +18,7 @@ namespace Anchored.Util
 			this.D = Vector2.Zero;
 		}
 
-		public Quad(Vector2 x)
+		public QuadF(Vector2 x)
 		{
 			this.A = x;
 			this.B = x;
@@ -26,7 +26,7 @@ namespace Anchored.Util
 			this.D = x;
 		}
 
-		public Quad(Vector2 a, Vector2 b, Vector2 c, Vector2 d)
+		public QuadF(Vector2 a, Vector2 b, Vector2 c, Vector2 d)
 		{
 			this.A = a;
 			this.B = b;
@@ -41,16 +41,16 @@ namespace Anchored.Util
 			max = dot;
 			
 			dot = Vector2.Dot(B, axis);
-			min = Math.Min(dot, min);
-			max = Math.Max(dot, max);
+			min = MathF.Min(dot, min);
+			max = MathF.Max(dot, max);
 
 			dot = Vector2.Dot(C, axis);
-			min = Math.Min(dot, min);
-			max = Math.Max(dot, max);
+			min = MathF.Min(dot, min);
+			max = MathF.Max(dot, max);
 			
 			dot = Vector2.Dot(D, axis);
-			min = Math.Min(dot, min);
-			max = Math.Max(dot, max);
+			min = MathF.Min(dot, min);
+			max = MathF.Max(dot, max);
 		}
 	}
 }

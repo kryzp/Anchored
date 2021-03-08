@@ -1,4 +1,7 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Anchored.Assets;
+using Anchored.World.Components;
+using ImGuiNET;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
@@ -48,15 +51,19 @@ namespace Anchored
 
 		private static KeyboardState prevKeyboardState;
 		private static KeyboardState keyboardState;
-		
+		private static bool guiBlocksKeyboard => AssetManager.ImGuiEnabled && Input.EnableImGuiFocus && ImGui.GetIO().WantCaptureKeyboard;
+
 		private static MouseState prevMouseState;
 		private static MouseState mouseState;
+		private static bool guiBlocksMouse => AssetManager.ImGuiEnabled && Input.EnableImGuiFocus && ImGui.GetIO().WantCaptureMouse;
 		
 		private static GamePadState[] prevGamePadState;
 		private static GamePadState[] gamePadState;
 
 		private static string textInput;
 		public static string TextInput => textInput;
+
+		public static bool EnableImGuiFocus;
 
 		static Input()
 		{
@@ -72,10 +79,32 @@ namespace Anchored
 			prevMouseState = mouseState;
 			mouseState = Mouse.GetState();
 
+			prevGamePadState[0] = gamePadState[0];
+			prevGamePadState[1] = gamePadState[1];
+			prevGamePadState[2] = gamePadState[2];
+			prevGamePadState[3] = gamePadState[3];
+
 			gamePadState[0] = GamePad.GetState(PlayerIndex.One);
 			gamePadState[1] = GamePad.GetState(PlayerIndex.Two);
 			gamePadState[2] = GamePad.GetState(PlayerIndex.Three);
 			gamePadState[3] = GamePad.GetState(PlayerIndex.Four);
+		}
+
+		public static Vector2 MouseScreenPosition()
+		{
+			return new Vector2(mouseState.Position.X, mouseState.Position.Y);
+		}
+
+		public static Vector2 MouseWorldPosition(Camera camera)
+		{
+			return MouseWorldPosition(camera.GetViewMatrix());
+		}
+
+		public static Vector2 MouseWorldPosition(Matrix transform)
+		{
+			Vector2 mousePos = MouseScreenPosition();
+			Matrix inverse = Matrix.Invert(transform);
+			return Vector2.Transform(mousePos, inverse);
 		}
 
 		public static bool IsDown(VirtualButton button, PlayerIndex index = PlayerIndex.One)
@@ -147,97 +176,121 @@ namespace Anchored
 			return false;
 		}
 
-		public static bool IsDown(MouseButton button)
-		{
-			if (button == MouseButton.Left)
-			{
-				return (mouseState.LeftButton == ButtonState.Pressed);
-			}
-			else if (button == MouseButton.Middle)
-			{
-				return (mouseState.MiddleButton == ButtonState.Pressed);
-			}
-			else if (button == MouseButton.Right)
-			{
-				return (mouseState.RightButton == ButtonState.Pressed);
-			}
-
-			return false;
-		}
-
-		public static bool IsPressed(MouseButton button)
+		public static bool IsDown(MouseButton button, bool ignoreGui = false)
 		{
 			if (button == MouseButton.Left)
 			{
 				return (
 					mouseState.LeftButton == ButtonState.Pressed &&
-					prevMouseState.LeftButton == ButtonState.Released
+					ignoreGui || !guiBlocksMouse
 				);
 			}
 			else if (button == MouseButton.Middle)
 			{
 				return (
 					mouseState.MiddleButton == ButtonState.Pressed &&
-					prevMouseState.MiddleButton == ButtonState.Released
+					ignoreGui || !guiBlocksMouse
 				);
 			}
 			else if (button == MouseButton.Right)
 			{
 				return (
 					mouseState.RightButton == ButtonState.Pressed &&
-					prevMouseState.RightButton == ButtonState.Released
+					ignoreGui || !guiBlocksMouse
 				);
 			}
 
 			return false;
 		}
 
-		public static bool IsReleased(MouseButton button)
+		public static bool IsPressed(MouseButton button, bool ignoreGui = false)
+		{
+			if (button == MouseButton.Left)
+			{
+				return (
+					mouseState.LeftButton == ButtonState.Pressed &&
+					prevMouseState.LeftButton == ButtonState.Released
+				) && (ignoreGui || !guiBlocksMouse);
+			}
+			else if (button == MouseButton.Middle)
+			{
+				return (
+					mouseState.MiddleButton == ButtonState.Pressed &&
+					prevMouseState.MiddleButton == ButtonState.Released
+				) && (ignoreGui || !guiBlocksMouse);
+			}
+			else if (button == MouseButton.Right)
+			{
+				return (
+					mouseState.RightButton == ButtonState.Pressed &&
+					prevMouseState.RightButton == ButtonState.Released
+				) && (ignoreGui || !guiBlocksMouse);
+			}
+
+			return false;
+		}
+
+		public static bool IsReleased(MouseButton button, bool ignoreGui = false)
 		{
 			if (button == MouseButton.Left)
 			{
 				return (
 					mouseState.LeftButton == ButtonState.Released &&
 					prevMouseState.LeftButton == ButtonState.Pressed
-				);
+				) && (ignoreGui || !guiBlocksMouse);
 			}
 			else if (button == MouseButton.Middle)
 			{
 				return (
 					mouseState.MiddleButton == ButtonState.Released &&
 					prevMouseState.MiddleButton == ButtonState.Pressed
-				);
+				) && (ignoreGui || !guiBlocksMouse);
 			}
 			else if (button == MouseButton.Right)
 			{
 				return (
 					mouseState.RightButton == ButtonState.Released &&
 					prevMouseState.RightButton == ButtonState.Pressed
-				);
+				) && (ignoreGui || !guiBlocksMouse);
 			}
 
 			return false;
 		}
-
-		public static bool IsDown(Keys key)
+		
+		public static bool IsDown(Keys key, bool ignoreGui = false)
 		{
-			return keyboardState.IsKeyDown(key);
+			return keyboardState.IsKeyDown(key) && (ignoreGui || !guiBlocksKeyboard);
 		}
 
-		public static bool IsPressed(Keys key)
+		public static bool IsPressed(Keys key, bool ignoreGui = false)
 		{
 			return (
 				keyboardState.IsKeyDown(key) &&
 				prevKeyboardState.IsKeyUp(key)
-			);
+			) && (ignoreGui || !guiBlocksKeyboard);
 		}
 
-		public static bool IsReleased(Keys key)
+		public static bool IsReleased(Keys key, bool ignoreGui = false)
 		{
 			return (
 				keyboardState.IsKeyUp(key) &&
 				prevKeyboardState.IsKeyDown(key)
-			);
+			) && (ignoreGui || !guiBlocksKeyboard);
+		}
+
+		public static bool Ctrl(bool ignoreGui = false)
+		{
+			return IsDown(Keys.LeftControl, ignoreGui) || Input.IsDown(Keys.RightControl, ignoreGui);
+		}
+
+		public static bool Shift(bool ignoreGui = false)
+		{
+			return IsDown(Keys.LeftShift, ignoreGui) || Input.IsDown(Keys.RightShift, ignoreGui);
+		}
+
+		public static bool Alt(bool ignoreGui = false)
+		{
+			return IsDown(Keys.LeftAlt, ignoreGui) || Input.IsDown(Keys.RightAlt, ignoreGui);
 		}
 
 		public static bool IsDown(GamePadButton button, PlayerIndex player = PlayerIndex.One)

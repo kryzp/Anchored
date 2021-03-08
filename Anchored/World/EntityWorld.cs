@@ -5,13 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-// note to anyone reading:
-// there is undoubtedly some spaghetti code here but for the most part i think it gets the job done
-// works pretty well with lots of entities since i store the components detached from entities.
-// this means it will be very easy to convert this into a proper entity component system, since
-// all that it'd entail would be to move the functions of components into different places.
-// but right now, i quite like the oop setup, makes it very comfortable to implement new components and such :)
-
 namespace Anchored.World
 {
 	public class EntityWorld
@@ -146,7 +139,7 @@ namespace Anchored.World
 			}
 		}
 
-		public Entity AddEntity(Vector2? position = null, float rotation = 0f, Vector2? scale = null)
+		public Entity AddEntity(string name, Vector2? position = null, float rotation = 0f, Vector2? scale = null)
 		{
 			int slot = -1;
 
@@ -166,15 +159,17 @@ namespace Anchored.World
 			if (uniqueID == 0)
 				uniqueID = 1;
 
-			entities[slot].Transform.Origin = Vector2.Zero;
-			entities[slot].Transform.Position = position ?? Vector2.Zero;
-			entities[slot].Transform.RotationDegrees = rotation;
-			entities[slot].Transform.Scale = scale ?? Vector2.One;
-			entities[slot].ID = uniqueID;
-			entities[slot].Index = (UInt16)slot;
-			entities[slot].World = this;
+			var entity = entities[slot];
+			entity.Transform.Origin = Vector2.Zero;
+			entity.Transform.Position = position ?? Vector2.Zero;
+			entity.Transform.RotationDegrees = rotation;
+			entity.Transform.Scale = scale ?? Vector2.One;
+			entity.ID = uniqueID;
+			entity.Index = (UInt16)slot;
+			entity.World = this;
+			entity.Name = name;
 
-			return entities[slot];
+			return entity;
 		}
 
 		public void DestroyEntity(Entity entity)
@@ -245,14 +240,16 @@ namespace Anchored.World
 			entity.Components.Add(new SimpleComponentHandle(this, typeof(T), list[slot].Index, list[slot].ID));
 			componentsInitializing.Add(new SimpleComponentHandle(this, typeof(T), list[slot].Index, list[slot].ID));
 
-			list[slot] = component;
-			list[slot].ID = uniqueID;
-			list[slot].Index = (UInt16)slot;
-			list[slot].Entity = entity;
-			list[slot].Enabled = true;
-			list[slot].Type = typeof(T);
+			T comp = new T();
+			comp = component;
+			comp.ID = uniqueID;
+			comp.Index = (UInt16)slot;
+			comp.Entity = entity;
+			comp.Enabled = true;
+			comp.Type = typeof(T);
 
-			return (T)list[slot];
+			list[slot] = comp;
+			return (T)comp;
 		}
 
 		public T GetComponent<T>(SimpleComponentHandle component) where T : Component
@@ -260,9 +257,9 @@ namespace Anchored.World
 			return (T)components[typeof(T)][component.Index];
 		}
 
-		public Component GetComponent<T>() where T : Component
+		public T GetComponent<T>() where T : Component
 		{
-			return components[typeof(T)][0];
+			return (T)components[typeof(T)][0];
 		}
 
 		public bool ValidComponent<T>(T component) where T : Component

@@ -10,9 +10,6 @@ namespace Anchored.World.Types
 		{
 			var camera = entity.AddComponent(new Camera(320, 180));
 			camera.Origin = new Vector2(160, 90);
-
-			var follow = entity.AddComponent(new Follow(Game1.Player.Transform));
-			follow.LerpAmount = 0.2f;
 		}
 	}
 }

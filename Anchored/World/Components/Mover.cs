@@ -1,9 +1,11 @@
-﻿using Anchored.Util;
+﻿using Anchored.Math;
+using Anchored.Physics;
+using Anchored.Util;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended;
 using System;
 
-namespace Anchored.World.Components.Physics
+namespace Anchored.World.Components
 {
 	public class Mover : Component, IUpdatable
 	{
@@ -47,7 +49,7 @@ namespace Anchored.World.Components.Physics
 			{
 				var pushoutNormal = hit.Pushout.NormalizedCopy();
 				var velocityNormal = Velocity.NormalizedCopy();
-				var dot = Math.Min(0f, Vector2.Dot(velocityNormal, pushoutNormal));
+				var dot = MathF.Min(0f, Vector2.Dot(velocityNormal, pushoutNormal));
 				var amount = pushoutNormal * Velocity.Length() * dot;
 				Velocity -= amount;
 			}
@@ -104,18 +106,18 @@ namespace Anchored.World.Components.Physics
 			{
 				if (Collider.IsValid())
 				{
-					var maxStep = Math.Min(
+					float maxStep = MathF.Min(
 						Collider.GetWorldBounds().Width,
 						Collider.GetWorldBounds().Height
 					) / 4f;
 
-					var distance = amount.Length();
-					var normal = amount.NormalizedCopy();
+					float distance = amount.Length();
+					Vector2 normal = amount.NormalizedCopy();
 
 					while (distance > 0)
 					{
-						var stepDist = Math.Min(distance, maxStep);
-						var step = normal * stepDist;
+						float stepDist = MathF.Min(distance, maxStep);
+						Vector2 step = normal * stepDist;
 						distance -= stepDist;
 
 						Entity.Transform.Position += step;

@@ -53,17 +53,11 @@
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.0.1641" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="BellsAndWhistles\" />
     <Folder Include="Debug\DearImGui\" />
-    <Folder Include="Debug\Console\" />
-    <Folder Include="Debug\Editors\" />
-    <Folder Include="Debug\Util\" />
-    <Folder Include="Events\" />
-    <Folder Include="Menus\" />
+    <Folder Include="Debug\Tools\" />
+    <Folder Include="Graphics\Particles\" />
     <Folder Include="Save\" />
-    <Folder Include="TerrainFeatures\" />
     <Folder Include="Items\" />
     <Folder Include="UI\" />
-    <Folder Include="Objects\" />
   </ItemGroup>
 </Project>

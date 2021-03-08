@@ -2,11 +2,12 @@
 using Anchored.Graphics.Animating;
 using Anchored.Util;
 using Anchored.World.Components;
-using Anchored.World.Components.Physics;
+using Anchored.Physics;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended;
 using System;
 using System.Collections.Generic;
+using MonoGame.Extended.Shapes;
 
 namespace Anchored.World.Types
 {
@@ -14,8 +15,16 @@ namespace Anchored.World.Types
 	{
 		public override void Create(Entity entity, UInt32 instance)
 		{
-			var collider = entity.AddComponent(new Collider(new RectangleF(0, 0, 16, 16)));
-			collider.Transform.Origin = new Vector2(8, 8);
+			//var collider = entity.AddComponent(new Collider(new RectangleF(0, 0, 16, 16)));
+			
+			var collider = entity.AddComponent(new Collider(new Polygon(new List<Vector2>()
+			{
+				new Vector2(8, 0),
+				new Vector2(16, 8),
+				new Vector2(12, 16),
+				new Vector2(4, 16),
+				new Vector2(0, 8),
+			})));
 
 			var mover = entity.AddComponent(new Mover(collider));
 			mover.Friction = 500f;
@@ -24,33 +33,35 @@ namespace Anchored.World.Types
 			var player = entity.AddComponent(new Player(mover));
 
 			{
-				AnimationData testAnimationData = new AnimationData();
-				testAnimationData.Layers.Add("Main", new List<AnimationFrame>()
+				var sprite = Textures.Get("test_anim");
+
+				AnimationData walkAnimData = new AnimationData();
+				walkAnimData.Layers.Add("Main", new List<AnimationFrame>()
 				{
 					new AnimationFrame()
 					{
 						Duration = 0.2f,
 						Bounds = new Rectangle(0, 0, 16, 16),
-						Texture = new TextureRegion(Textures.TEST_ANIM)
+						Texture = sprite
 					},
 					new AnimationFrame()
 					{
 						Duration = 0.2f,
 						Bounds = new Rectangle(16, 0, 16, 16),
-						Texture = new TextureRegion(Textures.TEST_ANIM)
+						Texture = sprite
 					}
 				});
 
-				testAnimationData.Tags.Add("Main", new AnimationTag()
+				walkAnimData.Tags.Add("Main", new AnimationTag()
 				{
 					StartFrame = 0,
 					EndFrame = 1,
 					Direction = AnimationDirection.Forward
 				});
 
-				var animation = new Animation(testAnimationData);
+				var walkAnim = new Animation(walkAnimData);
 
-				var animator = entity.AddComponent(new Animator(animation));
+				var animator = entity.AddComponent(new Animator(walkAnim));
 				animator.Origin = new Vector2(8, 8);
 			}
 		}

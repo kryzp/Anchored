@@ -1,14 +1,15 @@
 ﻿using Anchored.Assets;
 using Anchored.World;
 using Anchored.World.Components;
+using Anchored.World.Types;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Anchored.Areas
 {
 	public class DebugArea : GameArea
 	{
-		public DebugArea()
-			: base()
+		public DebugArea(EntityWorld world)
+			: base(world)
 		{
 		}
 
@@ -16,17 +17,14 @@ namespace Anchored.Areas
 		{
 			base.Load(sb);
 
-			SetupTileMap(Maps.TEST, true);
+			SetupTileMap(TileMaps.Get("test_map"), true);
 
-			var ids = EntityTypes.GetIDs();
-
-			var playerEntity = world.AddEntity();
-			EntityTypes.NewTypeOf(ids[0]).Create(playerEntity, 0);
+			var playerEntity = world.AddEntity("Player");
+			new PlayerType().Create(playerEntity, 0);
 			Game1.Player = playerEntity;
 
-			var cameraEntity = world.AddEntity();
-			EntityTypes.NewTypeOf(ids[1]).Create(cameraEntity, 0);
-			Game1.Camera = cameraEntity.GetComponent<Camera>();
+			var follow = cameraEntity.AddComponent(new Follow(playerEntity.Transform));
+			follow.LerpAmount = 0.2f;
 		}
 
 		public override void Unload()

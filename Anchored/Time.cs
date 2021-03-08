@@ -5,11 +5,13 @@ namespace Anchored
 {
 	public static class Time
 	{
-		public static double Seconds;
-		public static double PrevSeconds;
-		public static float Delta;
-		public static float PauseTimer;
-		public static GameTime GameTime;
+		public static double Seconds = 0.0;
+		public static double PrevSeconds = 0.0;
+		public static float DeltaModifier = 1f;
+		public static float RawDelta = 0f;
+		public static float Delta => RawDelta * DeltaModifier;
+		public static float PauseTimer = 0f;
+		public static GameTime GameTime = null;
 
 		public static void PauseFor(float duration)
 		{

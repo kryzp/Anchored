@@ -4,6 +4,12 @@ using System;
 using System.Linq;
 using Anchored.Util;
 using Microsoft.Xna.Framework.Graphics;
+using Anchored.Physics;
+using Anchored.Math;
+using MonoGame.Extended.Shapes;
+using Anchored.Debug;
+using System.Collections.Generic;
+using Anchored.Debug.Console;
 
 // note to anyone reading:
 // im super proud of myself for making this lol
@@ -14,23 +20,22 @@ using Microsoft.Xna.Framework.Graphics;
 // so it can handle any shape i need it to so long as i define a check function and a resulution function for it and it isn't concave!
 // (concave shapes can be created by just combining different colliders together)
 
-namespace Anchored.World.Components.Physics
+namespace Anchored.World.Components
 {
-	public class Collider : Component
+	public class Collider : Component, IDrawable
 	{
-		// todo: add like a polygon collider? which is just like multiple lines.
-
 		public enum ColliderType
 		{
 			Rect,
 			Circle,
-			Line
+			Line,
+			Polygon
 		}
 
 		private UInt32 entityMovementID;
 		private RectangleF worldBounds;
-		private Vector2[] axis;
-		private Vector2[] points;
+		private List<Vector2> axis;
+		private List<Vector2> points;
 		private int axisCount;
 		private int pointCount;
 		private ColliderType currentColliderType;
@@ -43,6 +48,7 @@ namespace Anchored.World.Components.Physics
 		public RectColliderData RectData => (RectColliderData)data;
 		public CircleColliderData CircleData => (CircleColliderData)data;
 		public LineColliderData LineData => (LineColliderData)data;
+		public PolygonColliderData PolygonData => (PolygonColliderData)data;
 
 		public Collider()
 		{
@@ -51,10 +57,12 @@ namespace Anchored.World.Components.Physics
 
 			worldBounds = new RectangleF();
 
-			axis = new Vector2[4];
+			//axis = new Vector2[4];
+			axis = new List<Vector2>();
 			axisCount = 0;
 
-			points = new Vector2[4];
+			//points = new Vector2[4];
+			points = new List<Vector2>();
 			pointCount = 0;
 		}
 
@@ -63,6 +71,8 @@ namespace Anchored.World.Components.Physics
 		{
 			this.currentColliderType = ColliderType.Rect;
 			this.data = new RectColliderData(rect);
+			this.axis.Populate(4, Vector2.Zero);
+			this.points.Populate(4, Vector2.Zero);
 		}
 
 		public Collider(CircleF circle)
@@ -72,17 +82,74 @@ namespace Anchored.World.Components.Physics
 			this.data = new CircleColliderData(circle);
 		}
 
-		public Collider(Line line)
+		public Collider(LineF line)
 			: this()
 		{
 			this.currentColliderType = ColliderType.Line;
 			this.data = new LineColliderData(line);
+			this.axis.Populate(1, Vector2.Zero);
+			this.points.Populate(2, Vector2.Zero);
+		}
+
+		public Collider(Polygon polygon)
+			: this()
+		{
+			this.currentColliderType = ColliderType.Polygon;
+			this.data = new PolygonColliderData(polygon);
+			this.axis.Populate(polygon.Vertices.Length, Vector2.Zero);
+			this.points.Populate(polygon.Vertices.Length, Vector2.Zero);
+		}
+
+		public void Draw(SpriteBatch sb)
+		{
+			if (!DebugConsole.GetVariable<bool>("showcolliders"))
+				return;
+
+			sb.DrawRectangle(
+				GetWorldBounds(),
+				((Overlaps(Masks.Solid, out _)) ? Color.Green : Color.Red) * 0.75f,
+				1f,
+				0.95f
+			);
+
+			if (data is CircleColliderData)
+			{
+				sb.DrawCircle(
+					CircleData.WorldCircle,
+					50,
+					Color.Red,
+					1.5f,
+					0.95f
+				);
+			}
+			else if (data is LineColliderData)
+			{
+				sb.DrawLine(
+					LineData.WorldLine.A,
+					LineData.WorldLine.B,
+					Color.Red,
+					1.5f,
+					0.95f
+				);
+			}
+			else if (data is PolygonColliderData)
+			{
+				sb.DrawPolygon(
+					Transform.Position + Entity.Transform.Position,
+					PolygonData.Polygon,
+					Color.Red,
+					1.5f,
+					0.95f
+				);
+			}
 		}
 
 		public void MakeRect(RectangleF rect)
 		{
 			this.currentColliderType = ColliderType.Rect;
 			this.data = new RectColliderData(rect);
+			this.axis.Populate(4, Vector2.Zero);
+			this.points.Populate(4, Vector2.Zero);
 			UpdateWorldBounds();
 		}
 
@@ -93,10 +160,21 @@ namespace Anchored.World.Components.Physics
 			UpdateWorldBounds();
 		}
 
-		public void MakeLine(Line line)
+		public void MakeLine(LineF line)
 		{
 			this.currentColliderType = ColliderType.Line;
 			this.data = new LineColliderData(line);
+			this.axis.Populate(1, Vector2.Zero);
+			this.points.Populate(2, Vector2.Zero);
+			UpdateWorldBounds();
+		}
+
+		public void MakePolygon(Polygon polygon)
+		{
+			this.currentColliderType = ColliderType.Polygon;
+			this.data = new PolygonColliderData(polygon);
+			this.axis.Populate(polygon.Vertices.Length, Vector2.Zero);
+			this.points.Populate(polygon.Vertices.Length, Vector2.Zero);
 			UpdateWorldBounds();
 		}
 
@@ -111,7 +189,7 @@ namespace Anchored.World.Components.Physics
 			return worldBounds;
 		}
 
-		public bool Overlaps(Collider collider, ref Vector2 pushout)
+		public bool Overlaps(Collider collider, out Vector2 pushout)
 		{
 			Vector2 push = new Vector2();
 			bool result = false;
@@ -143,20 +221,19 @@ namespace Anchored.World.Components.Physics
 				result = ConvexToConvex(this, collider, ref push);
 			}
 
-			if (pushout != null)
-				pushout = push;
+			pushout = push;
 
 			return result;
 		}
 
-		public bool Overlaps(Masks mask, ref Vector2 pushout)
+		public bool Overlaps(Masks mask, out Vector2 pushout)
 		{
 			bool hit = false;
 			Vector2 push = new Vector2();
 
 			World.ForeachComponentStoppable<Collider>(mask, (other) =>
 			{
-				if (Overlaps(other, ref push))
+				if (Overlaps(other, out push))
 				{
 					hit = true;
 					return false;
@@ -165,16 +242,15 @@ namespace Anchored.World.Components.Physics
 				return true;
 			});
 
-			if (pushout != null)
-				pushout = push;
+			pushout = push;
 
 			return hit;
 		}
 
-		public bool Overlaps(Masks mask, Vector2 offset, ref Vector2 pushout)
+		public bool Overlaps(Masks mask, Vector2 offset, out Vector2 pushout)
 		{
 			Transform.Position += offset;
-			bool result = Overlaps(mask, ref pushout);
+			bool result = Overlaps(mask, out pushout);
 			Transform.Position -= offset;
 			return result;
 		}
@@ -193,7 +269,7 @@ namespace Anchored.World.Components.Physics
 			World.ForeachComponentStoppable<Collider>(mask, (other) =>
 			{
 				Vector2 push = new Vector2();
-				if (Overlaps(mask, ref push))
+				if (Overlaps(mask, out push))
 				{
 					populateTemp[index].Collider = other;
 					populateTemp[index].Pushout = push;
@@ -232,31 +308,20 @@ namespace Anchored.World.Components.Physics
 			a.Project(axis, ref min0, ref max0);
 			b.Project(axis, ref min1, ref max1);
 
-			if (Math.Abs(min1 - max0) < Math.Abs(max1 - min0))
+			if (MathF.Abs(min1 - max0) < MathF.Abs(max1 - min0))
 				amount = min1 - max0;
 			else
 				amount = max1 - min0;
 
 			return (
-				(min0 < max1) &&
-				(max0 > min1)
+				min0 < max1 &&
+				max0 > min1
 			);
 		}
 
 		protected void Project(Vector2 axis, ref float min, ref float max)
 		{
-			if (currentColliderType == ColliderType.Rect)
-			{
-				RectData.Project(axis, ref min, ref max);
-			}
-			else if (currentColliderType == ColliderType.Circle)
-			{
-				CircleData.Project(axis, ref min, ref max);
-			}
-			else if (currentColliderType == ColliderType.Line)
-			{
-				LineData.Project(axis, ref min, ref max);
-			}
+			data.Project(axis, ref min, ref max);
 		}
 
 		protected void UpdateWorldBounds()
@@ -264,20 +329,7 @@ namespace Anchored.World.Components.Physics
 			if (entityMovementID == 0 || Entity.TransformStamp != entityMovementID)
 			{
 				Matrix mat = Transform.GetMatrix() * Entity.Transform.GetMatrix();
-
-				if (currentColliderType == ColliderType.Rect)
-				{
-					RectData.UpdateWorldBounds(mat, ref worldBounds, ref axis, ref points, ref axisCount, ref pointCount);
-				}
-				else if (currentColliderType == ColliderType.Circle)
-				{
-					CircleData.UpdateWorldBounds(mat, ref worldBounds, ref axis, ref points, ref axisCount, ref pointCount);
-				}
-				else if (currentColliderType == ColliderType.Line)
-				{
-					LineData.UpdateWorldBounds(mat, ref worldBounds, ref axis, ref points, ref axisCount, ref pointCount);
-				}
-
+				data.UpdateWorldBounds(mat, ref worldBounds, ref axis, ref points, ref axisCount, ref pointCount);
 				entityMovementID = Entity.TransformStamp;
 			}
 		}
@@ -335,10 +387,10 @@ namespace Anchored.World.Components.Physics
 				if (!AxisOverlaps(a, b, axis, ref amount))
 					return false;
 
-				if (ii == 0 || Math.Abs(amount) < distance)
+				if (ii == 0 || MathF.Abs(amount) < distance)
 				{
 					pushout = axis * amount;
-					distance = Math.Abs(amount);
+					distance = MathF.Abs(amount);
 				}
 			}
 
@@ -350,10 +402,10 @@ namespace Anchored.World.Components.Physics
 				if (!AxisOverlaps(a, b, axis, ref amount))
 					return false;
 
-				if (ii == 0 || Math.Abs(amount) < distance)
+				if (ii == 0 || MathF.Abs(amount) < distance)
 				{
 					pushout = axis * amount;
-					distance = Math.Abs(amount);
+					distance = MathF.Abs(amount);
 				}
 			}
 
@@ -378,10 +430,10 @@ namespace Anchored.World.Components.Physics
 				if (!AxisOverlaps(a, b, axis, ref amount))
 					return false;
 
-				if (ii == 0 || Math.Abs(amount) < distance)
+				if (ii == 0 || MathF.Abs(amount) < distance)
 				{
 					pushout = axis * amount;
-					distance = Math.Abs(amount);
+					distance = MathF.Abs(amount);
 				}
 			}
 
@@ -393,10 +445,10 @@ namespace Anchored.World.Components.Physics
 				if (!AxisOverlaps(a, b, axis, ref amount))
 					return false;
 
-				if (ii == 0 || Math.Abs(amount) < distance)
+				if (ii == 0 || MathF.Abs(amount) < distance)
 				{
 					pushout = axis * amount;
-					distance = Math.Abs(amount);
+					distance = MathF.Abs(amount);
 				}
 			}
 
@@ -406,46 +458,46 @@ namespace Anchored.World.Components.Physics
 		public class RectColliderData : IColliderData
 		{
 			public RectangleF Rect;
-			public Quad WorldBox;
+			public QuadF WorldRect;
 
 			public RectColliderData(RectangleF rect)
 			{
 				this.Rect = rect;
-				WorldBox = new Quad();
+				this.WorldRect = new QuadF();
 			}
 
 			public void Project(Vector2 axis, ref float min, ref float max)
 			{
-				WorldBox.Project(axis, ref min, ref max);
+				WorldRect.Project(axis, ref min, ref max);
 			}
 
-			public void UpdateWorldBounds(Matrix mat, ref RectangleF worldBounds, ref Vector2[] axis, ref Vector2[] points, ref int axisCount, ref int pointCount)
+			public void UpdateWorldBounds(Matrix mat, ref RectangleF worldBounds, ref List<Vector2> axis, ref List<Vector2> points, ref int axisCount, ref int pointCount)
 			{
-				WorldBox.A = Vector2.Transform(Rect.TopLeft, mat);
-				WorldBox.B = Vector2.Transform(Rect.TopRight, mat);
-				WorldBox.C = Vector2.Transform(Rect.BottomRight, mat);
-				WorldBox.D = Vector2.Transform(Rect.BottomLeft, mat);
+				WorldRect.A = Vector2.Transform(Rect.TopLeft, mat);
+				WorldRect.B = Vector2.Transform(Rect.TopRight, mat);
+				WorldRect.C = Vector2.Transform(Rect.BottomRight, mat);
+				WorldRect.D = Vector2.Transform(Rect.BottomLeft, mat);
 
-				axis[0] = (WorldBox.B - WorldBox.A).NormalizedCopy();
+				axis[0] = (WorldRect.B - WorldRect.A).NormalizedCopy();
 				axis[0] = new Vector2(-axis[0].Y, axis[0].X);
-				axis[1] = (WorldBox.C - WorldBox.B).NormalizedCopy();
+				axis[1] = (WorldRect.C - WorldRect.B).NormalizedCopy();
 				axis[1] = new Vector2(-axis[1].Y, axis[1].X);
-				axis[2] = (WorldBox.D - WorldBox.C).NormalizedCopy();
+				axis[2] = (WorldRect.D - WorldRect.C).NormalizedCopy();
 				axis[2] = new Vector2(-axis[2].Y, axis[2].X);
-				axis[3] = (WorldBox.A - WorldBox.D).NormalizedCopy();
+				axis[3] = (WorldRect.A - WorldRect.D).NormalizedCopy();
 				axis[3] = new Vector2(-axis[3].Y, axis[3].X);
 				axisCount = 4;
 
-				points[0] = WorldBox.A;
-				points[1] = WorldBox.B;
-				points[2] = WorldBox.C;
-				points[3] = WorldBox.D;
+				points[0] = WorldRect.A;
+				points[1] = WorldRect.B;
+				points[2] = WorldRect.C;
+				points[3] = WorldRect.D;
 				pointCount = 4;
 
-				worldBounds.X = Math.Min(WorldBox.A.X, Math.Min(WorldBox.B.X, Math.Min(WorldBox.C.X, WorldBox.D.X)));
-				worldBounds.Y = Math.Min(WorldBox.A.Y, Math.Min(WorldBox.B.Y, Math.Min(WorldBox.C.Y, WorldBox.D.Y)));
-				worldBounds.Width = Math.Max(WorldBox.A.X, Math.Max(WorldBox.B.X, Math.Max(WorldBox.C.X, WorldBox.D.X))) - worldBounds.X;
-				worldBounds.Height = Math.Max(WorldBox.A.Y, Math.Max(WorldBox.B.Y, Math.Max(WorldBox.C.Y, WorldBox.D.Y))) - worldBounds.Y;
+				worldBounds.X = MathF.Min(WorldRect.A.X, MathF.Min(WorldRect.B.X, MathF.Min(WorldRect.C.X, WorldRect.D.X)));
+				worldBounds.Y = MathF.Min(WorldRect.A.Y, MathF.Min(WorldRect.B.Y, MathF.Min(WorldRect.C.Y, WorldRect.D.Y)));
+				worldBounds.Width = MathF.Max(WorldRect.A.X, MathF.Max(WorldRect.B.X, MathF.Max(WorldRect.C.X, WorldRect.D.X))) - worldBounds.X;
+				worldBounds.Height = MathF.Max(WorldRect.A.Y, MathF.Max(WorldRect.B.Y, MathF.Max(WorldRect.C.Y, WorldRect.D.Y))) - worldBounds.Y;
 			}
 		}
 
@@ -464,7 +516,7 @@ namespace Anchored.World.Components.Physics
 				WorldCircle.Project(axis, ref min, ref max);
 			}
 
-			public void UpdateWorldBounds(Matrix mat, ref RectangleF worldBounds, ref Vector2[] axis, ref Vector2[] points, ref int axisCount, ref int pointCount)
+			public void UpdateWorldBounds(Matrix mat, ref RectangleF worldBounds, ref List<Vector2> axis, ref List<Vector2> points, ref int axisCount, ref int pointCount)
 			{
 				WorldCircle.Center = Vector2.Transform(Circle.Center, mat);
 				WorldCircle.Radius = Circle.Radius;
@@ -481,10 +533,10 @@ namespace Anchored.World.Components.Physics
 
 		public class LineColliderData : IColliderData
 		{
-			public Line Line;
-			public Line WorldLine;
+			public LineF Line;
+			public LineF WorldLine;
 
-			public LineColliderData(Line line)
+			public LineColliderData(LineF line)
 			{
 				this.Line = line;
 			}
@@ -494,7 +546,7 @@ namespace Anchored.World.Components.Physics
 				WorldLine.Project(axis, ref min, ref max);
 			}
 
-			public void UpdateWorldBounds(Matrix mat, ref RectangleF worldBounds, ref Vector2[] axis, ref Vector2[] points, ref int axisCount, ref int pointCount)
+			public void UpdateWorldBounds(Matrix mat, ref RectangleF worldBounds, ref List<Vector2> axis, ref List<Vector2> points, ref int axisCount, ref int pointCount)
 			{
 				WorldLine.A = Vector2.Transform(Line.A, mat);
 				WorldLine.B = Vector2.Transform(Line.B, mat);
@@ -507,10 +559,82 @@ namespace Anchored.World.Components.Physics
 				points[1] = WorldLine.B;
 				pointCount = 2;
 
-				worldBounds.X = Math.Min(WorldLine.A.X, WorldLine.B.X);
-				worldBounds.Y = Math.Min(WorldLine.A.Y, WorldLine.B.Y);
-				worldBounds.Width = Math.Max(WorldLine.A.X, WorldLine.B.X) - worldBounds.X;
-				worldBounds.Height = Math.Max(WorldLine.A.Y, WorldLine.B.Y) - worldBounds.Y;
+				worldBounds.X = MathF.Min(WorldLine.A.X, WorldLine.B.X);
+				worldBounds.Y = MathF.Min(WorldLine.A.Y, WorldLine.B.Y);
+				worldBounds.Width = MathF.Max(WorldLine.A.X, WorldLine.B.X) - worldBounds.X;
+				worldBounds.Height = MathF.Max(WorldLine.A.Y, WorldLine.B.Y) - worldBounds.Y;
+			}
+		}
+
+		public class PolygonColliderData : IColliderData
+		{
+			public Polygon Polygon;
+			public Polygon WorldPolygon;
+
+			public PolygonColliderData(Polygon polygon)
+			{
+				this.Polygon = polygon;
+				this.WorldPolygon = new Polygon(polygon.Vertices);
+			}
+
+			public void Project(Vector2 axis, ref float min, ref float max)
+			{
+				min = axis.Dot(Polygon.Vertices[0]);
+				max = min;
+
+				for (int ii = 0; ii < Polygon.Vertices.Length; ii++)
+				{
+					float p = axis.Dot(Polygon.Vertices[ii]);
+					if (p < min)
+						min = p;
+					else if (p > max)
+						max = p;
+				}
+			}
+
+			public void UpdateWorldBounds(Matrix mat, ref RectangleF worldBounds, ref List<Vector2> axis, ref List<Vector2> points, ref int axisCount, ref int pointCount)
+			{
+				int vertexCount = Polygon.Vertices.Length;
+
+				// Update Axis and Points
+				{
+					axisCount = vertexCount;
+					pointCount = vertexCount;
+
+					for (int ii = 0; ii < vertexCount; ii++)
+					{
+						WorldPolygon.Vertices[ii] = Vector2.Transform(Polygon.Vertices[ii], mat);
+
+						int next = ii + 1;
+
+						axis[ii] = Polygon.Vertices[ii]-Polygon.Vertices[(next>=vertexCount) ? 0 : next];
+						axis[ii] = new Vector2(-axis[0].Y, axis[0].X);
+						points[ii] = Polygon.Vertices[ii];
+					}
+				}
+
+				// Update World Bounds
+				{
+					float minx = Single.MaxValue;
+					float maxx = -Single.MaxValue;
+					float miny = Single.MaxValue;
+					float maxy = -Single.MaxValue;
+
+					for (int ii = 0; ii < vertexCount; ii++)
+					{
+						float xx = WorldPolygon.Vertices[ii].X;
+						float yy = WorldPolygon.Vertices[ii].Y;
+						minx = MathF.Min(minx, xx);
+						maxx = MathF.Max(maxx, xx);
+						miny = MathF.Min(miny, yy);
+						maxy = MathF.Max(maxy, yy);
+					}
+
+					worldBounds.X = minx;
+					worldBounds.Y = miny;
+					worldBounds.Width = maxx - minx;
+					worldBounds.Height = maxy - miny;
+				}
 			}
 		}
 	}

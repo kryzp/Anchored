@@ -45,16 +45,12 @@ namespace Anchored.Graphics.Animating
 		public TextureRegion GetSlice(string name, bool error = true)
 		{
 			if (Slices.TryGetValue(name, out var region))
-			{
 				return region;
-			}
 
 			if (!error)
-			{
 				return null;
-			}
 
-			return new TextureRegion(Textures.NULL);
+			return Textures.NULL;
 		}
 
 		public AnimationFrame? GetFrame(string layer, uint id)
@@ -71,9 +67,7 @@ namespace Anchored.Graphics.Animating
 			}
 
 			if (frames.Count < id)
-			{
 				return null;
-			}
 
 			return frames[(int)id];
 		}

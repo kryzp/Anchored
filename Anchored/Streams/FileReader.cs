@@ -17,7 +17,7 @@ namespace Anchored.Streams
 
 			set
 			{
-				position = Math.Max(0, Math.Min(read.Length - 1, value));
+				position = (int)MathF.Max(0, MathF.Min(read.Length-1, value));
 			}
 		}
 

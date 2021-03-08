@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Anchored.Assets;
+using System;
 using System.IO;
 
 namespace Anchored.Streams
@@ -16,6 +17,16 @@ namespace Anchored.Streams
 		public FileHandle(string path)
 		{
 			this.path = path;
+		}
+
+		public static FileHandle FromRoot(string path)
+		{
+			return new FileHandle(AssetManager.Root + path);
+		}
+
+		public static FileHandle FromNearRoot(string path)
+		{
+			return new FileHandle(AssetManager.NearRoot + path);
 		}
 
 		public void MakeDirectory()
@@ -111,7 +122,9 @@ namespace Anchored.Streams
 
 		public bool Exists()
 		{
-			return IsDirectory() ? Directory.Exists(path) : File.Exists(path);
+			return (IsDirectory())
+				? (Directory.Exists(path))
+				: (File.Exists(path));
 		}
 
 		public bool IsDirectory()

@@ -11,6 +11,9 @@ namespace Anchored.World
 		public UInt16 ID;
 		public UInt16 Index;
 
+		// todo: debug
+		public string Name;
+
 		public List<SimpleComponentHandle> Components = new List<SimpleComponentHandle>();
 		public EntityWorld World = null;
 
@@ -24,15 +27,17 @@ namespace Anchored.World
 			this.Index = 0;
 			this.Transform = new Transform();
 			this.Transform.OnTransformed += Transformed;
+			this.Name = "";
 		}
 
-		public Entity(EntityWorld world, UInt16 id, UInt16 index)
+		public Entity(EntityWorld world, UInt16 id, UInt16 index, string name)
 		{
 			this.World = world;
 			this.ID = id;
 			this.Index = index;
 			this.Transform = new Transform();
 			this.Transform.OnTransformed += Transformed;
+			this.Name = name;
 		}
 
 		public T AddComponent<T>() where T : Component, new()
