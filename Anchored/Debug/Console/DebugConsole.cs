@@ -1,10 +1,13 @@
 ﻿using Anchored.Debug.Console.Commands;
 using Anchored.World;
+using Anchored.World.Components;
 using ImGuiNET;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace Anchored.Debug.Console
@@ -17,7 +20,9 @@ namespace Anchored.Debug.Console
 
 		private static ImGuiTextFilterPtr filter = new ImGuiTextFilterPtr(ImGuiNative.ImGuiTextFilter_ImGuiTextFilter(null));
 		private static string input = "";
-		private static Dictionary<string, object> Variables = new Dictionary<string, object>();
+
+		private static List<ConsoleVariable> variables = new List<ConsoleVariable>();
+		private static bool showVariables;
 
 		private static bool forceFocus;
 
@@ -31,7 +36,10 @@ namespace Anchored.Debug.Console
 
 		static DebugConsole()
 		{
-			Variables.Add("showcolliders", false);
+			variables.Add(new ConsoleVariableOf<string>("playername", "epicgamer_420_69"));
+			variables.Add(new ConsoleVariableOf<bool>("showcolliders", true));
+			variables.Add(new ConsoleVariableOf<float>("deltamod", 0f, (x) => Time.DeltaModifier = x));
+			variables.Add(new ConsoleVariableOf<bool>("playerdocollisions", false, (x) => World.GetComponent<Player>().Entity.GetComponent<Mover>().ResolveCollisions = x));
 
 			Commands.Add(new HelpCommand());
 			Commands.Add(new SetCommand());
@@ -75,18 +83,64 @@ namespace Anchored.Debug.Console
 					ImGui.EndPopup();
 				}
 
-				if (ImGui.BeginPopup("Variables"))
-				{
-					ImGui.EndPopup();
-				}
-
 				ImGui.SameLine();
 				if (ImGui.Button("Options"))
 					ImGui.OpenPopup("Options");
 
 				ImGui.SameLine();
 				if (ImGui.Button("Variables"))
-					ImGui.OpenPopup("Variables");
+					showVariables = !showVariables;
+
+				if (showVariables)
+				{
+					ImGui.Begin("Console Variables");
+					{
+						foreach (ConsoleVariableOf<bool> variable in variables.Where(x => x is ConsoleVariableOf<bool>))
+						{
+							string name = variable.Name;
+							bool value = variable.Value;
+
+							ImGui.TextUnformatted($"{name} :");
+
+							ImGui.SameLine();
+
+							ImGui.PushStyleColor(ImGuiCol.Text, (value)
+								? new System.Numerics.Vector4(0.63f, 0.9f, 0.47f, 1f)
+								: new System.Numerics.Vector4(0.94f, 0.44f, 0.36f, 1f));
+							ImGui.TextUnformatted($"{value.ToString().ToLower()}");
+							ImGui.PopStyleColor();
+						}
+
+						foreach (ConsoleVariableOf<string> variable in variables.Where(x => x is ConsoleVariableOf<string>))
+						{
+							string name = variable.Name;
+							string value = variable.Value;
+
+							ImGui.TextUnformatted($"{name} :");
+
+							ImGui.SameLine();
+
+							ImGui.PushStyleColor(ImGuiCol.Text, new System.Numerics.Vector4(0.95f, 0.86f, 0.42f, 1f));
+							ImGui.TextUnformatted($"\"{value.ToString()}\"");
+							ImGui.PopStyleColor();
+						}
+
+						foreach (ConsoleVariableOf<float> variable in variables.Where(x => x is ConsoleVariableOf<float>))
+						{
+							string name = variable.Name;
+							float value = variable.Value;
+
+							ImGui.TextUnformatted($"{name} :");
+
+							ImGui.SameLine();
+
+							ImGui.PushStyleColor(ImGuiCol.Text, new System.Numerics.Vector4(0.41f, 0.68f, 0.89f, 1f));
+							ImGui.TextUnformatted($"{value.ToString()}");
+							ImGui.PopStyleColor();
+						}
+					}
+					ImGui.End();
+				}
 
 				ImGui.Separator();
 				var height = ImGui.GetStyle().ItemSpacing.Y + ImGui.GetFrameHeightWithSpacing();
@@ -159,40 +213,38 @@ namespace Anchored.Debug.Console
 			Error("Unknown Command");
 		}
 
-		public static void SetVariable(string var, object val)
+		public static void SetVariable<T>(string var, T val)
 		{
-			if (!Variables.ContainsKey(var))
+			foreach (ConsoleVariableOf<T> variable in variables.Where(x => x is ConsoleVariableOf<T>))
 			{
-				Error("No such variable exists!");
-				return;
-			}
+				if (variable.Name == var)
+				{
+					variable.Value = val;
 
-			if (Variables[var].GetType() == val.GetType())
-				Variables[var] = val;
+					if (variable.OnChanged != null)
+						variable.OnChanged(val);
+				}
+			}
 		}
 
 		public static T GetVariable<T>(string var)
 		{
-			if (!Variables.ContainsKey(var))
+			foreach (ConsoleVariableOf<T> variable in variables.Where(x => x is ConsoleVariableOf<T>))
 			{
-				Error("No such variable exists!");
-				return default(T);
+				if (variable.Name == var)
+				{
+					return variable.Value;
+				}
 			}
 
-			if (Variables[var].GetType() != typeof(T))
-			{
-				Error("Type of variable conflicts with the get value!");
-				return default(T);
-			}
-
-			return (T)Variables[var];
+			return default(T);
 		}
 
 		public static bool HasVariable<T>(string var)
 		{
-			if (Variables.ContainsKey(var))
+			foreach (ConsoleVariableOf<T> variable in variables.Where(x => x is ConsoleVariableOf<T>))
 			{
-				if (Variables[var].GetType() == typeof(T))
+				if (variable.Name == var)
 				{
 					return true;
 				}
@@ -230,6 +282,24 @@ namespace Anchored.Debug.Console
 			{
 				this.Text = text;
 				this.Colour = col;
+			}
+		}
+
+		public abstract class ConsoleVariable
+		{
+			public string Name;
+		}
+
+		public class ConsoleVariableOf<T> : ConsoleVariable
+		{
+			public T Value;
+			public Action<T> OnChanged;
+
+			public ConsoleVariableOf(string name, T value, Action<T> onChanged = null)
+			{
+				this.Name = name;
+				this.Value = value;
+				this.OnChanged = onChanged;
 			}
 		}
 	}

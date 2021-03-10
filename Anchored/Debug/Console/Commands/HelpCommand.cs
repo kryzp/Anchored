@@ -7,7 +7,7 @@ namespace Anchored.Debug.Console.Commands
 	class HelpCommand : ConsoleCommand
 	{
 		public HelpCommand()
-			: base("help", "", "Gives info about a command", "<opt:cmd>")
+			: base("help", "man", "Gives info about a command", "<opt:cmd>")
 		{
 		}
 

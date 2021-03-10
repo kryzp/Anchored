@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Anchored.Debug.Console;
+using Microsoft.Xna.Framework;
 using System;
 
 namespace Anchored

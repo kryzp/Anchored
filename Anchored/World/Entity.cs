@@ -50,6 +50,21 @@ namespace Anchored.World
 			return World.AddComponent<T>(this, component);
 		}
 
+		public void RemoveComponent<T>(SimpleComponentHandle component) where T : Component
+		{
+			World.RemoveComponent<T>(this, component);
+		}
+
+		public void RemoveComponent<T>(T component) where T : Component
+		{
+			World.RemoveComponent<T>(this, component);
+		}
+
+		public void RemoveComponent<T>() where T : Component
+		{
+			World.RemoveComponent<T>(this);
+		}
+
 		public T GetComponent<T>() where T : Component, new()
 		{
 			foreach (var it in Components)

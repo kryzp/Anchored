@@ -4,11 +4,13 @@ using Anchored.Util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
+using MonoGame.Extended.Shapes;
 using MonoGame.Extended.Tiled;
 using MonoGame.Extended.Tiled.Renderers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Anchored.World.Components
 {
@@ -61,40 +63,35 @@ namespace Anchored.World.Components
 			if (collisionLayer == null)
 				return;
 
+			for (int ii = 0; ii < colliders.Count; ii += 1)
+			{
+				Entity entity = colliders[ii].Entity;
+				entity.RemoveComponent(colliders[ii]);
+			}
+
+			colliders.Clear();
+
 			var colliderList = collisionLayer.Objects;
 
-			foreach (TiledMapPolygonObject collider in colliderList.Where(x => x is TiledMapPolygonObject))
+			/*
+			foreach (TiledMapObject rect in colliderList.Where(x => x is TiledMapRectangleObject))
 			{
-				Point2[] points = collider.Points;
+				Collider collider = Entity.AddComponent(new Collider());
+				collider.MakeRect(new RectangleF(0, 0, rect.Size.Width, rect.Size.Height));
+				collider.Transform.Position = rect.Position;
+				collider.Mask = Masks.Solid;
+				colliders.Add(collider);
+			}
+			*/
 
-				for (int ii = 0; ii < points.Length; ii++)
-				{
-					Point2 point = points[ii];
-					Point2 nextPoint = points[0];
-
-					if (ii < points.Length-1)
-						nextPoint = points[ii+1];
-
-					Collider lineCollider = Entity.AddComponent(new Collider());
-
-					lineCollider.MakeLine(
-						new LineF(
-							new Vector2(
-								point.X,
-								point.Y
-							),
-							new Vector2(
-								nextPoint.X,
-								nextPoint.Y
-							)
-						)
-					);
-
-					lineCollider.Transform.Position = collider.Position;
-					lineCollider.Mask = Masks.Solid;
-
-					colliders.Add(lineCollider);
-				}
+			foreach (TiledMapPolygonObject polygon in colliderList.Where(x => x is TiledMapPolygonObject))
+			{
+				var vectorPoints = polygon.Points.Select(x => new Vector2(x.X, x.Y)).ToList();
+				Collider collider = Entity.AddComponent(new Collider());
+				collider.MakePolygon(new Polygon(vectorPoints));
+				collider.Transform.Position = polygon.Position;
+				collider.Mask = Masks.Solid;
+				colliders.Add(collider);
 			}
 		}
 	}

@@ -20,16 +20,9 @@ namespace Anchored.Debug.Console.Commands
 			}
 
 			string toSet = args[0];
-			object varToSetTo = null;
 
 			if (args.Length == 1)
 			{
-				if (DebugConsole.HasVariable<bool>(toSet))
-				{
-					varToSetTo = !DebugConsole.GetVariable<bool>(args[0]);
-					goto set;
-				}
-
 				DebugConsole.Error("Not enough arguments given.");
 				return;
 			}
@@ -44,25 +37,34 @@ namespace Anchored.Debug.Console.Commands
 			
 			if (Boolean.TryParse(setTo, out bool parsedBoolVal))
 			{
-				varToSetTo = parsedBoolVal;
+				Set<bool>(toSet, parsedBoolVal);
 			}
 			else if (Single.TryParse(setTo, out float parsedFloatVal))
 			{
-				varToSetTo = parsedFloatVal;
+				Set<float>(toSet, parsedFloatVal);
 			}
 			else if (setTo[0] == '"' && setTo[setTo.Length-1] == '"')
 			{
-				varToSetTo = setTo;
+				string parsedStringVal = setTo[1..(setTo.Length-1)];
+				Set<string>(toSet, parsedStringVal);
 			}
 			else
 			{
 				DebugConsole.Error("Couldn't parse input into any viable type! If you're setting it to a string, make sure to use \" at the beginning and end of the variable!");
-				return;
 			}
+		}
 
-		set:
-			DebugConsole.SetVariable(toSet, varToSetTo);
-			DebugConsole.Log($"Set {toSet} to {varToSetTo}.");
+		private void Set<T>(string var, T to)
+		{
+			DebugConsole.SetVariable(var, to);
+			string name = 
+				(typeof(T) == typeof(bool))
+					? to.ToString().ToLower()
+					: (typeof(T) == typeof(string))
+						? "\"" + to.ToString() + "\""
+						: to.ToString();
+			
+			DebugConsole.Log($"Set {var} to {name}.");
 		}
 	}
 }

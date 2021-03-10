@@ -252,6 +252,21 @@ namespace Anchored.World
 			return (T)comp;
 		}
 
+		public void RemoveComponent<T>(Entity entity, SimpleComponentHandle component) where T : Component
+		{
+			componentsDestroying.Add(component);
+		}
+
+		public void RemoveComponent<T>(Entity entity, T component) where T : Component
+		{
+			componentsDestroying.Add(new SimpleComponentHandle(this, typeof(T), component.Index, component.ID));
+		}
+
+		public void RemoveComponent<T>(Entity entity) where T : Component
+		{
+			componentsDestroying.Add(new SimpleComponentHandle(this, typeof(T), 0, components[typeof(T)][0].ID));
+		}
+
 		public T GetComponent<T>(SimpleComponentHandle component) where T : Component
 		{
 			return (T)components[typeof(T)][component.Index];

@@ -43,6 +43,23 @@ namespace Anchored.World.Components
 			);
 		}
 
+		public bool Sees(Sprite sprite)
+		{
+			// todo: does not account for "advanced" matrix transformations
+
+			var bounds = sprite.Texture.Texture.Bounds;
+			bounds.X += (int)(sprite.Entity.Transform.Position.X);
+			bounds.Y += (int)(sprite.Entity.Transform.Position.Y);
+
+			if (GetViewport().Bounds.Contains(new Vector2(bounds.X, bounds.Y)) ||
+				GetViewport().Bounds.Contains(new Vector2(bounds.X + bounds.Width, bounds.Y + bounds.Height)))
+			{
+				return true;
+			}
+
+			return false;
+		}
+
 		public bool Sees(Collider col)
 		{
 			var bounds = col.GetWorldBounds();

@@ -15,16 +15,8 @@ namespace Anchored.World.Types
 	{
 		public override void Create(Entity entity, UInt32 instance)
 		{
-			//var collider = entity.AddComponent(new Collider(new RectangleF(0, 0, 16, 16)));
-			
-			var collider = entity.AddComponent(new Collider(new Polygon(new List<Vector2>()
-			{
-				new Vector2(8, 0),
-				new Vector2(16, 8),
-				new Vector2(12, 16),
-				new Vector2(4, 16),
-				new Vector2(0, 8),
-			})));
+			var collider = entity.AddComponent(new Collider(new RectangleF(0, 0, 16, 16)));
+			collider.Transform.Origin = new Vector2(8, 8);
 
 			var mover = entity.AddComponent(new Mover(collider));
 			mover.Friction = 500f;

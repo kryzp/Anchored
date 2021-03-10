@@ -107,18 +107,22 @@ namespace Anchored.World.Components
 
 			sb.DrawRectangle(
 				GetWorldBounds(),
-				((Overlaps(Masks.Solid, out _)) ? Color.Green : Color.Red) * 0.75f,
+				((Overlaps(Masks.Player, out _)) ? Color.Green : Color.Red) * 0.6f,
 				1f,
 				0.95f
 			);
 
-			if (data is CircleColliderData)
+			if (data is RectColliderData)
+			{
+				// todo: draw quad
+			}
+			else if (data is CircleColliderData)
 			{
 				sb.DrawCircle(
 					CircleData.WorldCircle,
 					50,
 					Color.Red,
-					1.5f,
+					1f,
 					0.95f
 				);
 			}
@@ -128,17 +132,17 @@ namespace Anchored.World.Components
 					LineData.WorldLine.A,
 					LineData.WorldLine.B,
 					Color.Red,
-					1.5f,
+					1f,
 					0.95f
 				);
 			}
 			else if (data is PolygonColliderData)
 			{
 				sb.DrawPolygon(
-					Transform.Position + Entity.Transform.Position,
-					PolygonData.Polygon,
+					GetWorldBounds().Position,
+					PolygonData.WorldPolygon,
 					Color.Red,
-					1.5f,
+					1f,
 					0.95f
 				);
 			}
@@ -579,37 +583,28 @@ namespace Anchored.World.Components
 
 			public void Project(Vector2 axis, ref float min, ref float max)
 			{
-				min = axis.Dot(Polygon.Vertices[0]);
-				max = min;
-
-				for (int ii = 0; ii < Polygon.Vertices.Length; ii++)
-				{
-					float p = axis.Dot(Polygon.Vertices[ii]);
-					if (p < min)
-						min = p;
-					else if (p > max)
-						max = p;
-				}
+				WorldPolygon.Project(axis, ref min, ref max);
 			}
 
 			public void UpdateWorldBounds(Matrix mat, ref RectangleF worldBounds, ref List<Vector2> axis, ref List<Vector2> points, ref int axisCount, ref int pointCount)
 			{
 				int vertexCount = Polygon.Vertices.Length;
+				axisCount = vertexCount;
+				pointCount = vertexCount;
 
 				// Update Axis and Points
 				{
-					axisCount = vertexCount;
-					pointCount = vertexCount;
-
 					for (int ii = 0; ii < vertexCount; ii++)
 					{
 						WorldPolygon.Vertices[ii] = Vector2.Transform(Polygon.Vertices[ii], mat);
 
-						int next = ii + 1;
+						Vector2 currentVertex = WorldPolygon.Vertices[ii];
+						Vector2 nextVertex = WorldPolygon.Vertices[((ii+1)>=vertexCount)?0:(ii+1)];
 
-						axis[ii] = Polygon.Vertices[ii]-Polygon.Vertices[(next>=vertexCount) ? 0 : next];
-						axis[ii] = new Vector2(-axis[0].Y, axis[0].X);
-						points[ii] = Polygon.Vertices[ii];
+						axis[ii] = (nextVertex - currentVertex).NormalizedCopy();
+						axis[ii] = new Vector2(-axis[ii].Y, axis[ii].X);
+
+						points[ii] = WorldPolygon.Vertices[ii];
 					}
 				}
 
