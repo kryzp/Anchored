@@ -39,10 +39,10 @@ namespace Anchored.Debug.Console
 			variables.Add(new ConsoleVariableOf<string>("playername", "epicgamer_420_69"));
 			variables.Add(new ConsoleVariableOf<bool>("showcolliders", true));
 			variables.Add(new ConsoleVariableOf<float>("deltamod", 0f, (x) => Time.DeltaModifier = x));
-			variables.Add(new ConsoleVariableOf<bool>("playerdocollisions", false, (x) => World.GetComponent<Player>().Entity.GetComponent<Mover>().ResolveCollisions = x));
 
 			Commands.Add(new HelpCommand());
 			Commands.Add(new SetCommand());
+			Commands.Add(new NoClipCommand());
 		}
 
 		public static void Update()

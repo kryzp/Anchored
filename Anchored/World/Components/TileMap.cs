@@ -73,7 +73,6 @@ namespace Anchored.World.Components
 
 			var colliderList = collisionLayer.Objects;
 
-			/*
 			foreach (TiledMapObject rect in colliderList.Where(x => x is TiledMapRectangleObject))
 			{
 				Collider collider = Entity.AddComponent(new Collider());
@@ -82,7 +81,6 @@ namespace Anchored.World.Components
 				collider.Mask = Masks.Solid;
 				colliders.Add(collider);
 			}
-			*/
 
 			foreach (TiledMapPolygonObject polygon in colliderList.Where(x => x is TiledMapPolygonObject))
 			{

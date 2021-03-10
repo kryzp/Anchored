@@ -114,7 +114,19 @@ namespace Anchored.World.Components
 
 			if (data is RectColliderData)
 			{
-				// todo: draw quad
+				sb.DrawPolygon(
+					Vector2.Zero,
+					new Polygon(new List<Vector2>()
+					{
+						RectData.WorldRect.A,
+						RectData.WorldRect.B,
+						RectData.WorldRect.C,
+						RectData.WorldRect.D
+					}),
+					Color.Red,
+					1f,
+					0.95f
+				);
 			}
 			else if (data is CircleColliderData)
 			{
@@ -139,7 +151,7 @@ namespace Anchored.World.Components
 			else if (data is PolygonColliderData)
 			{
 				sb.DrawPolygon(
-					GetWorldBounds().Position,
+					Vector2.Zero,
 					PolygonData.WorldPolygon,
 					Color.Red,
 					1f,

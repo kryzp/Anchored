@@ -61,11 +61,8 @@ namespace Anchored.Assets
 			progress += 1;
 			//Animations.Load();
 			//progress += 1;
-
-			//if (LoadSfx)
-			//	Audio.Load();
-
-			//progress += 1;
+			if (LoadSfx) Audio.Load();
+			progress += 1;
 		}
 
 		public static void Destroy()

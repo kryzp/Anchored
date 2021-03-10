@@ -2,6 +2,7 @@
 using Anchored.Debug;
 using Anchored.Debug.Console;
 using Anchored.Debug.DearImGui;
+using Anchored.Math;
 using Anchored.State;
 using Anchored.World;
 using Anchored.World.Components;
@@ -91,7 +92,7 @@ namespace Anchored
 				Exit();
 
 			DebugConsole.Update();
-
+			Tween.Update(Time.Delta);
 			Input.Update();
 
 			Time.RawDelta = (float)gt.ElapsedGameTime.TotalSeconds;
