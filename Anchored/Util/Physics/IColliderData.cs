@@ -2,7 +2,7 @@
 using MonoGame.Extended;
 using System.Collections.Generic;
 
-namespace Anchored.Physics
+namespace Anchored.Util.Physics
 {
 	public interface IColliderData
 	{

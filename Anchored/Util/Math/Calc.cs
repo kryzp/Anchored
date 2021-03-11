@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Anchored.Math
+namespace Anchored.Util.Math
 {
 	public static class Calc
 	{
 		public static float Approach(float from, float to, float amount)
 		{
-			return (from < to) ? (MathF.Min(from + amount, to)) : (MathF.Max(from - amount, to));
+			return from < to ? MathF.Min(from + amount, to) : MathF.Max(from - amount, to);
 		}
 	}
 }

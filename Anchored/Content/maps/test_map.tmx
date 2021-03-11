@@ -72,9 +72,6 @@
   <object id="67" x="48" y="208">
    <polygon points="0,0 0,16 16,16"/>
   </object>
-  <object id="69" x="98.5" y="100.5" width="83" height="31">
-   <text wrap="1">gamer momnt</text>
-  </object>
  </objectgroup>
  <layer id="1" name="Depth" width="16" height="16">
   <data encoding="csv">

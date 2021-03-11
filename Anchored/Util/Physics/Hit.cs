@@ -2,7 +2,7 @@
 using Anchored.World.Components;
 using Microsoft.Xna.Framework;
 
-namespace Anchored.Physics
+namespace Anchored.Util.Physics
 {
 	public class Hit
 	{

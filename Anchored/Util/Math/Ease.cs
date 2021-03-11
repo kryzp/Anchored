@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Anchored.Math
+namespace Anchored.Util.Math
 {
 	// e n g i n e e r   g a m i n g
 	public static class Ease

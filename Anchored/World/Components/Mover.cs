@@ -1,6 +1,6 @@
-﻿using Anchored.Math;
-using Anchored.Physics;
-using Anchored.Util;
+﻿using Anchored.Util;
+using Anchored.Util.Physics;
+using Anchored.Util.Math;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended;
 using System;

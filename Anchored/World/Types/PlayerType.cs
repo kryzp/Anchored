@@ -2,7 +2,7 @@
 using Anchored.Graphics.Animating;
 using Anchored.Util;
 using Anchored.World.Components;
-using Anchored.Physics;
+using Anchored.Util.Physics;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended;
 using System;

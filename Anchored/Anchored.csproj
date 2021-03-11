@@ -58,6 +58,5 @@
     <Folder Include="Graphics\Particles\" />
     <Folder Include="Save\" />
     <Folder Include="Items\" />
-    <Folder Include="UI\" />
   </ItemGroup>
 </Project>

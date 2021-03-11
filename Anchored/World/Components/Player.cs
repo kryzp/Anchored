@@ -1,5 +1,5 @@
 ﻿using Anchored.Assets;
-using Anchored.Physics;
+using Anchored.Util.Physics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;

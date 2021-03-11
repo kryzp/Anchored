@@ -1,5 +1,5 @@
 ﻿using Anchored.Debug.Console;
-using Anchored.Math;
+using Anchored.Util.Math;
 using Anchored.Streams;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Anchored.Util.Math.Tween;
 
 namespace Anchored.Assets
 {

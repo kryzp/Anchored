@@ -2,8 +2,9 @@
 using Anchored.Debug;
 using Anchored.Debug.Console;
 using Anchored.Debug.DearImGui;
-using Anchored.Math;
+using Anchored.Util.Math;
 using Anchored.State;
+using Anchored.UI;
 using Anchored.World;
 using Anchored.World.Components;
 using ImGuiNET;
@@ -12,6 +13,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using Anchored.Util.Math.Tween;
 
 namespace Anchored
 {
@@ -76,6 +78,8 @@ namespace Anchored
 			AssetManager.Load(ref progress);
 			DebugConsole.Engine("Finished Loading!");
 
+			UITestArea.CreateUI();
+
 			CurrentState = new PlayingState();
 			CurrentState.Load(SpriteBatch);
 		}
@@ -92,7 +96,7 @@ namespace Anchored
 				Exit();
 
 			DebugConsole.Update();
-			Tween.Update(Time.Delta);
+			Tween.Update();
 			Input.Update();
 
 			Time.RawDelta = (float)gt.ElapsedGameTime.TotalSeconds;
@@ -119,6 +123,7 @@ namespace Anchored
 				NextState = null;
 			}
 
+			UIManager.Update();
 			CurrentState.Update();
 
 			base.Update(gt);
@@ -136,8 +141,10 @@ namespace Anchored
 			SpriteBatch.Begin(SpriteSortMode.FrontToBack, samplerState: SamplerState.PointClamp);
 			SpriteBatch.Draw(GameRenderTarget, new Rectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT), Color.White);
 			SpriteBatch.End();
+
 			CurrentState.DrawUI(SpriteBatch);
-			
+			UIManager.Draw(SpriteBatch);
+
 			GraphicsDevice.SetRenderTarget(null);
 			
 			SpriteBatch.Begin(SpriteSortMode.Immediate, samplerState: SamplerState.PointClamp);

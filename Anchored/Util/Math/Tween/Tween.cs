@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 
-namespace Anchored.Math
+namespace Anchored.Util.Math.Tween
 {
 	public static class Tween
 	{
@@ -13,10 +13,7 @@ namespace Anchored.Math
 		public static TweenTask To(float to, float value, Action<float> set, float duration, Func<float, float> ease = null, float delay = 0)
 		{
 			if (ease == null)
-			{
-				// Default ease
 				ease = Ease.QuadOut;
-			}
 
 			var task = new TweenTask();
 			tasks.Add(task);
@@ -76,7 +73,7 @@ namespace Anchored.Math
 				tasks.Remove(task);
 		}
 
-		public static void Update(float dt)
+		public static void Update()
 		{
 			int ii = tasks.Count - 1;
 
@@ -92,7 +89,7 @@ namespace Anchored.Math
 						continue;
 					}
 
-					task.Update(dt);
+					task.Update();
 
 					if (task.Ended)
 						tasks.RemoveAt(ii);

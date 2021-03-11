@@ -43,6 +43,7 @@ namespace Anchored.Debug.Console
 			Commands.Add(new HelpCommand());
 			Commands.Add(new SetCommand());
 			Commands.Add(new NoClipCommand());
+			Commands.Add(new ReloadCommand());
 		}
 
 		public static void Update()

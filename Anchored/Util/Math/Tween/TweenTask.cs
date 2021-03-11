@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Anchored.Math
+namespace Anchored.Util.Math.Tween
 {
 	public class TweenTask
 	{
@@ -25,11 +25,11 @@ namespace Anchored.Math
 		public float To;
 		public Action<float> Set;
 
-		public void Update(float dt)
+		public void Update()
 		{
 			if (Delay >= 0)
 			{
-				Delay -= dt;
+				Delay -= Time.Delta;
 
 				if (Delay <= 0)
 				{
@@ -47,7 +47,7 @@ namespace Anchored.Math
 				OnStart?.Invoke();
 			}
 
-			Timer += dt;
+			Timer += Time.Delta;
 			float t = Timer / Duration;
 			bool callEnd = false;
 
