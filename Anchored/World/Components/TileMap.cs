@@ -44,6 +44,7 @@ namespace Anchored.World.Components
 
 		public void Update()
 		{
+			// todo: make this influenced by the DeltaModifier value in the 'Time' Class
 			renderer.Update(Time.GameTime);
 		}
 

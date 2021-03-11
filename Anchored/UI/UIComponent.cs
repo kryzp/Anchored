@@ -57,10 +57,8 @@ namespace Anchored.UI
 				var component = pair.Key;
 				var constraints = pair.Value;
 
-				constraints?.X?.ConstrainX(ref component.X, component);
-				constraints?.Y?.ConstrainY(ref component.Y, component);
-				constraints?.Width?.ConstrainWidth(ref component.Width, component);
-				constraints?.Height?.ConstrainHeight(ref component.Height, component);
+				constraints?.Constrain(component);
+				component.Update();
 			}
 		}
 
@@ -74,6 +72,11 @@ namespace Anchored.UI
 
 		public void Add(UIComponent component, UIConstraints constraints)
 		{
+			constraints?.X?.ConstrainX(ref component.X, component);
+			constraints?.Y?.ConstrainY(ref component.Y, component);
+			constraints?.Width?.ConstrainWidth(ref component.Width, component);
+			constraints?.Height?.ConstrainHeight(ref component.Height, component);
+
 			component.Init();
 			components.Add(component, constraints);
 		}

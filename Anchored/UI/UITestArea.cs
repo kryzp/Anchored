@@ -12,15 +12,24 @@ namespace Anchored.UI
 		public static void CreateUI()
 		{
 			UIComponent display = UIManager.Container;
-			UIComponent uiTexture = new UITexture(Textures.Get("null"));
-			UIConstraints constraints = new UIConstraints();
 
-			constraints.X = new CenterConstraint();
-			constraints.Y = new PixelConstraint(20);
-			constraints.Width = new PixelConstraint(64);
-			constraints.Height = new PixelConstraint(64);
+			// Button
+			{
+				UIButton uiButton = new UIButton(Textures.Get("null"));
+				UIConstraints constraints = new UIConstraints();
 
-			display.Add(uiTexture, constraints);
+				constraints.X = new CenterConstraint();
+				constraints.Y = new PixelConstraint(20);
+				constraints.Width = new PixelConstraint(256);
+				constraints.Height = new PixelConstraint(64);
+
+				uiButton.OnPressed = () =>
+				{
+					System.Diagnostics.Debug.WriteLine("btn prsd");
+				};
+
+				display.Add(uiButton, constraints);
+			}
 		}
 	}
 }
