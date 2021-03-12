@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,11 +11,11 @@ namespace Anchored.UI
 	{
 		private Dictionary<UIComponent, UIConstraints> components = new Dictionary<UIComponent, UIConstraints>();
 
-		public float X;
-		public float Y;
-		public float Width;
-		public float Height;
-		public float Alpha;
+		public int X;
+		public int Y;
+		public int Width;
+		public int Height;
+		public int Alpha;
 
 		public Vector2 Position
 		{
@@ -23,8 +24,8 @@ namespace Anchored.UI
 			{
 				if (value != null)
 				{
-					this.X = value.X;
-					this.Y = value.Y;
+					this.X = (int)value.X;
+					this.Y = (int)value.Y;
 				}
 			}
 		}
@@ -36,8 +37,8 @@ namespace Anchored.UI
 			{
 				if (value != null)
 				{
-					this.Width = value.X;
-					this.Height = value.Y;
+					this.Width = (int)value.X;
+					this.Height = (int)value.Y;
 				}
 			}
 		}
@@ -72,11 +73,7 @@ namespace Anchored.UI
 
 		public void Add(UIComponent component, UIConstraints constraints)
 		{
-			constraints?.X?.ConstrainX(ref component.X, component);
-			constraints?.Y?.ConstrainY(ref component.Y, component);
-			constraints?.Width?.ConstrainWidth(ref component.Width, component);
-			constraints?.Height?.ConstrainHeight(ref component.Height, component);
-
+			constraints?.Constrain(component);
 			component.Init();
 			components.Add(component, constraints);
 		}

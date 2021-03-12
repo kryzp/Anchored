@@ -55,7 +55,7 @@ namespace Anchored.Assets
 			if (sounds.TryGetValue(id, out effect))
 				return effect;
 
-			DebugConsole.Error($"Sound effect {id} was not found!");
+			DebugConsole.Error($"Sound effect \'{id}\' was not found!");
 			return null;
 		}
 
@@ -64,7 +64,7 @@ namespace Anchored.Assets
 			if (!AssetManager.LoadSfx)
 				return;
 
-			sfx?.Play(MathHelper.Clamp(0, 1, volume * SfxVolume * MasterVolume), pitch, pan);
+			sfx?.Play(MathHelper.Clamp(0f, 1f, volume * SfxVolume * MasterVolume), pitch, pan);
 		}
 
 		private static void LoadSfx(FileHandle file, string path, bool root = false)
@@ -77,7 +77,7 @@ namespace Anchored.Assets
 				{
 					if (sfx.Extension == ".xnb")
 					{
-						LoadSfx(sfx.NameWithoutExtension, path);
+						LoadSfx(sfx, path);
 					}
 				}
 
@@ -88,14 +88,17 @@ namespace Anchored.Assets
 			}
 			else
 			{
-				DebugConsole.Error($"File {file.Name} is missing.");
+				DebugConsole.Error($"File \'{file.Name}\' is missing.");
 			}
 		}
 
-		private static void LoadSfx(string sfx, string path)
+		private static void LoadSfx(FileHandle sfx, string path)
 		{
-			var s = Path.GetFileNameWithoutExtension(sfx);
-			sounds[$"{path}{s}".Replace('\\', '_')] = AssetManager.Content.Load<SoundEffect>($"sfx\\{path}{s}");
+			string folder = sfx.FullPath;
+			folder = folder.Remove(sfx.FullPath.Length - sfx.Name.Length, sfx.Name.Length);
+			folder = folder.Remove(0, (AssetManager.Root + "\\sfx").Length);
+			string id = folder + sfx.NameWithoutExtension;
+			sounds[$"{id}"] = AssetManager.Content.Load<SoundEffect>($"sfx\\{id}");
 		}
 	}
 }

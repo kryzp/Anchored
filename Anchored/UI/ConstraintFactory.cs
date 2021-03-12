@@ -7,7 +7,7 @@ namespace Anchored.UI
 {
 	public static class ConstraintFactory
 	{
-		public static UIConstraints GetRelative(int x, int y, int width, int height)
+		public static UIConstraints GetPosition(int x, int y, int width, int height)
 		{
 			UIConstraints constraints = new UIConstraints();
 

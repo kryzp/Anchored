@@ -1,6 +1,7 @@
 ﻿using Anchored.Streams;
 using Anchored.Util;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -39,7 +40,12 @@ namespace Anchored.Assets
 		private static void LoadTexture(FileHandle handle)
 		{
 			var region = new TextureRegion();
-			string id = handle.NameWithoutExtension;
+
+			string folder = handle.FullPath;
+			folder = folder.Remove(handle.FullPath.Length - handle.Name.Length, handle.Name.Length);
+			folder = folder.Remove(0, (AssetManager.Root + "\\txrs").Length);
+
+			string id = folder + handle.NameWithoutExtension;
 
 			if (AssetManager.LoadOriginalFiles)
 			{
@@ -49,7 +55,7 @@ namespace Anchored.Assets
 			}
 			else
 			{
-				region.Texture = AssetManager.Content.Load<Texture2D>($"txrs\\{handle.NameWithoutExtension}");
+				region.Texture = AssetManager.Content.Load<Texture2D>($"txrs\\{id}");
 			}
 
 			region.Source = region.Texture.Bounds;
@@ -67,7 +73,7 @@ namespace Anchored.Assets
 		public static TextureRegion Get(string id)
 		{
 			if (textures.TryGetValue(id, out var region))
-				return region;
+				return new TextureRegion(region.Texture, region.Source);
 
 			return Textures.NULL;
 		}

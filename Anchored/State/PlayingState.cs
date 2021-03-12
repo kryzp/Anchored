@@ -2,7 +2,6 @@
 using Anchored.Assets;
 using Anchored.Debug;
 using Anchored.Debug.Console;
-using Anchored.Debug.Editors;
 using Anchored.Util;
 using Anchored.World;
 using Anchored.World.Components;
@@ -20,8 +19,6 @@ namespace Anchored.State
 		private EntityWorld world;
 		private Camera camera;
 
-		private EditorWindow editorWindow;
-
 		public override void Load(SpriteBatch sb)
 		{
 			world = new EntityWorld();
@@ -34,8 +31,6 @@ namespace Anchored.State
 			Editor editor = new Editor();
 			editor.Camera = camera;
 			editor.World = world;
-
-			editorWindow = new EditorWindow(editor);
 		}
 
 		public override void Unload()
@@ -78,7 +73,6 @@ namespace Anchored.State
 			if (!DebugConsole.Open)
 				return;
 
-			editorWindow?.Draw();
 			DebugManager.Draw(world);
 		}
 	}

@@ -30,8 +30,13 @@ namespace Anchored.Assets
 
 		private static void LoadTileMap(FileHandle handle)
 		{
-			string id = handle.NameWithoutExtension;
-			TiledMap tilemap = AssetManager.Content.Load<TiledMap>($"maps\\{handle.NameWithoutExtension}");
+			string folder = handle.FullPath;
+			folder = folder.Remove(handle.FullPath.Length - handle.Name.Length, handle.Name.Length);
+			folder = folder.Remove(0, (AssetManager.Root + "\\maps").Length);
+
+			string id = folder + handle.NameWithoutExtension;
+
+			TiledMap tilemap = AssetManager.Content.Load<TiledMap>($"maps\\{id}");
 			maps[id] = tilemap;
 		}
 

@@ -112,9 +112,9 @@ namespace Anchored.Streams
 		{
 			var handles = new FileHandle[names.Length];
 
-			for (int i = 0; i < names.Length; i++)
+			for (int ii = 0; ii < names.Length; ii++)
 			{
-				handles[i] = new FileHandle(names[i]);
+				handles[ii] = new FileHandle(names[ii]);
 			}
 
 			return handles;

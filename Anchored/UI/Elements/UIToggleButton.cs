@@ -1,52 +1,50 @@
 ﻿using Anchored.UI.Constraints;
 using Anchored.Util;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using MonoGame.Extended;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Anchored.UI.Elements
 {
-	public class UIButton : UIComponent
-	{
-		private TextureRegion texture;
+	// todo: maybe also like a hover texture?
 
-		public Action OnPressed = null;
-		public Action OnReleased = null;
+	public class UIToggleButton : UIComponent
+	{
+		private TextureRegion textureOn;
+		private TextureRegion textureOff;
+		private UITexture uiTexture;
+
+		public Action OnEnabled = null;
+		public Action WhileEnabled = null;
 		public Action OnHovering = null;
 
-		public bool Pressed;
-		public bool Released;
+		public bool Enabled;
 		public bool Hovering;
 
-		public UIButton(TextureRegion tex)
-		{
-			this.texture = tex;
-		}
+		/// <summary>
+		/// When set to true, the button will activate upon being pressed, otherwise it will activate upon being released.
+		/// </summary>
+		public bool Instant = true;
 
-		public UIButton(TextureRegion tex, int width, int height)
-			: this(tex)
+		public UIToggleButton(TextureRegion texOff, TextureRegion texOn)
 		{
-			this.Width = width;
-			this.Height = height;
+			this.textureOn = texOn;
+			this.textureOff = texOff;
 		}
 
 		public override void Init()
 		{
 			// Texture
 			{
-				// todo: maybe also like a hover texture?
-
-				UITexture uiTexture = new UITexture(texture);
+				uiTexture = new UITexture(textureOff);
 				UIConstraints uiTextureConstraints = new UIConstraints();
 
 				uiTextureConstraints.X = new CenterConstraint();
 				uiTextureConstraints.Y = new PixelConstraint(Y);
 				uiTextureConstraints.Width = new PixelConstraint(Width);
 				uiTextureConstraints.Height = new PixelConstraint(Height);
-				
+
 				base.Add(uiTexture, uiTextureConstraints);
 			}
 		}
@@ -70,20 +68,29 @@ namespace Anchored.UI.Elements
 					OnHovering();
 			}
 
-			Pressed = false;
-			if (mousePressed && Hovering)
+			bool mouse = (Instant) ? mousePressed : mouseReleased;
+
+			if (mouse && Hovering)
 			{
-				Pressed = true;
-				if (OnPressed != null)
-					OnPressed();
+				Enabled = !Enabled;
+
+				if (Enabled)
+				{
+					uiTexture.Texture = textureOff;
+
+					if (OnEnabled != null)
+						OnEnabled();
+				}
+				else
+				{
+					uiTexture.Texture = textureOn;
+				}
 			}
 
-			Released = false;
-			if (mouseReleased && Hovering)
+			if (Enabled)
 			{
-				Released = true;
-				if (OnReleased != null)
-					OnReleased();
+				if (WhileEnabled != null)
+					WhileEnabled();
 			}
 		}
 	}

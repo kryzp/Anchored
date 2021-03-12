@@ -90,21 +90,21 @@ namespace Anchored
 			gamePadState[3] = GamePad.GetState(PlayerIndex.Four);
 		}
 
-		public static Vector2 MouseScreenPosition()
+		public static Point MouseScreenPosition()
 		{
-			return new Vector2(mouseState.Position.X, mouseState.Position.Y);
+			return mouseState.Position;
+		}
+
+		public static Vector2 MouseWorldPosition(Matrix transform)
+		{
+			Vector2 mousePos = MouseScreenPosition().ToVector2();
+			Matrix inverse = Matrix.Invert(transform);
+			return Vector2.Transform(mousePos, inverse);
 		}
 
 		public static Vector2 MouseWorldPosition(Camera camera)
 		{
 			return MouseWorldPosition(camera.GetViewMatrix());
-		}
-
-		public static Vector2 MouseWorldPosition(Matrix transform)
-		{
-			Vector2 mousePos = MouseScreenPosition();
-			Matrix inverse = Matrix.Invert(transform);
-			return Vector2.Transform(mousePos, inverse);
 		}
 
 		public static bool IsDown(VirtualButton button, PlayerIndex index = PlayerIndex.One)

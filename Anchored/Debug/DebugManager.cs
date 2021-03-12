@@ -16,16 +16,11 @@ namespace Anchored.Debug
 		public static bool Cheats = false; // not done
 		public static bool Entities = false; // not done
 		public static bool RunInfo = false; // not done
-		public static bool Console = true; // not done
-		public static bool ItemEditor = false; // not done
-		public static bool LevelEditor = false; // not done
+		public static bool Console = true; // done
 		public static bool LayerDebug = false; // not done
-		public static bool LocaleEditor = false; // not done
 		public static bool Rooms = false; // not done
-		public static bool Settings = false; // not done
-		public static bool SaveEditor = false; // not done
-		public static bool LootTableEditor = false; // not done
-		public static bool DebugView = false;
+		public static bool Settings = false; // done
+		public static bool DebugView = false; // not done
 
 		private static void DrawSettings()
 		{
@@ -59,14 +54,14 @@ namespace Anchored.Debug
 
 			if (ImGui.Button("Hide All"))
 			{
-				Cheats = DebugView = Entities = RunInfo = ItemEditor = LevelEditor = LayerDebug = LocaleEditor = Rooms = Settings = SaveEditor = LootTableEditor = false;
+				Cheats = DebugView = Entities = RunInfo = LayerDebug = Rooms = Settings = false;
 			}
 
 			ImGui.SameLine();
 
 			if (ImGui.Button("Show All"))
 			{
-				Cheats = DebugView = Entities = RunInfo = ItemEditor = LevelEditor = LayerDebug = LocaleEditor = Rooms = Settings = SaveEditor = LootTableEditor = true;
+				Cheats = DebugView = Entities = RunInfo =  LayerDebug = Rooms = Settings = true;
 			}
 
 			ImGui.BeginMainMenuBar();
@@ -74,16 +69,6 @@ namespace Anchored.Debug
 				if (ImGui.BeginMenu("General"))
 				{
 					ImGui.MenuItem("Settings", "", ref Settings);
-					ImGui.EndMenu();
-				}
-
-				if (ImGui.BeginMenu("Editors"))
-				{
-					ImGui.MenuItem("Level Editor", "", ref LevelEditor);
-					ImGui.MenuItem("Item Editor", "", ref ItemEditor);
-					ImGui.MenuItem("Locale Editor", "", ref LocaleEditor);
-					ImGui.MenuItem("Loot Table Editor", "", ref LootTableEditor);
-					ImGui.MenuItem("Save Editor", "", ref SaveEditor);
 					ImGui.EndMenu();
 				}
 
