@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="70">
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="83">
  <tileset firstgid="1" source="../tilesheets/ground_test.tsx"/>
  <tileset firstgid="7" source="../tilesheets/water_test.tsx"/>
  <layer id="3" name="Back" width="16" height="16">
@@ -44,33 +44,19 @@
 </data>
  </layer>
  <objectgroup id="5" name="CollisionsObj">
-  <object id="52" x="0" y="224" width="256" height="32"/>
-  <object id="53" x="128" y="160" width="128" height="16"/>
-  <object id="54" x="144" y="144" width="80" height="16"/>
-  <object id="55" x="224" y="176" width="16" height="16"/>
-  <object id="56" x="208" y="176" width="16" height="48"/>
-  <object id="57" x="192" y="208" width="16" height="16"/>
-  <object id="58" x="128" y="176" width="32" height="32"/>
-  <object id="59" x="0" y="208" width="48" height="16"/>
-  <object id="60" x="96" y="208" width="48" height="16"/>
-  <object id="61" x="112" y="192" width="16" height="16"/>
-  <object id="62" x="144" y="144">
-   <polygon points="0,0 -16,16 0,16"/>
-  </object>
-  <object id="63" x="128" y="176">
-   <polygon points="0,0 0,16 -16,16"/>
-  </object>
-  <object id="64" x="80" y="224">
-   <polygon points="0,0 16,-16 16,0"/>
-  </object>
-  <object id="65" x="96" y="208">
-   <polygon points="0,0 16,-16 16,0"/>
-  </object>
-  <object id="66" x="224" y="144">
-   <polygon points="0,0 0,16 16,16"/>
-  </object>
-  <object id="67" x="48" y="208">
-   <polygon points="0,0 0,16 16,16"/>
+  <object id="70" x="144" y="144" width="80" height="16"/>
+  <object id="71" x="128" y="160" width="16" height="32"/>
+  <object id="72" x="112" y="192" width="48" height="16"/>
+  <object id="73" x="144" y="160" width="16" height="32"/>
+  <object id="74" x="160" y="160" width="96" height="16"/>
+  <object id="75" x="208" y="176" width="32" height="16"/>
+  <object id="76" x="208" y="192" width="16" height="32"/>
+  <object id="77" x="0" y="224" width="256" height="32"/>
+  <object id="78" x="192" y="208" width="16" height="16"/>
+  <object id="79" x="96" y="208" width="48" height="16"/>
+  <object id="80" x="0" y="208" width="48" height="16"/>
+  <object id="82" x="80" y="48">
+   <polygon points="-48,-32 64,80 -48,-16"/>
   </object>
  </objectgroup>
  <layer id="1" name="Depth" width="16" height="16">

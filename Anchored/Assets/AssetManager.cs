@@ -49,8 +49,8 @@ namespace Anchored.Assets
 			//AsepriteReader.GraphicsDevice = Engine.GraphicsDevice;
 			//Audio.StartThread();
 
-			//if (Locale.Map == null)
-			//	Locale.Load(Locale.PrefferedClientLanguage);
+			if (Locales.Map == null)
+				Locales.Load(Locales.PrefferedClientLanguage);
 
 			//progress += 1;
 			//Effects.Load();

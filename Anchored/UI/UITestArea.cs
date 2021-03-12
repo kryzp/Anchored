@@ -29,8 +29,8 @@ namespace Anchored.UI
 
 				constraints.X = new CenterConstraint();
 				constraints.Y = new PixelConstraint(20);
-				constraints.Width = new PixelConstraint(64);
-				constraints.Height = new PixelConstraint(64);
+				constraints.Width = new PixelConstraint(36);
+				constraints.Height = new PixelConstraint(36);
 
 				display.Add(uiToggleButton, constraints);
 			}

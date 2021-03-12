@@ -36,7 +36,6 @@ namespace Anchored.Debug.Console
 
 		static DebugConsole()
 		{
-			variables.Add(new ConsoleVariableOf<string>("playername", "epicgamer_420_69"));
 			variables.Add(new ConsoleVariableOf<bool>("showcolliders", true));
 			variables.Add(new ConsoleVariableOf<float>("deltamod", 0f, (x) => Time.DeltaModifier = x));
 

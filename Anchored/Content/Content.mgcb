@@ -14,6 +14,9 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin locales/en.json
+/copy:locales/en.json
+
 #begin maps/test_map.tmx
 /importer:TiledMapImporter
 /processor:TiledMapProcessor
