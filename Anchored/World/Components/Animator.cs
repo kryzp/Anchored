@@ -1,34 +1,44 @@
-﻿using Anchored.Graphics.Animating;
+﻿using Anchored.Assets;
+using Anchored.Graphics.Animating;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Anchored.World.Components
 {
-	public class Animator : Component, IUpdatable, IDrawable
+	public class Animator : Component, IUpdatable, IRenderable
 	{
-		public Animation Animation { get; set; }
+		private Dictionary<string, Animation> animations = new Dictionary<string, Animation>();
+
+		public Animation CurrentAnimation { get; set; }
 
 		public float LayerDepth = 0f;
 		public Color Colour = Color.White;
 		public Vector2 Origin = Vector2.Zero;
 
+		public bool Paused { get; private set; }
+
 		public Animator()
 		{
 		}
 
-		public Animator(Animation animation)
+		public Animator(Dictionary<string, Animation> animations)
 		{
-			this.Animation = animation;
+			this.animations = animations;
 		}
 
 		public void Update()
 		{
-			Animation.Update();
+			if (Paused)
+				return;
+
+			CurrentAnimation.Update();
 		}
 
 		public void Draw(SpriteBatch sb)
 		{
-			Animation.Draw(
+			CurrentAnimation.Draw(
 				sb,
 				Entity.Transform.Position,
 				Origin,
@@ -37,6 +47,16 @@ namespace Anchored.World.Components
 				Entity.Transform.Scale,
 				Colour
 			);
+		}
+
+		public void Play(string name)
+		{
+			CurrentAnimation = animations[name];
+		}
+
+		public void Pause()
+		{
+			Paused = true;
 		}
 	}
 }

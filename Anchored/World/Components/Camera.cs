@@ -12,6 +12,8 @@ namespace Anchored.World.Components
 		public Vector2 Scale = Vector2.One * 4;
 		public Vector2 Origin = Vector2.Zero;
 
+		public static Camera Main;
+
 		public Camera()
 		{
 		}

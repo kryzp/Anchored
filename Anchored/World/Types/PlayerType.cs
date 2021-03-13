@@ -13,7 +13,7 @@ namespace Anchored.World.Types
 {
 	public class PlayerType : EntityType
 	{
-		public override void Create(Entity entity, UInt32 instance)
+		public override void Create(Entity entity)
 		{
 			var collider = entity.AddComponent(new Collider(new RectangleF(0, 0, 16, 16)));
 			collider.Transform.Origin = new Vector2(8, 8);
@@ -25,36 +25,40 @@ namespace Anchored.World.Types
 			var player = entity.AddComponent(new Player(mover));
 
 			{
-				var sprite = Textures.Get("test_anim");
+				var sprite = Textures.Get("null");
 
+				// Walk Animation
 				AnimationData walkAnimData = new AnimationData();
-				walkAnimData.Layers.Add("Main", new List<AnimationFrame>()
 				{
-					new AnimationFrame()
+					walkAnimData.Layers.Add("Main", new List<AnimationFrame>()
 					{
-						Duration = 0.2f,
-						Bounds = new Rectangle(0, 0, 16, 16),
-						Texture = sprite
-					},
-					new AnimationFrame()
+						new AnimationFrame()
+						{
+							Duration = 0.2f,
+							Bounds = new Rectangle(0, 0, 16, 16),
+							Texture = sprite
+						}
+					});
+
+					walkAnimData.Tags.Add("Main", new AnimationTag()
 					{
-						Duration = 0.2f,
-						Bounds = new Rectangle(16, 0, 16, 16),
-						Texture = sprite
-					}
-				});
-
-				walkAnimData.Tags.Add("Main", new AnimationTag()
-				{
-					StartFrame = 0,
-					EndFrame = 1,
-					Direction = AnimationDirection.Forward
-				});
-
+						StartFrame = 0,
+						EndFrame = 0,
+						Direction = AnimationDirection.Forward
+					});
+				}
 				var walkAnim = new Animation(walkAnimData);
 
-				var animator = entity.AddComponent(new Animator(walkAnim));
+				var animator = entity.AddComponent(new Animator(new Dictionary<string, Animation>()
+				{
+					{
+						"Walk",
+						walkAnim
+					}
+				}));
 				animator.Origin = new Vector2(8, 8);
+
+				animator.Play("Walk");
 			}
 		}
 	}

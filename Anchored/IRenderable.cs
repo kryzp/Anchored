@@ -2,7 +2,7 @@
 
 namespace Anchored
 {
-	public interface IDrawable
+	public interface IRenderable
 	{
 		void Draw(SpriteBatch sb);
 	}

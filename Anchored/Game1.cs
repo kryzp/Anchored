@@ -80,6 +80,8 @@ namespace Anchored
 
 			UITestArea.CreateUI();
 
+			Camera.Main = new Camera(320, 180);
+
 			CurrentState = new PlayingState();
 			CurrentState.Load(SpriteBatch);
 		}

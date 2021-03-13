@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Anchored.Streams;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -11,7 +12,6 @@ namespace Anchored.World
 		public UInt16 ID;
 		public UInt16 Index;
 
-		// todo: debug
 		public string Name;
 
 		public List<SimpleComponentHandle> Components = new List<SimpleComponentHandle>();
@@ -84,6 +84,22 @@ namespace Anchored.World
 				World != null &&
 				World.ValidEntity(this)
 			);
+		}
+
+		public void Save(FileWriter stream)
+		{
+			foreach (var component in Components)
+			{
+				World.GetComponent<Component>(component).Save(stream);
+			}
+		}
+
+		public void Load(FileReader stream)
+		{
+			foreach (var component in Components)
+			{
+				World.GetComponent<Component>(component).Load(stream);
+			}
 		}
 
 		private void Transformed()

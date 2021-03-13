@@ -35,8 +35,8 @@ namespace Anchored.State
 			editor.World = world;
 
 			{
-				FileReader saveFile = new FileReader(SaveGame.GetSaveFilePath("Krys_563421987"));
-				world.Load(saveFile);
+				//FileReader saveFile = new FileReader(SaveGame.GetSaveFilePath("Krys_563421987"));
+				//world.Load(saveFile);
 			}
 		}
 

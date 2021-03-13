@@ -15,7 +15,7 @@ namespace Anchored.World
 		private List<Int32> entitiesDestroying = new List<Int32>();
 
 		private List<IUpdatable> updatables = new List<IUpdatable>();
-		private List<IDrawable> renderables = new List<IDrawable>();
+		private List<IRenderable> renderables = new List<IRenderable>();
 
 		private Dictionary<Type, List<Component>> components = new Dictionary<Type, List<Component>>();
 		private Dictionary<Type, List<Int32>> componentsFree = new Dictionary<Type, List<Int32>>();
@@ -101,11 +101,11 @@ namespace Anchored.World
 					{
 						foreach (var component in componentList)
 						{
-							if (component is IDrawable)
+							if (component is IRenderable)
 							{
 								if (component.Enabled)
 								{
-									renderables.Add((IDrawable)component);
+									renderables.Add((IRenderable)component);
 								}
 							}
 						}
@@ -387,28 +387,6 @@ namespace Anchored.World
 						if (!func((T)it))
 							break;
 					}
-				}
-			}
-		}
-
-		public void Save(FileWriter stream)
-		{
-			foreach (var componentList in components.Values)
-			{
-				foreach (var component in componentList)
-				{
-					component.Save(stream);
-				}
-			}
-		}
-
-		public void Load(FileReader stream)
-		{
-			foreach (var componentList in components.Values)
-			{
-				foreach (var component in componentList)
-				{
-					component.Load(stream);
 				}
 			}
 		}

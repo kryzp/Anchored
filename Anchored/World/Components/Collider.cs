@@ -10,7 +10,6 @@ using MonoGame.Extended.Shapes;
 using Anchored.Debug;
 using System.Collections.Generic;
 using Anchored.Debug.Console;
-using Anchored.Util.Physics;
 
 // note to anyone reading:
 // im super proud of myself for making this lol
@@ -23,7 +22,7 @@ using Anchored.Util.Physics;
 
 namespace Anchored.World.Components
 {
-	public class Collider : Component, IDrawable
+	public class Collider : Component, IRenderable
 	{
 		public enum ColliderType
 		{

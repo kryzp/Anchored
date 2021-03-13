@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Content;
+﻿using Anchored.World;
+using Microsoft.Xna.Framework.Content;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -46,23 +47,34 @@ namespace Anchored.Assets
 
 		private static void LoadAssets(ref int progress)
 		{
-			//AsepriteReader.GraphicsDevice = Engine.GraphicsDevice;
 			//Audio.StartThread();
 
 			if (Locales.Map == null)
+			{
 				Locales.Load(Locales.PrefferedClientLanguage);
+				progress += 1;
+			}
 
-			//progress += 1;
-			//Effects.Load();
-			//progress += 1;
+			Effects.Load();
+			progress += 1;
+			
 			Textures.Load();
 			progress += 1;
+
 			TileMaps.Load();
 			progress += 1;
+
+			Prefabs.Load();
+			progress += 1;
+
 			//Animations.Load();
 			//progress += 1;
-			if (LoadSfx) Audio.Load();
-			progress += 1;
+
+			if (LoadSfx)
+			{
+				Audio.Load();
+				progress += 1;
+			}
 		}
 
 		public static void Destroy()
@@ -72,11 +84,11 @@ namespace Anchored.Assets
 
 		private static void DestroyAssets()
 		{
-			//Effects.Destroy();
+			Effects.Destroy();
 			Textures.Destroy();
 			TileMaps.Destroy();
+			Audio.Destroy();
 			//Animations.Destroy();
-			//Audio.Destroy();
 		}
 	}
 }

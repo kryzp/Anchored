@@ -1,10 +1,11 @@
-﻿using Anchored.Util;
+﻿using Anchored.Assets;
+using Anchored.Util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Anchored.World.Components
 {
-	public class Sprite : Component, IDrawable
+	public class Sprite : Component, IRenderable
 	{
 		public TextureRegion Texture;
 		public float LayerDepth = 0f;

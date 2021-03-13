@@ -16,8 +16,6 @@ namespace Anchored.Util.Math.Tween
 				ease = Ease.QuadOut;
 
 			var task = new TweenTask();
-			tasks.Add(task);
-
 			task.Delay = delay;
 			task.Duration = duration;
 			task.EaseFn = ease;
@@ -25,6 +23,8 @@ namespace Anchored.Util.Math.Tween
 			task.From = value;
 			task.To = to;
 			task.Set = set;
+
+			tasks.Add(task);
 
 			return task;
 		}

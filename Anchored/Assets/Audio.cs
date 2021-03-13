@@ -35,6 +35,15 @@ namespace Anchored.Assets
 			}
 		}
 
+		public static void Destroy()
+		{
+			foreach (var sound in sounds.Values)
+			{
+				sound.Dispose();
+				GC.SuppressFinalize(sound);
+			}
+		}
+
 		public static void Load()
 		{
 			LoadSfx(FileHandle.FromNearRoot("sfx\\"), "", true);

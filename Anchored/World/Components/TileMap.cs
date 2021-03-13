@@ -14,7 +14,7 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace Anchored.World.Components
 {
-	public class TileMap : Component, IUpdatable, IDrawable
+	public class TileMap : Component, IUpdatable, IRenderable
 	{
 		private TiledMap map;
 		private TiledMapRenderer renderer;
