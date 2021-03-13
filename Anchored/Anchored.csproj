@@ -56,7 +56,6 @@
     <Folder Include="Debug\DearImGui\" />
     <Folder Include="Debug\Tools\" />
     <Folder Include="Graphics\Particles\" />
-    <Folder Include="Save\" />
     <Folder Include="Items\" />
   </ItemGroup>
 </Project>

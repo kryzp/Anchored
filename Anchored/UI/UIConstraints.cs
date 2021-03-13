@@ -13,10 +13,17 @@ namespace Anchored.UI
 
 		public void Constrain(UIComponent component)
 		{
-			X?.ConstrainX(ref component.X, component);
-			Y?.ConstrainY(ref component.Y, component);
-			Width?.ConstrainWidth(ref component.Width, component);
-			Height?.ConstrainHeight(ref component.Height, component);
+			if (X != null)
+				component.X = X.ConstrainX(component);
+
+			if (Y != null)
+				component.Y = Y.ConstrainY(component);
+
+			if (Width != null)
+				component.Width = Width.ConstrainWidth(component);
+
+			if (Height != null)
+				component.Height = Height.ConstrainHeight(component);
 		}
 	}
 }

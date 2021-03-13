@@ -76,14 +76,14 @@ namespace Anchored.UI.Elements
 
 				if (Enabled)
 				{
-					uiTexture.Texture = textureOff;
+					uiTexture.Texture = textureOn;
 
 					if (OnEnabled != null)
 						OnEnabled();
 				}
 				else
 				{
-					uiTexture.Texture = textureOn;
+					uiTexture.Texture = textureOff;
 				}
 			}
 

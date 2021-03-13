@@ -19,7 +19,14 @@ namespace Anchored.Streams
 
 		protected virtual void OpenStream(string path, bool append)
 		{
-			stream = new BinaryWriter(File.Open(path, (append) ? FileMode.Append : FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite));
+			stream = new BinaryWriter(
+				File.Open(
+					path,
+					(append)
+						? FileMode.Append
+						: FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite
+				)
+			);
 		}
 
 		public void Flush()

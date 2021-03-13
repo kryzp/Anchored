@@ -13,9 +13,9 @@ namespace Anchored.UI.Constraints
 			this.Pixels = px;
 		}
 
-		public override void ConstrainX(ref int value, UIComponent component) => value = Pixels;
-		public override void ConstrainY(ref int value, UIComponent component) => value = Pixels;
-		public override void ConstrainWidth(ref int value, UIComponent component) => value = Pixels;
-		public override void ConstrainHeight(ref int value, UIComponent component) => value = Pixels;
+		public override int ConstrainX(UIComponent component) => Pixels;
+		public override int ConstrainY(UIComponent component) => Pixels;
+		public override int ConstrainWidth(UIComponent component) => Pixels;
+		public override int ConstrainHeight(UIComponent component) => Pixels;
 	}
 }

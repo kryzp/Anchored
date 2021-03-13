@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Anchored.Streams;
+using System;
 using System.Runtime.CompilerServices;
 
 namespace Anchored.World
@@ -41,6 +42,14 @@ namespace Anchored.World
 		}
 
 		public virtual void Destroyed()
+		{
+		}
+
+		public virtual void Save(FileWriter stream)
+		{
+		}
+
+		public virtual void Load(FileReader stream)
 		{
 		}
 	}

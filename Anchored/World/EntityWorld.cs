@@ -1,4 +1,5 @@
-﻿using Anchored.Util;
+﻿using Anchored.Streams;
+using Anchored.Util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -386,6 +387,28 @@ namespace Anchored.World
 						if (!func((T)it))
 							break;
 					}
+				}
+			}
+		}
+
+		public void Save(FileWriter stream)
+		{
+			foreach (var componentList in components.Values)
+			{
+				foreach (var component in componentList)
+				{
+					component.Save(stream);
+				}
+			}
+		}
+
+		public void Load(FileReader stream)
+		{
+			foreach (var componentList in components.Values)
+			{
+				foreach (var component in componentList)
+				{
+					component.Load(stream);
 				}
 			}
 		}

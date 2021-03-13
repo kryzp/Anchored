@@ -10,22 +10,22 @@ namespace Anchored.UI.Constraints
 		{
 		}
 
-		public override void ConstrainX(ref int value, UIComponent component)
+		public override int ConstrainX(UIComponent component)
 		{
-			value = (Game1.WINDOW_WIDTH / 2) - (component.Width / 2);
+			return (Game1.WINDOW_WIDTH / 2) - (component.Width / 2);
 		}
 
-		public override void ConstrainY(ref int value, UIComponent component)
+		public override int ConstrainY(UIComponent component)
 		{
-			value = (Game1.WINDOW_HEIGHT / 2) - (component.Height / 2);
+			return (Game1.WINDOW_HEIGHT / 2) - (component.Height / 2);
 		}
 
-		public override void ConstrainWidth(ref int value, UIComponent component)
+		public override int ConstrainWidth(UIComponent component)
 		{
 			throw new NotImplementedException();
 		}
 
-		public override void ConstrainHeight(ref int value, UIComponent component)
+		public override int ConstrainHeight(UIComponent component)
 		{
 			throw new NotImplementedException();
 		}

@@ -2,6 +2,8 @@
 using Anchored.Assets;
 using Anchored.Debug;
 using Anchored.Debug.Console;
+using Anchored.Save;
+using Anchored.Streams;
 using Anchored.Util;
 using Anchored.World;
 using Anchored.World.Components;
@@ -31,6 +33,11 @@ namespace Anchored.State
 			Editor editor = new Editor();
 			editor.Camera = camera;
 			editor.World = world;
+
+			{
+				FileReader saveFile = new FileReader(SaveGame.GetSaveFilePath("Krys_563421987"));
+				world.Load(saveFile);
+			}
 		}
 
 		public override void Unload()
