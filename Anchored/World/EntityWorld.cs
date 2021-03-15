@@ -179,11 +179,6 @@ namespace Anchored.World
 				entitiesDestroying.Add(entity.Index);
 		}
 
-		public Entity GetEntity(Entity entity)
-		{
-			return entities[entity.Index];
-		}
-
 		public void ForeachEntity(Action<Entity> func)
 		{
 			foreach (var entity in entities)
@@ -273,9 +268,19 @@ namespace Anchored.World
 			return (T)components[typeof(T)][component.Index];
 		}
 
+		public Component GetComponent(SimpleComponentHandle component, Type type)
+		{
+			return components[type][component.Index];
+		}
+
 		public T GetComponent<T>() where T : Component
 		{
-			return (T)components[typeof(T)][0];
+			return (T)components[typeof(T)].FirstOrDefault();
+		}
+
+		public Component GetComponent(Type type)
+		{
+			return components[type].FirstOrDefault();
 		}
 
 		public bool ValidComponent<T>(T component) where T : Component

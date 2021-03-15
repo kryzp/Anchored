@@ -1,3 +1,4 @@
+using Microsoft.Xna.Framework;
 using System;
 using System.IO;
 using System.Text;
@@ -6,12 +7,12 @@ namespace Anchored.Streams
 {
 	public class FileReader
 	{
-		protected byte[] read;
-		public byte[] Data => read;
+		protected Byte[] read;
+		public Byte[] Data => read;
 
-		private int position;
+		private Int32 position;
 
-		public int Position
+		public Int32 Position
 		{
 			get => position;
 
@@ -25,7 +26,7 @@ namespace Anchored.Streams
 		{
 			if (path == null)
 			{
-				read = new byte[1];
+				read = new Byte[1];
 				return;
 			}
 
@@ -37,12 +38,10 @@ namespace Anchored.Streams
 			var file = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 			var stream = new BinaryReader(file);
 
-			read = new byte[file.Length];
+			read = new Byte[file.Length];
 
-			for (var i = 0; i < file.Length; i++)
-			{
-				read[i] = (byte)file.ReadByte();
-			}
+			for (var ii = 0; ii < file.Length; ii++)
+				read[ii] = (Byte)file.ReadByte();
 
 			stream.Close();
 		}
@@ -50,9 +49,7 @@ namespace Anchored.Streams
 		public byte ReadByte()
 		{
 			if (read.Length == Position)
-			{
 				return 0;
-			}
 
 			return read[Position++];
 		}
@@ -67,27 +64,22 @@ namespace Anchored.Streams
 			return ReadByte() == 1;
 		}
 
-		public short ReadInt16()
+		public Int16 ReadInt16()
 		{
 			return (short)((ReadByte() << 8) | ReadByte());
 		}
 
-		public ushort ReadUint16()
+		public UInt16 ReadUInt16()
 		{
 			return (ushort)((ReadByte() << 8) | ReadByte());
 		}
 
-		public int ReadInt32()
+		public Int32 ReadInt32()
 		{
 			return (ReadByte() << 24) | (ReadByte() << 16) | (ReadByte() << 8) | ReadByte();
 		}
 
-		public ushort ReadUInt16()
-		{
-			return (ushort)((ReadByte() << 8) | ReadByte());
-		}
-
-		public uint ReadUInt32()
+		public UInt32 ReadUInt32()
 		{
 			return (uint)((ReadByte() << 24) | (ReadByte() << 16) | (ReadByte() << 8) | ReadByte());
 		}
@@ -97,26 +89,29 @@ namespace Anchored.Streams
 			byte length = ReadByte();
 
 			if (length == 0)
-			{
 				return null;
-			}
 
 			var result = new StringBuilder();
 
-			for (int i = 0; i < length; i++)
-			{
+			for (int ii = 0; ii < length; ii++)
 				result.Append((char)ReadByte());
-			}
 
 			return result.ToString();
 		}
 
-		public float ReadFloat()
+		public Single ReadFloat()
 		{
 			return BitConverter.ToSingle(new[] { ReadByte(), ReadByte(), ReadByte(), ReadByte() }, 0);
 		}
 
-		public void SetData(byte[] data)
+		public Vector2 ReadVector2()
+		{
+			float x = ReadFloat();
+			float y = ReadFloat();
+			return new Vector2(x, y);
+		}
+
+		public void SetData(Byte[] data)
 		{
 			read = data;
 			position = 0;

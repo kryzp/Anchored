@@ -20,6 +20,8 @@ namespace Anchored.World
 		public UInt32 TransformStamp => transformStamp;
 		public Transform Transform;
 
+		public EntityType Type;
+
 		public Entity()
 		{
 			this.World = null;
@@ -88,17 +90,21 @@ namespace Anchored.World
 
 		public void Save(FileWriter stream)
 		{
+			Transform.Save(stream);
+
 			foreach (var component in Components)
 			{
-				World.GetComponent<Component>(component).Save(stream);
+				World.GetComponent(component, component.Type).Save(stream);
 			}
 		}
 
 		public void Load(FileReader stream)
 		{
+			Transform.Load(stream);
+
 			foreach (var component in Components)
 			{
-				World.GetComponent<Component>(component).Load(stream);
+				World.GetComponent(component, component.Type).Load(stream);
 			}
 		}
 

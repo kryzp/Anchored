@@ -8,6 +8,7 @@ using MonoGame.Extended;
 using System;
 using System.Collections.Generic;
 using MonoGame.Extended.Shapes;
+using Anchored.Streams;
 
 namespace Anchored.World.Types
 {
@@ -15,6 +16,8 @@ namespace Anchored.World.Types
 	{
 		public override void Create(Entity entity)
 		{
+			base.Create(entity);
+
 			var collider = entity.AddComponent(new Collider(new RectangleF(0, 0, 16, 16)));
 			collider.Transform.Origin = new Vector2(8, 8);
 

@@ -33,11 +33,6 @@ namespace Anchored.State
 			Editor editor = new Editor();
 			editor.Camera = camera;
 			editor.World = world;
-
-			{
-				//FileReader saveFile = new FileReader(SaveGame.GetSaveFilePath("Krys_563421987"));
-				//world.Load(saveFile);
-			}
 		}
 
 		public override void Unload()

@@ -1,3 +1,4 @@
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -64,19 +65,19 @@ namespace Anchored.Streams
 			WriteByte((byte)(value ? 1 : 0));
 		}
 
-		public void WriteInt16(short value)
+		public void WriteInt16(Int16 value)
 		{
 			WriteByte((byte)(value >> 8));
 			WriteByte((byte)value);
 		}
 
-		public void WriteUint16(ushort value)
+		public void WriteUInt16(UInt16 value)
 		{
 			WriteByte((byte)(value >> 8));
 			WriteByte((byte)value);
 		}
 
-		public void WriteInt32(int value)
+		public void WriteInt32(Int32 value)
 		{
 			WriteByte((byte)((value >> 24) & 0xFF));
 			WriteByte((byte)((value >> 16) & 0xFF));
@@ -84,13 +85,7 @@ namespace Anchored.Streams
 			WriteByte((byte)(value & 0xFF));
 		}
 
-		public void WriteUInt16(ushort value)
-		{
-			WriteByte((byte)(value >> 8));
-			WriteByte((byte)value);
-		}
-
-		public void WriteUInt32(uint value)
+		public void WriteUInt32(UInt32 value)
 		{
 			WriteByte((byte)((value >> 24) & 0xFF));
 			WriteByte((byte)((value >> 16) & 0xFF));
@@ -110,14 +105,14 @@ namespace Anchored.Streams
 
 				WriteByte((byte)str.Length);
 
-				for (var i = 0; i < MathF.Min(255, str.Length); i++)
+				for (var ii = 0; ii < MathF.Min(255, str.Length); ii++)
 				{
-					WriteByte((byte)str[i]);
+					WriteByte((byte)str[ii]);
 				}
 			}
 		}
 
-		public unsafe void WriteFloat(float value)
+		public unsafe void WriteFloat(Single value)
 		{
 			uint val = *((uint*)&value);
 
@@ -125,6 +120,12 @@ namespace Anchored.Streams
 			WriteByte((byte)((val >> 8) & 0xFF));
 			WriteByte((byte)((val >> 16) & 0xFF));
 			WriteByte((byte)((val >> 24) & 0xFF));
+		}
+
+		public void WriteVector2(Vector2 value)
+		{
+			WriteFloat(value.X);
+			WriteFloat(value.Y);
 		}
 
 		public virtual void Close()

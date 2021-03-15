@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using Anchored.Util.Math.Tween;
+using Anchored.Save;
 
 namespace Anchored
 {
@@ -71,12 +72,14 @@ namespace Anchored
 		protected override void LoadContent()
 		{
 			SpriteBatch = new SpriteBatch(GraphicsDevice);
-			BackgroundColor = Color.CornflowerBlue;
+			BackgroundColor = new Color(22, 18, 27);
 
 			DebugConsole.Engine("Loading Assets...");
 			int progress = 0;
 			AssetManager.Load(ref progress);
 			DebugConsole.Engine("Finished Loading!");
+
+			SaveManager.Init();
 
 			UITestArea.CreateUI();
 

@@ -1,13 +1,13 @@
 ﻿using Anchored.Assets;
 using Anchored.World;
 using Anchored.World.Components;
-using Anchored.World.Types;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Anchored.Graphics.Particles;
 using System;
 using Anchored.Save;
 using Anchored.Streams;
+using Anchored.World.Types;
 
 namespace Anchored.Areas
 {
@@ -20,6 +20,7 @@ namespace Anchored.Areas
 
 		public override void Load(SpriteBatch sb)
 		{
+			/*
 			base.Load(sb);
 
 			SetupTileMap(TileMaps.Get("test_map"), true);
@@ -27,10 +28,19 @@ namespace Anchored.Areas
 			var playerEntity = world.AddEntity("Player");
 			{
 				new PlayerType().Create(playerEntity);
+				{
+					playerEntity.Transform.Position = new Vector2(50, 25);
+				}
+				
 				Game1.Player = playerEntity;
 			}
 
-			var follow = cameraEntity.AddComponent(new Follow(playerEntity.Transform));
+			SaveManager.Save(world, SaveType.Level);
+			*/
+
+			SaveManager.Load(world, SaveType.Level);
+
+			var follow = cameraEntity.AddComponent(new Follow(world.GetComponent<Player>().Entity.Transform));
 			{
 				follow.LerpAmount = 0.2f;
 			}

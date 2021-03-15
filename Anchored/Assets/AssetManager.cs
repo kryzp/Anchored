@@ -64,8 +64,8 @@ namespace Anchored.Assets
 			TileMaps.Load();
 			progress += 1;
 
-			Prefabs.Load();
-			progress += 1;
+			//Prefabs.Load();
+			//progress += 1;
 
 			//Animations.Load();
 			//progress += 1;

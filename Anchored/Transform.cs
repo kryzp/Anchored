@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Anchored.Streams;
+using Microsoft.Xna.Framework;
 using System;
 
 namespace Anchored
@@ -119,6 +120,22 @@ namespace Anchored
 		public Vector2 GetPositionWithoutTrigger()
 		{
 			return position;
+		}
+
+		public void Save(FileWriter stream)
+		{
+			stream.WriteVector2(Position);
+			stream.WriteFloat(RotationDegrees);
+			stream.WriteVector2(Scale);
+			stream.WriteVector2(Origin);
+		}
+
+		public void Load(FileReader stream)
+		{
+			Position = stream.ReadVector2();
+			RotationDegrees = stream.ReadFloat();
+			Scale = stream.ReadVector2();
+			Origin = stream.ReadVector2();
 		}
 	}
 }
