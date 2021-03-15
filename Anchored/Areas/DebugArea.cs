@@ -20,7 +20,6 @@ namespace Anchored.Areas
 
 		public override void Load(SpriteBatch sb)
 		{
-			/*
 			base.Load(sb);
 
 			SetupTileMap(TileMaps.Get("test_map"), true);
@@ -34,11 +33,9 @@ namespace Anchored.Areas
 				
 				Game1.Player = playerEntity;
 			}
-
-			SaveManager.Save(world, SaveType.Level);
-			*/
-
-			SaveManager.Load(world, SaveType.Level);
+			
+			//SaveManager.Save(world, SaveType.Level);
+			//SaveManager.Load(world, SaveType.Level);
 
 			var follow = cameraEntity.AddComponent(new Follow(world.GetComponent<Player>().Entity.Transform));
 			{

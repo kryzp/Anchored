@@ -20,7 +20,7 @@ namespace Anchored.World
 		public UInt32 TransformStamp => transformStamp;
 		public Transform Transform;
 
-		public EntityType Type;
+		public EntityType Type = null;
 
 		public Entity()
 		{

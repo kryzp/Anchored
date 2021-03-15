@@ -11,7 +11,7 @@ namespace Anchored.Save
 	public static class SaveManager
 	{
 		public static byte CurrentSlot = 0;
-		public static string SlotName = "Debug"; // temp
+		public static string SlotName = "debug"; // temp
 
 		public const short Version = 0;
 
@@ -21,14 +21,15 @@ namespace Anchored.Save
 		{
 			DebugConsole.Log($"Save directory is '{GetSaveFilePath(SlotName)}'");
 
-			Savers = new Saver[5];
+			// these are here because i plan to do them in the future, so i dont forget lol
+
+			Savers = new Saver[4];
 			//Savers[(int)SaveType.Global] = new GlobalSave();
 			//Savers[(int)SaveType.Game] = new GameSave();
 			Savers[(int)SaveType.Level] = new LevelSave();
 			//Savers[(int)SaveType.Player] = new PlayerSave();
-			//Savers[(int)SaveType.Statistics] = new StatisticsSaver();
 
-			var saveDirectory = new FileHandle(GetSaveFilePath(SlotName));
+			var saveDirectory = new FileHandle(GetSaveDirectory());
 
 			if (!saveDirectory.Exists())
 			{
@@ -36,13 +37,24 @@ namespace Anchored.Save
 				DebugConsole.Log("Creating the save directory...");
 			}
 		}
+
+		public static string GetSaveDirectory()
+		{
+			return System.IO.Path.Combine(
+				Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+				"Anchored",
+				"Saves"
+			);
+		}
+
 		public static string GetSaveFilePath(string user)
 		{
 			return System.IO.Path.Combine(
 				Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
 				"Anchored",
 				"Saves",
-				user
+				user,
+				$"{user}.asav"
 			);
 		}
 
@@ -67,7 +79,7 @@ namespace Anchored.Save
 			stream.Close();
 		}
 
-		public static void Load(EntityWorld world, SaveType saveType, string path = null)
+		public static void Load(EntityWorld world, SaveType saveType)
 		{
 			var save = GetFileHandle(GetSaveFilePath(SlotName));
 
@@ -76,7 +88,13 @@ namespace Anchored.Save
 				var stream = GetReader(save.FullPath);
 
 				var version = stream.ReadInt16();
-				stream.ReadByte();
+				var readSaveType = stream.ReadByte();
+
+				if (readSaveType != (byte)saveType)
+				{
+					DebugConsole.Error("Read SaveType did NOT match its loader type!");
+					return;
+				}
 
 				ForType(saveType).Load(world, stream);
 			}

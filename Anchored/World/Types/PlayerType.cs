@@ -14,10 +14,15 @@ namespace Anchored.World.Types
 {
 	public class PlayerType : EntityType
 	{
+		public PlayerType()
+		{
+			Serializable = true;
+		}
+
 		public override void Create(Entity entity)
 		{
 			base.Create(entity);
-
+			
 			var collider = entity.AddComponent(new Collider(new RectangleF(0, 0, 16, 16)));
 			collider.Transform.Origin = new Vector2(8, 8);
 

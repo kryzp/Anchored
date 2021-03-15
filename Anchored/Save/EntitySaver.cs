@@ -23,7 +23,10 @@ namespace Anchored.Save
 				{
 					if (e.Type != null)
 					{
-						all.Add(e);
+						if (e.Type.Serializable)
+						{
+							all.Add(e);
+						}
 					}
 				}
 			}
@@ -69,11 +72,11 @@ namespace Anchored.Save
 
 			try
 			{
-				Entity entity = world.AddEntity(name);
-				entity.Load(reader);
-
 				EntityType entityType = (EntityType)Activator.CreateInstance(Type.GetType($"Anchored.{type}", true, false));
+
+				Entity entity = world.AddEntity(name);
 				entityType.Create(entity);
+				entity.Load(reader);
 
 				var sum = reader.Position - position - size;
 
