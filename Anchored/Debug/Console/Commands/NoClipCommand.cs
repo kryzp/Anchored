@@ -1,7 +1,5 @@
 ﻿using Anchored.World.Components;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Anchored.Debug.Console.Commands
 {

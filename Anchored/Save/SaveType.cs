@@ -9,7 +9,6 @@ namespace Anchored.Save
 		Global,
 		Game,
 		Level,
-		Player,
-		Statistics
+		Player
 	}
 }

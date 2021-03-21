@@ -10,6 +10,8 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using Anchored.Util.Math.Tween;
 using Anchored.Save;
 
@@ -72,20 +74,11 @@ namespace Anchored
 		{
 			SpriteBatch = new SpriteBatch(GraphicsDevice);
 			BackgroundColor = new Color(22, 18, 27);
-
-			DebugConsole.Engine("Loading Assets...");
-			int progress = 0;
-			AssetManager.Load(ref progress);
-			DebugConsole.Engine("Finished Loading!");
-
-			SaveManager.Init();
 			
-			UITestArea.CreateUI();
-
 			Camera.Main = new Camera(320, 180);
 
-			CurrentState = new PlayingState();
-			CurrentState.Load(SpriteBatch);
+			SaveManager.Init();
+			ChangeState(new AssetLoadState());
 		}
 
 		protected override void UnloadContent()
@@ -120,7 +113,7 @@ namespace Anchored
 
 			if (NextState != null)
 			{
-				CurrentState.Unload();
+				CurrentState?.Unload();
 				CurrentState = NextState;
 				Input.EnableImGuiFocus = false;
 				CurrentState.Load(SpriteBatch);
@@ -148,9 +141,7 @@ namespace Anchored
 			gameShader?.Effect.CurrentTechnique.Passes[0].Apply();
 
 			SpriteBatch.Draw(GameRenderTarget, new Rectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT), Color.White);
-			
 			SpriteBatch.End();
-
 			CurrentState.DrawUI(SpriteBatch);
 			UIManager.Draw(SpriteBatch);
 
@@ -168,9 +159,10 @@ namespace Anchored
 			base.Draw(gt);
 		}
 
-		public static void ChangeState(GameState state)
+		public static GameState ChangeState(GameState state)
 		{
 			NextState = state;
+			return state;
 		}
 
 		public static void SetGameShader(Shader shader)

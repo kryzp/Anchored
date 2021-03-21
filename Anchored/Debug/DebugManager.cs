@@ -5,13 +5,13 @@ using ImGuiNET;
 using Microsoft.Xna.Framework;
 using System;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 
 namespace Anchored.Debug
 {
 	public static class DebugManager
 	{
-		private static System.Numerics.Vector2 size;
-		private static System.Numerics.Vector3 bgcol = new System.Numerics.Vector3();
+		private static System.Numerics.Vector3 bgcol;
 
 		public static bool Entities = false; // not done
 		public static bool RunInfo = false;
@@ -21,23 +21,10 @@ namespace Anchored.Debug
 		public static bool Settings = false;
 		public static bool DebugView = false;
 
-		private static void DrawSettings()
+		static DebugManager()
 		{
-			if (!Settings)
-				return;
-
-			if (!ImGui.Begin("Settings"))
-			{
-				ImGui.End();
-				return;
-			}
-
-			if (ImGui.ColorPicker3("Background Colour", ref bgcol))
-			{
-				Game1.BackgroundColor = new Color(bgcol.X, bgcol.Y, bgcol.Z, 255);
-			}
-
-			ImGui.End();
+			var vec3 = Game1.BackgroundColor.ToVector3();
+			bgcol = new System.Numerics.Vector3(vec3.X, vec3.Y, vec3.Z);
 		}
 
 		public static void Draw(EntityWorld world)
@@ -47,7 +34,7 @@ namespace Anchored.Debug
 			Anchored.Debug.Info.DebugView.Draw();
 			Anchored.Debug.Info.RunInfo.Draw();
 
-			ImGui.SetNextWindowPos(new System.Numerics.Vector2(Game1.WINDOW_WIDTH - size.X - 10, Game1.WINDOW_HEIGHT - size.Y - 10));
+			ImGui.SetNextWindowPos(new System.Numerics.Vector2(Game1.WINDOW_WIDTH - 10, Game1.WINDOW_HEIGHT - 10));
 			ImGui.Begin(
 				"Windows",
 				ImGuiWindowFlags.NoCollapse |
@@ -93,7 +80,25 @@ namespace Anchored.Debug
 			}
 			ImGui.EndMainMenuBar();
 
-			size = ImGui.GetWindowSize();
+			ImGui.End();
+		}
+		
+		private static void DrawSettings()
+		{
+			if (!Settings)
+				return;
+
+			if (!ImGui.Begin("Settings"))
+			{
+				ImGui.End();
+				return;
+			}
+
+			if (ImGui.ColorPicker3("Background Colour", ref bgcol))
+			{
+				Game1.BackgroundColor = new Color(bgcol.X, bgcol.Y, bgcol.Z, 255);
+			}
+
 			ImGui.End();
 		}
 	}

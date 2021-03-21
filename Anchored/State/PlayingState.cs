@@ -2,16 +2,10 @@
 using Anchored.Assets;
 using Anchored.Debug;
 using Anchored.Debug.Console;
-using Anchored.Save;
-using Anchored.Streams;
-using Anchored.Util;
+using Anchored.UI;
 using Anchored.World;
 using Anchored.World.Components;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGame.Extended;
-using System;
-using System.Diagnostics;
 
 namespace Anchored.State
 {
@@ -23,6 +17,8 @@ namespace Anchored.State
 
 		public override void Load(SpriteBatch sb)
 		{
+			UITestArea.CreateUI();
+			
 			world = new EntityWorld();
 			DebugConsole.World = world;
 

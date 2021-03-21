@@ -1,9 +1,11 @@
 ﻿using Anchored.World;
 using Microsoft.Xna.Framework.Content;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading;
 
 namespace Anchored.Assets
 {
@@ -46,8 +48,6 @@ namespace Anchored.Assets
 
 		private static void LoadAssets(ref int progress)
 		{
-			//Audio.StartThread();
-
 			if (Locales.Map == null)
 			{
 				Locales.Load(Locales.PrefferedClientLanguage);
@@ -55,18 +55,13 @@ namespace Anchored.Assets
 			}
 
 			Effects.Load();
-			ShaderHolder.Load();
 			progress += 1;
-			
+		
 			Textures.Load();
-			TileSheetBounds.Load();
 			progress += 1;
 
 			TileMaps.Load();
 			progress += 1;
-
-			//Animations.Load();
-			//progress += 1;
 
 			if (LoadSfx)
 			{
@@ -86,7 +81,6 @@ namespace Anchored.Assets
 			Textures.Destroy();
 			TileMaps.Destroy();
 			Audio.Destroy();
-			//Animations.Destroy();
 		}
 	}
 }

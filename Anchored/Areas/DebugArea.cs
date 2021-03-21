@@ -38,9 +38,6 @@ namespace Anchored.Areas
 				var sprite = dummyEntity.AddComponent(new Sprite(Textures.Get("null")));
 				var depth = dummyEntity.AddComponent(new DepthSorter(sprite));
 			}
-			
-			//SaveManager.Save(world, SaveType.Level);
-			//SaveManager.Load(world, SaveType.Level);
 
 			var follow = cameraEntity.AddComponent(new Follow(world.GetComponent<Player>().Entity.Transform));
 			{

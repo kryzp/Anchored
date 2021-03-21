@@ -70,6 +70,7 @@ namespace Anchored.Debug.Console.Commands
 			else
 			{
 				DebugConsole.Error("Too many arguments given.");
+				return;
 			}
 		}
 	}

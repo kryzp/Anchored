@@ -1,8 +1,5 @@
-﻿using Anchored.Assets;
-using Anchored.Util;
-using Microsoft.Xna.Framework;
+﻿using Anchored.Util;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGame.Extended.TextureAtlases;
 
 namespace Anchored.World.Components
 {
