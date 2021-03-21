@@ -1,4 +1,5 @@
-﻿using ImGuiNET;
+﻿using Anchored.Debug.Console;
+using ImGuiNET;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,6 +17,12 @@ namespace Anchored.Debug.Info
 			{
 				ImGui.End();
 				return;
+			}
+
+			bool var = DebugConsole.GetVariable<bool>("showcolliders");
+			if (ImGui.Checkbox("Show Colliders", ref var))
+			{
+				DebugConsole.SetVariable<bool>("showcolliders", var);
 			}
 
 			// todo: like move the camera around freely and stuff

@@ -13,14 +13,13 @@ namespace Anchored.Debug
 		private static System.Numerics.Vector2 size;
 		private static System.Numerics.Vector3 bgcol = new System.Numerics.Vector3();
 
-		public static bool Cheats = false; // not done
 		public static bool Entities = false; // not done
-		public static bool RunInfo = false; // not done
-		public static bool Console = true; // done
+		public static bool RunInfo = false;
+		public static bool Console = true;
 		public static bool LayerDebug = false; // not done
-		public static bool Rooms = false; // not done
-		public static bool Settings = false; // done
-		public static bool DebugView = false; // not done
+		public static bool Areas = false; // not done
+		public static bool Settings = false;
+		public static bool DebugView = false;
 
 		private static void DrawSettings()
 		{
@@ -46,22 +45,26 @@ namespace Anchored.Debug
 			DrawSettings();
 			//RunStatistics.DrawDebug();
 			Anchored.Debug.Info.DebugView.Draw();
+			Anchored.Debug.Info.RunInfo.Draw();
 
 			ImGui.SetNextWindowPos(new System.Numerics.Vector2(Game1.WINDOW_WIDTH - size.X - 10, Game1.WINDOW_HEIGHT - size.Y - 10));
-			ImGui.Begin("Windows", ImGuiWindowFlags.NoCollapse |
-								   ImGuiWindowFlags.AlwaysAutoResize |
-								   ImGuiWindowFlags.NoTitleBar);
+			ImGui.Begin(
+				"Windows",
+				ImGuiWindowFlags.NoCollapse |
+				ImGuiWindowFlags.AlwaysAutoResize |
+				ImGuiWindowFlags.NoTitleBar
+			);
 
 			if (ImGui.Button("Hide All"))
 			{
-				Cheats = DebugView = Entities = RunInfo = LayerDebug = Rooms = Settings = false;
+				DebugView = Entities = RunInfo = LayerDebug = Areas = Settings = false;
 			}
 
 			ImGui.SameLine();
 
 			if (ImGui.Button("Show All"))
 			{
-				Cheats = DebugView = Entities = RunInfo =  LayerDebug = Rooms = Settings = true;
+				DebugView = Entities = RunInfo =  LayerDebug = Areas = Settings = true;
 			}
 
 			ImGui.BeginMainMenuBar();
@@ -75,8 +78,7 @@ namespace Anchored.Debug
 				if (ImGui.BeginMenu("Tools"))
 				{
 					ImGui.MenuItem("Console", "", ref Console);
-					ImGui.MenuItem("Cheats", "", ref Cheats);
-					ImGui.MenuItem("Rooms", "", ref Rooms);
+					ImGui.MenuItem("Areas", "", ref Areas);
 					ImGui.MenuItem("Layer Debug", "", ref LayerDebug);
 					ImGui.EndMenu();
 				}

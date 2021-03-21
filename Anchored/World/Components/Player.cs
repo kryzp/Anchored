@@ -1,14 +1,12 @@
-﻿using Anchored.Assets;
-using Anchored.Streams;
-using Anchored.Util.Physics;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Collections;
+using Anchored.Util.Timing;
 
 namespace Anchored.World.Components
 {
-	public class Player : Component, IUpdatable
+	public class Player : Actor
 	{
 		private Mover mover;
 
@@ -19,15 +17,19 @@ namespace Anchored.World.Components
 
 		public Player()
 		{
+			StartCoroutine(DoTextPrint());
 		}
 
 		public Player(Mover mover)
+			: this()
 		{
 			this.mover = mover;
 		}
 
-		public void Update()
+		public override void Update()
 		{
+			base.Update();
+			
 			int mx = 0;
 			int my = 0;
 
@@ -53,6 +55,15 @@ namespace Anchored.World.Components
 
 			mover.Velocity.X = MathHelper.Clamp(mover.Velocity.X, -MAX_SPEED, MAX_SPEED);
 			mover.Velocity.Y = MathHelper.Clamp(mover.Velocity.Y, -MAX_SPEED, MAX_SPEED);
+		}
+
+		private IEnumerator DoTextPrint()
+		{
+			while (true)
+			{
+				Console.WriteLine("E");
+				yield return new WaitForSeconds(3f);
+			}
 		}
 	}
 }

@@ -83,6 +83,14 @@ namespace Anchored.World.Components
 		{
 			Game1.GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
 
+			renderer.Draw(
+				map.Layers[4],
+				viewMatrix: camera.GetViewMatrix(),
+				effect: Shader?.Effect,
+				depth: LayerDepth
+			);
+
+			/*
 			for (int ii = currentDrawingLayer; ii < map.Layers.Count; ii++)
 			{
 				var layer = map.Layers[ii];
@@ -100,6 +108,7 @@ namespace Anchored.World.Components
 					depth: LayerDepth
 				);
 			}
+			*/
 		}
 
 		public override void DrawEnd(SpriteBatch sb)

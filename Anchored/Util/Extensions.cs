@@ -11,20 +11,6 @@ namespace Anchored.Util
 {
     public static class Extensions
     {
-        public static void Project(this Polygon poly, Vector2 axis, ref float min, ref float max)
-		{
-            float dot = Vector2.Dot(poly.Vertices[0], axis);
-            min = dot;
-            max = dot;
-
-            for (int ii = 1; ii < poly.Vertices.Length; ii++)
-			{
-                dot = Vector2.Dot(poly.Vertices[ii], axis);
-                min = MathF.Min(dot, min);
-                max = MathF.Max(dot, max);
-            }
-        }
-
         public static void Populate<T>(this T[] arr, T value)
         {
             for (int ii = 0; ii < arr.Length; ii++)
@@ -74,12 +60,6 @@ namespace Anchored.Util
         public static void Resize<T>(this List<T> list, int sz) where T : new()
         {
             Resize(list, sz, new T());
-        }
-
-        public static void Project(this CircleF circ, Vector2 axis, ref float min, ref float max)
-        {
-            min = Vector2.Dot(circ.Center - (axis * circ.Radius), axis);
-            max = Vector2.Dot(circ.Center + (axis * circ.Radius), axis);
         }
 
         public static void DrawRoundedRectangle(

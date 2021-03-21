@@ -16,11 +16,8 @@ namespace Anchored.UI
 
 			var nullTex = Textures.Get("null");
 
-			var checkBoxOffTex = Textures.Get("ui\\checkbox");
-			checkBoxOffTex.Source = new Rectangle(0, 0, 9, 9);
-
-			var checkBoxOnTex = Textures.Get("ui\\checkbox");
-			checkBoxOnTex.Source = new Rectangle(9, 0, 9, 9);
+			var checkBoxOffTex = TileSheetBounds.Get("ui\\checkbox", "unchecked");
+			var checkBoxOnTex = TileSheetBounds.Get("ui\\checkbox", "checked");
 
 			// Checkbox
 			{

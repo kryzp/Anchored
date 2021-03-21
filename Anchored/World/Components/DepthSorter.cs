@@ -28,7 +28,7 @@ namespace Anchored.World.Components
             float position = Entity.Transform.Position.Y;
             float bottom = graphicsComponent.Texture.Texture.Bounds.Bottom + position;
 
-            // todo: isnt this  like really inefficient lmao
+            // todo: isn't this  like really inefficient lmao
             // if you're wondering why this isn't just position / 100000f then its because then
             // there can't be negative values. though, it might not be worth the performance hit
             // research into this at some point lol
@@ -44,7 +44,7 @@ namespace Anchored.World.Components
                     max = entity.Transform.Position.Y;
             });
 
-            float layer = Calc.MapValue(1f, 0f, max, min, position);
+            float layer = Calc.MapValue(0f, 1f, min, max, position);
             graphicsComponent.LayerDepth = layer;
         }
     }

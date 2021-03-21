@@ -52,5 +52,10 @@ namespace Anchored.World
 		public virtual void Load(FileReader stream)
 		{
 		}
+
+		public T GetComponent<T>() where T : Component, new()
+		{
+			return Entity.GetComponent<T>();
+		}
 	}
 }

@@ -47,15 +47,7 @@ namespace Anchored.State
 
 		public override void Draw(SpriteBatch sb)
 		{
-			sb.Begin(
-				SpriteSortMode.FrontToBack,
-				samplerState: SamplerState.PointClamp,
-				transformMatrix: camera.GetViewMatrix()
-			);
-
 			currentArea.Draw(sb);
-
-			sb.End();
 		}
 
 		public override void DrawUI(SpriteBatch sb)
