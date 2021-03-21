@@ -14,47 +14,35 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin fx/rainbow_fx.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:fx/rainbow_fx.fx
+
+#begin fx/wave_fx.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:fx/wave_fx.fx
+
 #begin locales/en.json
 /copy:locales/en.json
 
-#begin maps/test_map.tmx
+#begin maps/tilemaps/test_map.tmx
 /importer:TiledMapImporter
 /processor:TiledMapProcessor
-/build:maps/test_map.tmx
+/build:maps/tilemaps/test_map.tmx
 
-#begin tilesheets/ground_test.tsx
+#begin maps/tilesheets/ground_test.tsx
 /importer:TiledMapTilesetImporter
 /processor:TiledMapTilesetProcessor
-/build:tilesheets/ground_test.tsx
+/build:maps/tilesheets/ground_test.tsx
 
-#begin tilesheets/test_sheet.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:tilesheets/test_sheet.png
-
-#begin tilesheets/water_test.tsx
+#begin maps/tilesheets/water_test.tsx
 /importer:TiledMapTilesetImporter
 /processor:TiledMapTilesetProcessor
-/build:tilesheets/water_test.tsx
-
-#begin tilesheets/water_tile_anim.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:tilesheets/water_tile_anim.png
+/build:maps/tilesheets/water_test.tsx
 
 #begin txrs/null.png
 /importer:TextureImporter
@@ -68,15 +56,39 @@
 /processorParam:TextureFormat=Color
 /build:txrs/null.png
 
-#begin txrs/ui/checkbox.png
+#begin txrs/tilesheets/test_sheet.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=False
+/processorParam:ColorKeyEnabled=True
 /processorParam:GenerateMipmaps=False
 /processorParam:PremultiplyAlpha=True
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:txrs/ui/checkbox.png
+/build:txrs/tilesheets/test_sheet.png
+
+#begin txrs/tilesheets/ui/checkbox.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:txrs/tilesheets/ui/checkbox.png
+
+#begin txrs/tilesheets/water_tile_anim.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:txrs/tilesheets/water_tile_anim.png
 

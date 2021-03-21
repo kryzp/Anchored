@@ -16,6 +16,8 @@ namespace Anchored.World.Components
 		public float Friction;
 		public Masks Solids;
 
+		public int Order { get; set; } = 0;
+
 		public Mover()
 		{
 			Collider = null;

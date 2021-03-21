@@ -25,7 +25,6 @@ namespace Anchored.Assets
 		public static bool LoadMods = true;
 #endif
 
-
 		public static string Root
 		{
 			get
@@ -56,16 +55,15 @@ namespace Anchored.Assets
 			}
 
 			Effects.Load();
+			ShaderHolder.Load();
 			progress += 1;
 			
 			Textures.Load();
+			TileSheetBounds.Load();
 			progress += 1;
 
 			TileMaps.Load();
 			progress += 1;
-
-			//Prefabs.Load();
-			//progress += 1;
 
 			//Animations.Load();
 			//progress += 1;

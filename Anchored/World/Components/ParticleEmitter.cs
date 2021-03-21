@@ -14,14 +14,15 @@ namespace Anchored.World.Components
 	public class ParticleEmitter : Component, IUpdatable, IRenderable
 	{
 		private HashSet<Particle> ToRemove = new HashSet<Particle>();
-
-		public float LayerDepth = 0f;
-		public Effect Shader = null;
-
 		public HashSet<Particle> Particles = new HashSet<Particle>();
 
 		public Particle ParticleType;
 		public float ParticleSpawnInterval = 0.5f;
+
+		public Shader Shader = null;
+		public float LayerDepth = 0f;
+		
+		public int Order { get; set; } = 0;
 
 		public ParticleEmitter()
 		{
@@ -61,9 +62,7 @@ namespace Anchored.World.Components
 				particle.Velocity.Y = Calc.Approach(particle.Velocity.Y, 0f, particle.Friction.Y * Time.Delta);
 				
 				particle.Position += particle.Velocity * Time.Delta;
-
 				particle.Rotation += particle.RotationVelocity * Time.Delta;
-
 				particle.Scale += particle.ScaleVelocity * Time.Delta;
 
 				particle.Alpha += particle.AlphaVelocity * Time.Delta;
@@ -76,10 +75,13 @@ namespace Anchored.World.Components
 			ResolveRemoving();
 		}
 
+		public void DrawBegin(SpriteBatch sb)
+		{
+		}
+
 		public void Draw(SpriteBatch sb)
 		{
-			if (Shader != null)
-				Shaders.Begin(sb, Shader);
+			Shader?.Begin(sb);
 
 			foreach (Particle particle in Particles)
 			{
@@ -96,8 +98,11 @@ namespace Anchored.World.Components
 				);
 			}
 
-			if (Shader != null)
-				Shaders.End(sb);
+			Shader?.End(sb);
+		}
+
+		public void DrawEnd(SpriteBatch sb)
+		{
 		}
 
 		private void ResolveRemoving()

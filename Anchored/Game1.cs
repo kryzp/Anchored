@@ -1,13 +1,10 @@
 ﻿using Anchored.Assets;
-using Anchored.Debug;
 using Anchored.Debug.Console;
 using Anchored.Debug.DearImGui;
-using Anchored.Util.Math;
 using Anchored.State;
 using Anchored.UI;
 using Anchored.World;
 using Anchored.World.Components;
-using ImGuiNET;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -20,6 +17,8 @@ namespace Anchored
 {
 	public class Game1 : Game
 	{
+		private static Shader gameShader;
+		
 		private static ImGuiRenderer imGuiRenderer;
 
 		public static GraphicsDeviceManager Graphics;
@@ -38,7 +37,7 @@ namespace Anchored
 
 		public static Entity Player;
 
-		public static Int32 Seed = 492982532;
+		public static Int32 Seed = 745321968;
 
 		public Game1()
 		{
@@ -80,7 +79,7 @@ namespace Anchored
 			DebugConsole.Engine("Finished Loading!");
 
 			SaveManager.Init();
-
+			
 			UITestArea.CreateUI();
 
 			Camera.Main = new Camera(320, 180);
@@ -115,8 +114,8 @@ namespace Anchored
 					return;
 			}
 
-			Time.PrevSeconds = Time.Seconds;
-			Time.Seconds += Time.Delta;
+			Time.TotalSeconds = Time.TotalSeconds;
+			Time.TotalSeconds += Time.Delta;
 			Time.GameTime = gt;
 
 			if (NextState != null)
@@ -128,9 +127,11 @@ namespace Anchored
 				NextState = null;
 			}
 
+			gameShader?.Update();
+			
 			UIManager.Update();
 			CurrentState.Update();
-
+			
 			base.Update(gt);
 		}
 
@@ -143,8 +144,11 @@ namespace Anchored
 			
 			GraphicsDevice.SetRenderTarget(AppRenderTarget);
 			
-			SpriteBatch.Begin(SpriteSortMode.FrontToBack, samplerState: SamplerState.PointClamp);
+			SpriteBatch.Begin(SpriteSortMode.Immediate, samplerState: SamplerState.PointClamp);
+			gameShader?.Effect.CurrentTechnique.Passes[0].Apply();
+
 			SpriteBatch.Draw(GameRenderTarget, new Rectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT), Color.White);
+			
 			SpriteBatch.End();
 
 			CurrentState.DrawUI(SpriteBatch);
@@ -169,6 +173,11 @@ namespace Anchored
 			NextState = state;
 		}
 
+		public static void SetGameShader(Shader shader)
+		{
+			gameShader = shader;
+		}
+		
 		private void TextInputHandler(object sender, TextInputEventArgs args)
 		{
 			Input.HandleTextInput(args.Key, args.Character);

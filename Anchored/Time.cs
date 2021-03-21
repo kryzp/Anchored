@@ -6,8 +6,8 @@ namespace Anchored
 {
 	public static class Time
 	{
-		public static double Seconds = 0.0;
-		public static double PrevSeconds = 0.0;
+		public static float TotalSeconds = 0f;
+		public static float PrevTotalSeconds = 0f;
 		public static float DeltaModifier = 1f;
 		public static float RawDelta = 0f;
 		public static float Delta => RawDelta * DeltaModifier;
@@ -20,7 +20,7 @@ namespace Anchored
 				PauseTimer = duration;
 		}
 
-		public static bool OnInterval(double time, float delta, float interval, float offset)
+		public static bool OnInterval(float time, float delta, float interval, float offset)
 		{
 			var last = (long)((time - offset - delta) / interval);
 			var next = (long)((time - offset) / interval);
@@ -29,17 +29,17 @@ namespace Anchored
 
 		public static bool OnInterval(float delta, float interval, float offset)
 		{
-			return OnInterval(Seconds, delta, interval, offset);
+			return OnInterval(TotalSeconds, delta, interval, offset);
 		}
 
 		public static bool OnInterval(float interval, float offset)
 		{
-			return OnInterval(Seconds, Delta, interval, offset);
+			return OnInterval(TotalSeconds, Delta, interval, offset);
 		}
 
-		public static bool OnTime(double time, double timestamp)
+		public static bool OnTime(float time, double timestamp)
 		{
-			float c = (float)time - Delta;
+			float c = time - Delta;
 			return (
 				time >= timestamp &&
 				c < timestamp
@@ -53,7 +53,7 @@ namespace Anchored
 
 		public static bool BetweenInterval(float interval, float offset)
 		{
-			return BetweenInterval(Seconds, interval, offset);
+			return BetweenInterval(TotalSeconds, interval, offset);
 		}
 	}
 }

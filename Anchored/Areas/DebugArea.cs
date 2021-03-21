@@ -27,11 +27,16 @@ namespace Anchored.Areas
 			var playerEntity = world.AddEntity("Player");
 			{
 				new PlayerType().Create(playerEntity);
-				{
-					playerEntity.Transform.Position = new Vector2(50, 25);
-				}
-				
 				Game1.Player = playerEntity;
+			}
+
+			var dummyEntity = world.AddEntity("Dummy");
+			{
+				dummyEntity.Transform.Position = new Vector2(64, 64);
+				dummyEntity.Transform.Origin = new Vector2(8, 16);
+				
+				var sprite = dummyEntity.AddComponent(new Sprite(Textures.Get("null")));
+				var depth = dummyEntity.AddComponent(new DepthSorter(sprite));
 			}
 			
 			//SaveManager.Save(world, SaveType.Level);

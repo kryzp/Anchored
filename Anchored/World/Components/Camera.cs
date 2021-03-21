@@ -49,7 +49,8 @@ namespace Anchored.World.Components
 		{
 			// todo: does not account for "advanced" matrix transformations
 
-			var bounds = sprite.Texture.Texture.Bounds;
+			Rectangle bounds = sprite.Texture.Texture.Bounds;
+			
 			bounds.X += (int)(sprite.Entity.Transform.Position.X);
 			bounds.Y += (int)(sprite.Entity.Transform.Position.Y);
 

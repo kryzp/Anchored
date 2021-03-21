@@ -1,14 +1,9 @@
 ﻿using Anchored.Assets;
 using Anchored.Graphics.Animating;
-using Anchored.Util;
 using Anchored.World.Components;
-using Anchored.Util.Physics;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended;
-using System;
 using System.Collections.Generic;
-using MonoGame.Extended.Shapes;
-using Anchored.Streams;
 
 namespace Anchored.World.Types
 {
@@ -22,18 +17,23 @@ namespace Anchored.World.Types
 		public override void Create(Entity entity)
 		{
 			base.Create(entity);
+			entity.Transform.Origin = new Vector2(8, 16);
 			
 			var collider = entity.AddComponent(new Collider(new RectangleF(0, 0, 16, 16)));
-			collider.Transform.Origin = new Vector2(8, 8);
-
+			
 			var mover = entity.AddComponent(new Mover(collider));
 			mover.Friction = 500f;
 			mover.Solids = Masks.Solid;
-
+			
 			var player = entity.AddComponent(new Player(mover));
 
+			#region Sprite
+
+			var sprite = entity.AddComponent(new Sprite());
+			
+			Animator animator = null;
 			{
-				var sprite = Textures.Get("null");
+				var texture = Textures.Get("null");
 
 				// Walk Animation
 				AnimationData walkAnimData = new AnimationData();
@@ -44,7 +44,7 @@ namespace Anchored.World.Types
 						{
 							Duration = 0.2f,
 							Bounds = new Rectangle(0, 0, 16, 16),
-							Texture = sprite
+							Texture = texture
 						}
 					});
 
@@ -57,17 +57,19 @@ namespace Anchored.World.Types
 				}
 				var walkAnim = new Animation(walkAnimData);
 
-				var animator = entity.AddComponent(new Animator(new Dictionary<string, Animation>()
+				animator = entity.AddComponent(new Animator(sprite, new Dictionary<string, Animation>()
 				{
 					{
 						"Walk",
 						walkAnim
 					}
 				}));
-				animator.Origin = new Vector2(8, 8);
 
 				animator.Play("Walk");
 			}
+			#endregion Animator
+
+			var depth = entity.AddComponent(new DepthSorter(sprite));
 		}
 	}
 }

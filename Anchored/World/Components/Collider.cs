@@ -57,11 +57,9 @@ namespace Anchored.World.Components
 
 			worldBounds = new RectangleF();
 
-			//axis = new Vector2[4];
 			axis = new List<Vector2>();
 			axisCount = 0;
 
-			//points = new Vector2[4];
 			points = new List<Vector2>();
 			pointCount = 0;
 		}
@@ -100,7 +98,15 @@ namespace Anchored.World.Components
 			this.points.Populate(polygon.Vertices.Length, Vector2.Zero);
 		}
 
+		public void DrawBegin(SpriteBatch sb)
+		{
+		}
+
 		public void Draw(SpriteBatch sb)
+		{
+		}
+
+		public void DrawEnd(SpriteBatch sb)
 		{
 			if (!DebugConsole.GetVariable<bool>("showcolliders"))
 				return;

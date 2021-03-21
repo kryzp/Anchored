@@ -1,5 +1,6 @@
 ﻿using Anchored.Streams;
 using Anchored.Util;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -70,10 +71,10 @@ namespace Anchored.Assets
 			textures.Clear();
 		}
 
-		public static TextureRegion Get(string id)
+		public static TextureRegion Get(string id, Rectangle? bounds = null)
 		{
 			if (textures.TryGetValue(id, out var region))
-				return new TextureRegion(region.Texture, region.Source);
+				return new TextureRegion(region.Texture, (bounds != null) ? (Rectangle)bounds : region.Source);
 
 			return Textures.NULL;
 		}

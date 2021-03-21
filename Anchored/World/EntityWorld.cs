@@ -1,5 +1,6 @@
 ﻿using Anchored.Streams;
 using Anchored.Util;
+using Anchored.World.Components;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -80,7 +81,7 @@ namespace Anchored.World
 					}
 				}
 
-				// TODO(kmp): order the updatables by update order here!
+				updatables.OrderBy(u => u.Order);
 
 				foreach (var it in updatables)
 					it.Update();
@@ -89,7 +90,7 @@ namespace Anchored.World
 			ResolveRemoving();
 		}
 
-		public void Draw(SpriteBatch sb)
+		public void Draw(SpriteBatch sb, Matrix? viewMatrix = null)
 		{
 			// Render Components
 			{
@@ -112,10 +113,39 @@ namespace Anchored.World
 					}
 				}
 
-				// TODO(kmp): order the renderables by render order here!
+				if (viewMatrix == null)
+					viewMatrix = Matrix.Identity;
+
+				sb.Begin(
+					SpriteSortMode.FrontToBack,
+					samplerState: SamplerState.PointClamp,
+					transformMatrix: viewMatrix
+				);
 
 				foreach (var it in renderables)
+					it.DrawBegin(sb);
+				
+				sb.End();
+				sb.Begin(
+					SpriteSortMode.FrontToBack,
+					samplerState: SamplerState.PointClamp,
+					transformMatrix: viewMatrix
+				);
+				
+				foreach (var it in renderables)
 					it.Draw(sb);
+				
+				sb.End();
+				sb.Begin(
+					SpriteSortMode.FrontToBack,
+					samplerState: SamplerState.PointClamp,
+					transformMatrix: viewMatrix
+				);
+
+				foreach (var it in renderables)
+					it.DrawEnd(sb);
+
+				sb.End();
 			}
 		}
 

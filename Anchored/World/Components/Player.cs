@@ -12,8 +12,10 @@ namespace Anchored.World.Components
 	{
 		private Mover mover;
 
-		public const float ACCELERATION = 120f;
-		public const float MAX_SPEED = 250f;
+		public const float ACCELERATION = 75f;
+		public const float MAX_SPEED = 150f;
+
+		public int Order { get; set; } = 0;
 
 		public Player()
 		{

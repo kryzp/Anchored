@@ -2,21 +2,14 @@
 using Anchored.Util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended.TextureAtlases;
 
 namespace Anchored.World.Components
 {
-	public class Sprite : Component, IRenderable
+	public class Sprite : GraphicsComponent
 	{
-		public TextureRegion Texture;
-		public float LayerDepth = 0f;
-		public Color Colour = Color.White;
-		public Vector2 Origin = Vector2.Zero;
-
 		public Sprite()
 		{
-			LayerDepth = 0f;
-			Colour = Color.White;
-			Origin = Vector2.Zero;
 		}
 
 		public Sprite(TextureRegion tex)
@@ -25,14 +18,14 @@ namespace Anchored.World.Components
 			Texture = tex;
 		}
 
-		public Sprite(Texture2D tex)
-			: this()
+		public override void DrawBegin(SpriteBatch sb)
 		{
-			Texture = new TextureRegion(tex);
 		}
 
-		public void Draw(SpriteBatch sb)
+		public override void Draw(SpriteBatch sb)
 		{
+			Shader?.Begin(sb);
+
 			Texture.Draw(
 				Entity.Transform.Position,
 				Origin + Entity.Transform.Origin,
@@ -42,6 +35,12 @@ namespace Anchored.World.Components
 				sb,
 				LayerDepth
 			);
+
+			Shader?.End(sb);
+		}
+
+		public override void DrawEnd(SpriteBatch sb)
+		{
 		}
 	}
 }

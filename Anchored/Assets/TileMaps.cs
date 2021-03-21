@@ -13,7 +13,7 @@ namespace Anchored.Assets
 
 		internal static void Load()
 		{
-			var mapDir = FileHandle.FromRoot("maps\\");
+			var mapDir = FileHandle.FromRoot("maps\\tilemaps\\");
 
 			if (mapDir.Exists())
 				LoadTileMaps(mapDir);
@@ -32,11 +32,11 @@ namespace Anchored.Assets
 		{
 			string folder = handle.FullPath;
 			folder = folder.Remove(handle.FullPath.Length - handle.Name.Length, handle.Name.Length);
-			folder = folder.Remove(0, (AssetManager.Root + "\\maps").Length);
+			folder = folder.Remove(0, (AssetManager.Root + "\\maps\\tilemaps").Length);
 
 			string id = folder + handle.NameWithoutExtension;
 
-			TiledMap tilemap = AssetManager.Content.Load<TiledMap>($"maps\\{id}");
+			TiledMap tilemap = AssetManager.Content.Load<TiledMap>($"maps\\tilemaps\\{id}");
 			maps[id] = tilemap;
 		}
 
