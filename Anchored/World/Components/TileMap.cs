@@ -7,6 +7,7 @@ using MonoGame.Extended.Tiled;
 using MonoGame.Extended.Tiled.Renderers;
 using System.Collections.Generic;
 using System.Linq;
+using Anchored.Util.Math;
 
 namespace Anchored.World.Components
 {
@@ -16,9 +17,8 @@ namespace Anchored.World.Components
 		private TiledMapRenderer renderer;
 		private TiledMapObjectLayer collisionLayer;
 		private List<Collider> colliders;
-
 		private int currentDrawingLayer;
-
+		
 		private Camera camera;
 
 		public int Order { get; set; } = 0;
@@ -51,13 +51,6 @@ namespace Anchored.World.Components
 
 		public override void DrawBegin(SpriteBatch sb)
 		{
-			sb.End();
-			sb.Begin(
-				SpriteSortMode.Immediate,
-				samplerState: SamplerState.PointClamp,
-				transformMatrix: Camera.Main.GetViewMatrix()
-			);
-
 			Game1.GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
 
 			for (int ii = 0; ii < map.Layers.Count; ii++)
@@ -72,7 +65,7 @@ namespace Anchored.World.Components
 				
 				renderer.Draw(
 					layer,
-					viewMatrix: camera.GetViewMatrix(),
+					viewMatrix: GetTileMapMatrix(),
 					effect: Shader?.Effect,
 					depth: 0f
 				);
@@ -83,14 +76,6 @@ namespace Anchored.World.Components
 		{
 			Game1.GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
 
-			renderer.Draw(
-				map.Layers[4],
-				viewMatrix: camera.GetViewMatrix(),
-				effect: Shader?.Effect,
-				depth: LayerDepth
-			);
-
-			/*
 			for (int ii = currentDrawingLayer; ii < map.Layers.Count; ii++)
 			{
 				var layer = map.Layers[ii];
@@ -100,15 +85,14 @@ namespace Anchored.World.Components
 					currentDrawingLayer = ii;
 					break;
 				}
-				
+
 				renderer.Draw(
 					layer,
-					viewMatrix: camera.GetViewMatrix(),
+					viewMatrix: GetTileMapMatrix(),
 					effect: Shader?.Effect,
-					depth: LayerDepth
+					depth: 0.1f
 				);
 			}
-			*/
 		}
 
 		public override void DrawEnd(SpriteBatch sb)
@@ -121,7 +105,7 @@ namespace Anchored.World.Components
 
 				renderer.Draw(
 					layer,
-					viewMatrix: camera.GetViewMatrix(),
+					viewMatrix: GetTileMapMatrix(),
 					effect: Shader?.Effect,
 					depth: 1f
 				);
@@ -137,7 +121,7 @@ namespace Anchored.World.Components
 
 			var colliderList = collisionLayer.Objects;
 
-			foreach (TiledMapObject rect in colliderList.Where(x => x is TiledMapRectangleObject))
+			foreach (TiledMapRectangleObject rect in colliderList.Where(x => x is TiledMapRectangleObject))
 			{
 				Collider collider = Entity.AddComponent(new Collider());
 				collider.MakeRect(new RectangleF(0, 0, rect.Size.Width, rect.Size.Height));
@@ -146,6 +130,25 @@ namespace Anchored.World.Components
 				colliders.Add(collider);
 			}
 
+			foreach (TiledMapPolylineObject line in colliderList.Where(x => x is TiledMapPolylineObject))
+			{
+				Collider collider = Entity.AddComponent(new Collider());
+				collider.MakeLine(new LineF(line.Points[0], line.Points[1]));
+				collider.Transform.Position = line.Position;
+				collider.Mask = Masks.Solid;
+				colliders.Add(collider);
+			}
+
+			// note: currently placing down circles only supports circles that have equal radius, if the one placed down doesn't have equal radius then it'll just use the X radius!
+			foreach (TiledMapEllipseObject circle in colliderList.Where(x => x is TiledMapEllipseObject))
+			{
+				Collider collider = Entity.AddComponent(new Collider());
+				collider.MakeCircle(new CircleF(circle.Radius, circle.Radius.X));
+				collider.Transform.Position = circle.Position;
+				collider.Mask = Masks.Solid;
+				colliders.Add(collider);
+			}
+			
 			foreach (TiledMapPolygonObject polygon in colliderList.Where(x => x is TiledMapPolygonObject))
 			{
 				var vectorPoints = polygon.Points.Select(x => new Vector2(x.X, x.Y)).ToList();
@@ -166,6 +169,12 @@ namespace Anchored.World.Components
 			}
 
 			colliders.Clear();
+		}
+		
+		private Matrix GetTileMapMatrix()
+		{
+			// when it was drawn at float positions it left seams between the tiles so making its position only ints fixes this
+			return camera.GetIntPosViewMatrix();
 		}
 	}
 }

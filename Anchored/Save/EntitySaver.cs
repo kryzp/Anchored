@@ -74,8 +74,15 @@ namespace Anchored.Save
 			{
 				EntityType entityType = (EntityType)Activator.CreateInstance(Type.GetType($"Anchored.{type}", true, false));
 
+				if (entityType == null)
+				{
+					DebugConsole.Error($"Could not create EntityType: \'Anchored.{type}\'");
+					return;
+				}
+				
 				Entity entity = world.AddEntity(name);
 				entityType.Create(entity);
+				
 				entity.Load(reader);
 
 				var sum = reader.Position - position - size;
@@ -86,7 +93,7 @@ namespace Anchored.Save
 			catch (Exception e)
 			{
 				DebugConsole.Error($"Failed to load: \'{type}\'");
-				DebugConsole.Error(e.Message);
+				DebugConsole.Error(e);
 
 				reader.Position = position + size;
 			}

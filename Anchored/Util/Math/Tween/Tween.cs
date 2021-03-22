@@ -60,7 +60,7 @@ namespace Anchored.Util.Math.Tween
 				}
 				catch (Exception e)
 				{
-					DebugConsole.Error(e.Message);
+					DebugConsole.Error(e);
 				}
 			}
 
@@ -98,7 +98,7 @@ namespace Anchored.Util.Math.Tween
 			catch (Exception e)
 			{
 				tasks.RemoveAt(ii);
-				DebugConsole.Error(e.Message);
+				DebugConsole.Error(e);
 			}
 		}
 	}

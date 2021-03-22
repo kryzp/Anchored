@@ -1,17 +1,13 @@
 ﻿namespace Anchored.Util.Timing
 {
-    public class WaitForSeconds : YieldInstruction
+    public class WaitForSeconds : WaitYieldInstruction
     {
-        private float timeRemaining;
-
-        public bool IsFinished => timeRemaining <= 0f;
-
         public WaitForSeconds(float sec)
         {
             timeRemaining = sec;
         }
 
-        public void Update()
+        public override void Update()
         {
             timeRemaining -= (float)Time.GameTime.ElapsedGameTime.TotalSeconds;
         }

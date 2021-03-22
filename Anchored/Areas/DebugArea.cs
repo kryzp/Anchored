@@ -3,10 +3,6 @@ using Anchored.World;
 using Anchored.World.Components;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using Anchored.Graphics.Particles;
-using System;
-using Anchored.Save;
-using Anchored.Streams;
 using Anchored.World.Types;
 
 namespace Anchored.Areas
@@ -39,10 +35,8 @@ namespace Anchored.Areas
 				var depth = dummyEntity.AddComponent(new DepthSorter(sprite));
 			}
 
-			var follow = cameraEntity.AddComponent(new Follow(world.GetComponent<Player>().Entity.Transform));
-			{
-				follow.LerpAmount = 0.2f;
-			}
+			Camera.Follow = playerEntity;
+			Camera.FollowLerp = 0.2f;
 
 			/*
 			var particleEmitterEntity = world.AddEntity("Particle Emitter");

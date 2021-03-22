@@ -4,12 +4,12 @@ using Anchored.Util.Timing;
 
 namespace Anchored.World.Components
 {
-    public class Actor : Component, IUpdatable
+    public abstract class Actor : Component, IUpdatable
     {
         protected List<Coroutine> coroutines = new List<Coroutine>();
 
-        public int Order { get; set; } = 0;
-        
+        public abstract int Order { get; set; }
+
         public virtual void Update()
         {
             UpdateCoroutines();
@@ -25,7 +25,6 @@ namespace Anchored.World.Components
         private void UpdateCoroutines()
         {
             coroutines.RemoveAll(c => c.IsFinished);
-            
             var coroutinesToUpdate = coroutines.ToArray();
             foreach (var coroutine in coroutinesToUpdate)
                 coroutine.Update();

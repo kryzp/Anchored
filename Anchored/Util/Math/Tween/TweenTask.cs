@@ -80,7 +80,7 @@ namespace Anchored.Util.Math.Tween
 				Interpolate(t);
 
 				callEnd = true;
-				DebugConsole.Error(e.Message);
+				DebugConsole.Error(e);
 			}
 
 			if (callEnd && !Ended)

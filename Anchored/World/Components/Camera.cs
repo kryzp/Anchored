@@ -1,10 +1,9 @@
-﻿using Anchored.Util.Physics;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Anchored.World.Components
 {
-	public class Camera : Component
+	public class Camera : Component, IUpdatable
 	{
 		public Vector2 Position = Vector2.Zero;
 		public float Rotation = 0f;
@@ -14,14 +13,19 @@ namespace Anchored.World.Components
 
 		public static Camera Main;
 
+		public int Order { get; set; } = 100;
+		
+		public Entity Follow = null;
+		public float FollowLerp = 0.2f;
+		
 		public Camera()
 		{
 		}
 
 		public Camera(int width, int height)
 		{
-			Scale.X = Game1.WINDOW_WIDTH / width;
-			Scale.Y = Game1.WINDOW_HEIGHT / height;
+			Scale.X = (int)(Game1.WINDOW_WIDTH / width);
+			Scale.Y = (int)(Game1.WINDOW_HEIGHT / height);
 		}
 
 		public Viewport GetViewport()
@@ -45,6 +49,17 @@ namespace Anchored.World.Components
 			);
 		}
 
+		public Matrix GetIntPosViewMatrix()
+		{
+			Matrix mat = GetViewMatrix();
+
+			mat.M41 = (int)mat.M41;
+			mat.M42 = (int)mat.M42;
+			mat.M43 = (int)mat.M43;
+
+			return mat;
+		}
+
 		public bool Sees(Sprite sprite)
 		{
 			// todo: does not account for "advanced" matrix transformations
@@ -62,18 +77,16 @@ namespace Anchored.World.Components
 
 			return false;
 		}
-
-		public bool Sees(Collider col)
+		
+		public void Update()
 		{
-			var bounds = col.GetWorldBounds();
-
-			if (GetViewport().Bounds.Contains(bounds.Position) ||
-				GetViewport().Bounds.Contains(new Vector2(bounds.X + bounds.Width, bounds.Y + bounds.Height)))
+			if (Follow != null)
 			{
-				return true;
+				Position = new Vector2(
+					MathHelper.Lerp(Position.X, Follow.Transform.Position.X, FollowLerp),
+					MathHelper.Lerp(Position.Y, Follow.Transform.Position.Y, FollowLerp)
+				);
 			}
-
-			return false;
 		}
 	}
 }

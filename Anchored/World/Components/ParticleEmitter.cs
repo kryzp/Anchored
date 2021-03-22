@@ -3,11 +3,7 @@ using Anchored.Graphics.Particles;
 using Anchored.Util.Math;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Security;
-using System.Text;
 
 namespace Anchored.World.Components
 {

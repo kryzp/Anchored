@@ -2,16 +2,20 @@
 using System.Diagnostics;
 using System.Threading;
 using Anchored.Assets;
+using Anchored.Assets.Prefabs;
 using Anchored.Debug.Console;
 using Anchored.Save;
+using Anchored.Util;
 using Anchored.World;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended;
 
 namespace Anchored.State
 {
     public class AssetLoadState : GameState
     {
-        private const bool SECTIONAL_LOAD_TIME_LOGGING = false;
+        private const bool SECTIONAL_LOAD_TIME_LOGGING = true;
         private bool ready;
         private int progress;
         private string currentlyLoadingLabel;
@@ -32,6 +36,7 @@ namespace Anchored.State
                 
                 LoadSection(ShaderHolder.Load, "Shaders");
                 LoadSection(TileSheetBounds.Load, "Tile Sheets");
+                LoadSection(PrefabHolder.Load, "Prefabs");
 
                 progress += 1;
                 
@@ -64,6 +69,14 @@ namespace Anchored.State
 
         public override void Draw(SpriteBatch sb)
         {
+            // todo: temp
+            
+            sb.Begin();
+            
+            var color = DrawUtil.BlendColours(Color.Aqua, new Color(25, 120, 220), MathF.Sin(Time.TotalSeconds));
+            DrawUtil.DrawRectangle(new RectangleF(10, 10, 64, 64), color, 1f, sb);
+
+            sb.End();
         }
 
         public override void DrawUI(SpriteBatch sb)

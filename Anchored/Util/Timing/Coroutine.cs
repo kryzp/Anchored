@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 
 namespace Anchored.Util.Timing
 {
     public class Coroutine
     {
         private IEnumerator routine;
-        private WaitForSeconds wait;
+        private WaitYieldInstruction wait;
         
         public bool IsFinished { get; set; }
 
@@ -38,7 +37,7 @@ namespace Anchored.Util.Timing
             if (!routine.MoveNext())
                 IsFinished = true;
             
-            wait = routine.Current as WaitForSeconds;
+            wait = routine.Current as WaitYieldInstruction;
         }
     }
 }

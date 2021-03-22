@@ -1,8 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
-using System.Collections;
-using Anchored.Util.Timing;
 
 namespace Anchored.World.Components
 {
@@ -13,11 +11,10 @@ namespace Anchored.World.Components
 		public const float ACCELERATION = 75f;
 		public const float MAX_SPEED = 150f;
 
-		public int Order { get; set; } = 0;
-
+		public override int Order { get; set; } = 0;
+		
 		public Player()
 		{
-			StartCoroutine(DoTextPrint());
 		}
 
 		public Player(Mover mover)
@@ -29,7 +26,7 @@ namespace Anchored.World.Components
 		public override void Update()
 		{
 			base.Update();
-			
+
 			int mx = 0;
 			int my = 0;
 
@@ -55,15 +52,6 @@ namespace Anchored.World.Components
 
 			mover.Velocity.X = MathHelper.Clamp(mover.Velocity.X, -MAX_SPEED, MAX_SPEED);
 			mover.Velocity.Y = MathHelper.Clamp(mover.Velocity.Y, -MAX_SPEED, MAX_SPEED);
-		}
-
-		private IEnumerator DoTextPrint()
-		{
-			while (true)
-			{
-				Console.WriteLine("E");
-				yield return new WaitForSeconds(3f);
-			}
 		}
 	}
 }

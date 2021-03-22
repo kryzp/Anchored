@@ -15,17 +15,13 @@ namespace Anchored.Areas
 		protected EntityWorld world;
 		protected Entity cameraEntity;
 
-		public Camera Camera => (Camera)cameraEntity.GetComponent<Camera>();
+		public Camera Camera => cameraEntity.GetComponent<Camera>();
 
 		public GameArea(EntityWorld world)
 		{
 			this.world = world;
-
-			cameraEntity = world.AddEntity("Camera");
-			var camera = cameraEntity.AddComponent(new Camera(320, 180));
-			camera.Origin = new Vector2(160, 90);
-
-			Camera.Main = camera;
+			cameraEntity = SetupCamera(320, 180, 180, 90);
+			Camera.Main = Camera;
 		}
 
 		public virtual void Load(SpriteBatch sb)
@@ -48,6 +44,14 @@ namespace Anchored.Areas
 
 		public virtual void DrawUI(SpriteBatch sb)
 		{
+		}
+
+		protected Entity SetupCamera(int width, int height, int originX = 0, int originY = 0)
+		{
+			var camEntity = world.AddEntity("Camera");
+			var camera = camEntity.AddComponent(new Camera(width, height));
+			camera.Origin = new Vector2(originX, originY);
+			return camEntity;
 		}
 
 		protected Entity SetupTileMap(TiledMap map, bool loadColliders = true, bool loadEntities = true)

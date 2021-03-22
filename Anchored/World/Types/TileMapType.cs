@@ -1,12 +1,8 @@
 ﻿using Anchored.Assets;
-using Anchored.Util;
 using Anchored.World.Components;
 using Microsoft.Xna.Framework;
-using MonoGame.Extended;
 using MonoGame.Extended.Tiled;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Anchored.Streams;
 
 namespace Anchored.World.Types
 {
@@ -47,30 +43,28 @@ namespace Anchored.World.Types
 				Vector2 entityPosition = entityObj.Position;
 				float entityRotation = entityObj.Rotation;
 
-				// todo: only an example this should be replaced with like a 'TreeType' entity type!!!!
-
 				/*
 				if (entityObj.Type == "Tree")
 				{
-					string sheet = entityObj.Properties["Sheet"];
-					string textureName = entityObj.Properties["Texture"];
-					TextureRegion texture = TileSheetBounds.Get(sheet, textureName);
-
-					Entity entity = world.AddEntity(entityName);
-					entity.Transform.Position = entityPosition;
-					entity.Transform.RotationDegrees = entityRotation;
-
-					var sprite = entity.AddComponent(new Sprite(texture));
-
-					sprite.Origin.X = texture.Width / 2;
-					sprite.Origin.Y = texture.Height;
-
-					var collider = entity.AddComponent(new Collider());
-					collider.Mask = Masks.Solid;
-					collider.MakeRect(new RectangleF(-8, -16, 16, 16));
 				}
 				*/
 			}
+		}
+		
+		public override void Save(FileWriter stream)
+		{
+			stream.WriteString(map.Name);
+			stream.WriteBoolean(loadColliders);
+			stream.WriteBoolean(loadEntities);
+		}
+
+		public override void Load(FileReader stream)
+		{
+			string mapName = stream.ReadString();
+			loadColliders = stream.ReadBoolean();
+			loadEntities = stream.ReadBoolean();
+			
+			map = TileMaps.Get(mapName);
 		}
 	}
 }

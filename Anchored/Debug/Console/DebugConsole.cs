@@ -269,6 +269,11 @@ namespace Anchored.Debug.Console
 		{
 			Lines.Add(new ConsoleLine("[ERR] " + str, ConsoleLine.COL_ERR));
 		}
+		
+		public static void Error(Exception e)
+		{
+			Lines.Add(new ConsoleLine("[ERR] " + e.Message, ConsoleLine.COL_ERR));
+		}
 
 		public class ConsoleLine
 		{

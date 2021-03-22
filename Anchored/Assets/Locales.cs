@@ -99,7 +99,7 @@ namespace Anchored.Assets
 			}
 			catch (Exception e)
 			{
-				DebugConsole.Error(e.Message);
+				DebugConsole.Error(e);
 			}
 		}
 	}

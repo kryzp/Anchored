@@ -7,12 +7,12 @@ namespace Anchored.Util
 {
 	public static class DrawUtil
 	{
-		public static Color BlendColours(Color a, Color b, float factorA, float factorB)
+		public static Color BlendColours(Color a, Color b, float factor)
 		{
 			return new Color(
-				(byte)MathHelper.Clamp(((a.R * factorA) + (b.R * factorB)), 0, 255),
-				(byte)MathHelper.Clamp(((a.G * factorA) + (b.G * factorB)), 0, 255),
-				(byte)MathHelper.Clamp(((a.B * factorA) + (b.B * factorB)), 0, 255)
+				(byte)MathHelper.Clamp(((a.R * factor) + (b.R * (1f - factor))), 0, 255),
+				(byte)MathHelper.Clamp(((a.G * factor) + (b.G * (1f - factor))), 0, 255),
+				(byte)MathHelper.Clamp(((a.B * factor) + (b.B * (1f - factor))), 0, 255)
 			);
 		}
 

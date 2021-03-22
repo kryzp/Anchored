@@ -11,6 +11,7 @@ namespace Anchored.Debug
 {
 	public static class DebugManager
 	{
+		private static System.Numerics.Vector2 size;
 		private static System.Numerics.Vector3 bgcol;
 
 		public static bool Entities = false; // not done
@@ -34,7 +35,7 @@ namespace Anchored.Debug
 			Anchored.Debug.Info.DebugView.Draw();
 			Anchored.Debug.Info.RunInfo.Draw();
 
-			ImGui.SetNextWindowPos(new System.Numerics.Vector2(Game1.WINDOW_WIDTH - 10, Game1.WINDOW_HEIGHT - 10));
+			ImGui.SetNextWindowPos(new System.Numerics.Vector2(Game1.WINDOW_WIDTH - 10 - size.X, Game1.WINDOW_HEIGHT - 10 - size.Y));
 			ImGui.Begin(
 				"Windows",
 				ImGuiWindowFlags.NoCollapse |
@@ -80,6 +81,7 @@ namespace Anchored.Debug
 			}
 			ImGui.EndMainMenuBar();
 
+			size = ImGui.GetWindowSize();
 			ImGui.End();
 		}
 		

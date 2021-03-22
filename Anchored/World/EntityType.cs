@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Anchored.Streams;
 
 namespace Anchored.World
 {
@@ -11,6 +9,14 @@ namespace Anchored.World
 		public virtual void Create(Entity entity)
 		{
 			entity.Type = this;
+		}
+
+		public virtual void Save(FileWriter stream)
+		{
+		}
+		
+		public virtual void Load(FileReader stream)
+		{
 		}
 	}
 }
