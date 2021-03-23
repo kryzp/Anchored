@@ -2,11 +2,35 @@
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Anchored.Util
 {
-	public static class DrawUtil
+	public static class Utility
 	{
+		public static Rectangle ConvertStringToRectangle(string raw)
+		{
+			List<string> values = raw.Split(' ').ToList();
+
+			if (values.Count > 4)
+				return Rectangle.Empty;
+			else if (values.Count < 4)
+				return Rectangle.Empty;
+
+			Int32 x = Int32.Parse(values[0]);
+			Int32 y = Int32.Parse(values[1]);
+			Int32 w = Int32.Parse(values[2]);
+			Int32 h = Int32.Parse(values[3]);
+
+			return new Rectangle(x, y, w, h);
+		}
+
+		public static string ConvertRectangleToString(Rectangle raw)
+		{
+			return $"{raw.Width} {raw.Height} {raw.Width} {raw.Height}";
+		}
+		
 		public static Color BlendColours(Color a, Color b, float factor)
 		{
 			return new Color(
@@ -72,6 +96,7 @@ namespace Anchored.Util
 			return texture;
 		}
 
+		/*
 		public static void DrawRoundedRectangle(
 			RectangleF rectangle,
 			float r,
@@ -102,18 +127,6 @@ namespace Anchored.Util
 			ShapeExtensions.DrawCircle(sb, x0, y1-r-variableThatFixesThingsLmao, r, sides, colour, d, layer);
 			ShapeExtensions.DrawCircle(sb, x1-r-variableThatFixesThingsLmao, y1-r-variableThatFixesThingsLmao, r, sides, colour, d, layer);
 		}
-
-		public static void DrawOutlinedRoundedRectangle(
-			RectangleF rectangle,
-			float r,
-			float t,
-			Color colour,
-			float layer = 0.95f,
-			int sides = 15,
-			SpriteBatch sb = null
-		)
-		{
-			// todo
-		}
+		*/
 	}
 }

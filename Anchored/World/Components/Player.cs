@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
+using Anchored.Debug.Info;
 
 namespace Anchored.World.Components
 {
@@ -26,6 +27,9 @@ namespace Anchored.World.Components
 		public override void Update()
 		{
 			base.Update();
+
+			if (DebugView.DebugCameraMove)
+				return;
 
 			int mx = 0;
 			int my = 0;

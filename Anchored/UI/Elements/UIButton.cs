@@ -7,13 +7,20 @@ using MonoGame.Extended.TextureAtlases;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace Anchored.UI.Elements
 {
 	public class UIButton : UIComponent
 	{
 		private TextureRegion texture;
+		private TextureRegion textureHov;
+		private TextureRegion texturePrs;
 
+		private UITexture uiTexture;
+
+		private bool hasPressedAndHoldingDown = false;
+		
 		public Action OnPressed = null;
 		public Action OnReleased = null;
 		public Action OnHovering = null;
@@ -26,21 +33,19 @@ namespace Anchored.UI.Elements
 		{
 			this.texture = tex;
 		}
-
-		public UIButton(TextureRegion tex, int width, int height)
-			: this(tex)
+		
+		public UIButton(TextureRegion tex, TextureRegion prs, TextureRegion hov)
 		{
-			this.Width = width;
-			this.Height = height;
+			this.texture = tex;
+			this.texturePrs = prs;
+			this.textureHov = hov;
 		}
 
 		public override void Init()
 		{
 			// Texture
 			{
-				// todo: maybe also like a hover texture?
-
-				UITexture uiTexture = new UITexture(texture);
+				uiTexture = new UITexture(texture);
 				UIConstraints uiTextureConstraints = new UIConstraints();
 
 				uiTextureConstraints.X = new CenterConstraint();
@@ -63,28 +68,44 @@ namespace Anchored.UI.Elements
 			bool mousePressed = Input.IsPressed(MouseButton.Left);
 			bool mouseReleased = Input.IsReleased(MouseButton.Left);
 
+			if (!hasPressedAndHoldingDown)
+			{
+				if (texture != null && uiTexture.Texture != texture)
+					uiTexture.Texture = texture;
+			}
+
 			Hovering = false;
 			if (mouseRect.Intersects(boundingBox))
 			{
 				Hovering = true;
 				if (OnHovering != null)
 					OnHovering();
+				
+				if (textureHov != null && uiTexture.Texture != textureHov)
+					uiTexture.Texture = textureHov;
 			}
 
 			Pressed = false;
-			if (mousePressed && Hovering)
+			if ((mousePressed && Hovering) || hasPressedAndHoldingDown)
 			{
 				Pressed = true;
 				if (OnPressed != null)
 					OnPressed();
+				
+				if (texturePrs != null && uiTexture.Texture != texturePrs)
+					uiTexture.Texture = texturePrs;
+
+				hasPressedAndHoldingDown = true;
 			}
 
 			Released = false;
-			if (mouseReleased && Hovering)
+			if (mouseReleased)
 			{
 				Released = true;
 				if (OnReleased != null)
 					OnReleased();
+
+				hasPressedAndHoldingDown = false;
 			}
 		}
 	}

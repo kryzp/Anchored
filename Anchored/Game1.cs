@@ -32,6 +32,7 @@ namespace Anchored
 
 		public const int WINDOW_WIDTH = 1280;
 		public const int WINDOW_HEIGHT = 720;
+		
 		public static Color BackgroundColor;
 
 		public static RenderTarget2D GameRenderTarget; // only the game stuff in a rendertarget
@@ -49,6 +50,7 @@ namespace Anchored
 
 			IsMouseVisible = true;
 			IsFixedTimeStep = true;
+			Window.AllowUserResizing = true;
 		}
 
 		protected override void Initialize()
@@ -74,8 +76,6 @@ namespace Anchored
 		{
 			SpriteBatch = new SpriteBatch(GraphicsDevice);
 			BackgroundColor = new Color(22, 18, 27);
-			
-			Camera.Main = new Camera(320, 180);
 
 			SaveManager.Init();
 			ChangeState(new AssetLoadState());

@@ -15,7 +15,6 @@ namespace Anchored.UI
 			UIComponent display = UIManager.Container;
 
 			var nullTex = Textures.Get("null");
-
 			var checkBoxOffTex = TileSheetBounds.Get("ui\\checkbox", "unchecked");
 			var checkBoxOnTex = TileSheetBounds.Get("ui\\checkbox", "checked");
 
@@ -30,6 +29,19 @@ namespace Anchored.UI
 				constraints.Height = new PixelConstraint(36);
 
 				display.Add(uiToggleButton, constraints);
+			}
+			
+			// Button
+			{
+				UIButton uiButton = new UIButton(checkBoxOffTex, checkBoxOnTex, checkBoxOffTex);
+				UIConstraints constraints = new UIConstraints();
+				
+				constraints.X = new CenterConstraint();
+				constraints.Y = new PixelConstraint(100);
+				constraints.Width = new PixelConstraint(36);
+				constraints.Height = new PixelConstraint(36);
+
+				display.Add(uiButton, constraints);
 			}
 		}
 	}

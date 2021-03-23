@@ -1,5 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Anchored.Util.Math;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended;
 
 namespace Anchored.World.Components
 {
@@ -14,8 +17,20 @@ namespace Anchored.World.Components
 		public static Camera Main;
 
 		public int Order { get; set; } = 100;
+
+		private Entity follow = null;
+
+		public Entity Follow
+		{
+			get => follow;
+			set
+			{
+				DoFollow = true;
+				follow = value;
+			}
+		}
 		
-		public Entity Follow = null;
+		public bool DoFollow = false;
 		public float FollowLerp = 0.2f;
 		
 		public Camera()
@@ -38,20 +53,16 @@ namespace Anchored.World.Components
 			);
 		}
 
+		
+		
 		public Matrix GetViewMatrix()
 		{
-			return (
-				Matrix.CreateTranslation(new Vector3(-Position.X - Entity.Transform.Position.X, -Position.Y - Entity.Transform.Position.Y, 0)) *
-				Matrix.CreateRotationZ(Rotation) *
-				Matrix.CreateScale(new Vector3(Zoom, Zoom, 1)) *
-				Matrix.CreateTranslation(Origin.X, Origin.Y, 0) *
-				Matrix.CreateScale(new Vector3(Scale.X, Scale.Y, 1))
-			);
+			return _GetViewMatrix();
 		}
 
-		public Matrix GetIntPosViewMatrix()
+		public Matrix GetPerfectViewMatrix()
 		{
-			Matrix mat = GetViewMatrix();
+			Matrix mat = _GetViewMatrix();
 
 			mat.M41 = (int)mat.M41;
 			mat.M42 = (int)mat.M42;
@@ -60,17 +71,47 @@ namespace Anchored.World.Components
 			return mat;
 		}
 
-		public bool Sees(Sprite sprite)
+		public bool Sees(GraphicsComponent sprite)
 		{
-			// todo: does not account for "advanced" matrix transformations
-
 			Rectangle bounds = sprite.Texture.Texture.Bounds;
 			
 			bounds.X += (int)(sprite.Entity.Transform.Position.X);
 			bounds.Y += (int)(sprite.Entity.Transform.Position.Y);
 
 			if (GetViewport().Bounds.Contains(new Vector2(bounds.X, bounds.Y)) ||
-				GetViewport().Bounds.Contains(new Vector2(bounds.X + bounds.Width, bounds.Y + bounds.Height)))
+			    GetViewport().Bounds.Contains(new Vector2(bounds.X + bounds.Width, bounds.Y + bounds.Height)))
+			{
+				return true;
+			}
+
+			return false;
+		}
+		
+		public bool SeesAdvanced(GraphicsComponent sprite)
+		{
+			Rectangle bounds = sprite.Texture.Texture.Bounds;
+			var mat = sprite.Entity.Transform.GetMatrix();
+			
+			QuadF worldRect = new QuadF();
+			RectangleF worldBounds = new RectangleF();
+
+			var tl = new Vector2(bounds.Top, bounds.Left);
+			var tr = new Vector2(bounds.Top, bounds.Right);
+			var bl = new Vector2(bounds.Bottom, bounds.Left);
+			var br = new Vector2(bounds.Bottom, bounds.Right);
+			
+			worldRect.A = Vector2.Transform(tl, mat);
+			worldRect.B = Vector2.Transform(tr, mat);
+			worldRect.C = Vector2.Transform(br, mat);
+			worldRect.D = Vector2.Transform(bl, mat);
+
+			worldBounds.X = MathF.Min(worldRect.A.X, MathF.Min(worldRect.B.X, MathF.Min(worldRect.C.X, worldRect.D.X)));
+			worldBounds.Y = MathF.Min(worldRect.A.Y, MathF.Min(worldRect.B.Y, MathF.Min(worldRect.C.Y, worldRect.D.Y)));
+			worldBounds.Width = MathF.Max(worldRect.A.X, MathF.Max(worldRect.B.X, MathF.Max(worldRect.C.X, worldRect.D.X))) - worldBounds.X;
+			worldBounds.Height = MathF.Max(worldRect.A.Y, MathF.Max(worldRect.B.Y, MathF.Max(worldRect.C.Y, worldRect.D.Y))) - worldBounds.Y;
+			
+			if (GetViewport().Bounds.Contains(new Vector2(worldBounds.X, worldBounds.Y)) ||
+				GetViewport().Bounds.Contains(new Vector2(worldBounds.X + worldBounds.Width, worldBounds.Y + worldBounds.Height)))
 			{
 				return true;
 			}
@@ -80,13 +121,24 @@ namespace Anchored.World.Components
 		
 		public void Update()
 		{
-			if (Follow != null)
+			if (Follow != null && DoFollow)
 			{
 				Position = new Vector2(
 					MathHelper.Lerp(Position.X, Follow.Transform.Position.X, FollowLerp),
 					MathHelper.Lerp(Position.Y, Follow.Transform.Position.Y, FollowLerp)
 				);
 			}
+		}
+		
+		private Matrix _GetViewMatrix()
+		{
+			return (
+				Matrix.CreateTranslation(new Vector3(-Position.X - Entity.Transform.Position.X, -Position.Y - Entity.Transform.Position.Y, 0)) *
+				Matrix.CreateRotationZ(Rotation) *
+				Matrix.CreateScale(new Vector3(Zoom, Zoom, 1)) *
+				Matrix.CreateTranslation(Origin.X, Origin.Y, 0) *
+				Matrix.CreateScale(new Vector3(Scale.X, Scale.Y, 1))
+			);
 		}
 	}
 }

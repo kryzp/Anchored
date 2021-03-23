@@ -37,7 +37,7 @@ namespace Anchored.Debug.Console
 		static DebugConsole()
 		{
 			variables.Add(new ConsoleVariableOf<bool>("showcolliders", true));
-			variables.Add(new ConsoleVariableOf<float>("deltamod", 0f, (x) => Time.DeltaModifier = x));
+			variables.Add(new ConsoleVariableOf<float>("deltamod", Time.DeltaModifier, (x) => Time.DeltaModifier = x));
 
 			Commands.Add(new HelpCommand());
 			Commands.Add(new SetCommand());

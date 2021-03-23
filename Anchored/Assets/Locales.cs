@@ -73,7 +73,7 @@ namespace Anchored.Assets
 
 			if (!file.Exists())
 			{
-				DebugConsole.Error($"Locale \'{path}\' was now found!");
+				DebugConsole.Error($"Locale \'{path}\' was not found!");
 				return;
 			}
 

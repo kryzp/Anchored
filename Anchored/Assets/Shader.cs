@@ -26,7 +26,7 @@ namespace Anchored.Assets
             sb.Begin(
                 SpriteSortMode.Immediate,
                 samplerState: SamplerState.PointClamp,
-                transformMatrix: camera?.GetViewMatrix() ?? Camera.Main.GetViewMatrix()
+                transformMatrix: camera?.GetPerfectViewMatrix() ?? Camera.Main.GetPerfectViewMatrix()
             );
             Effect.CurrentTechnique.Passes[0].Apply();
         }
@@ -37,7 +37,7 @@ namespace Anchored.Assets
             sb.Begin(
                 SpriteSortMode.FrontToBack,
                 samplerState: SamplerState.PointClamp,
-                transformMatrix: camera?.GetViewMatrix() ?? Camera.Main.GetViewMatrix()
+                transformMatrix: camera?.GetPerfectViewMatrix() ?? Camera.Main.GetPerfectViewMatrix()
             );
         }
     }

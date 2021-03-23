@@ -35,8 +35,6 @@ namespace Anchored.World.Components
 		private RectangleF worldBounds;
 		private List<Vector2> axis;
 		private List<Vector2> points;
-		private int axisCount;
-		private int pointCount;
 		private ColliderType currentColliderType;
 		private IColliderData data;
 
@@ -57,10 +55,7 @@ namespace Anchored.World.Components
 			worldBounds = new RectangleF();
 
 			axis = new List<Vector2>();
-			axisCount = 0;
-
 			points = new List<Vector2>();
-			pointCount = 0;
 		}
 
 		public Collider(RectangleF rect)
@@ -350,7 +345,7 @@ namespace Anchored.World.Components
 			if (entityMovementID == 0 || Entity.TransformStamp != entityMovementID)
 			{
 				Matrix mat = Transform.GetMatrix() * Entity.Transform.GetMatrix();
-				data.UpdateWorldBounds(mat, ref worldBounds, ref axis, ref points, ref axisCount, ref pointCount);
+				data.UpdateWorldBounds(mat, ref worldBounds, ref axis, ref points);
 				entityMovementID = Entity.TransformStamp;
 			}
 		}
@@ -400,7 +395,7 @@ namespace Anchored.World.Components
 
 			float distance = 0.0f;
 
-			for (int ii = 0; ii < a.axisCount; ii++)
+			for (int ii = 0; ii < a.axis.Count; ii++)
 			{
 				var axis = a.axis[ii];
 				float amount = 0.0f;
@@ -415,7 +410,7 @@ namespace Anchored.World.Components
 				}
 			}
 
-			for (int ii = 0; ii < a.pointCount; ii++)
+			for (int ii = 0; ii < a.points.Count; ii++)
 			{
 				Vector2 axis = (a.points[ii] - new Vector2(circle_b.Center.X, circle_b.Center.Y)).NormalizedCopy();
 				float amount = 0.0f;
@@ -443,7 +438,7 @@ namespace Anchored.World.Components
 
 			float distance = 0;
 
-			for (int ii = 0; ii < a.axisCount; ii++)
+			for (int ii = 0; ii < a.axis.Count; ii++)
 			{
 				var axis = a.axis[ii];
 				float amount = 0.0f;
@@ -458,7 +453,7 @@ namespace Anchored.World.Components
 				}
 			}
 
-			for (int ii = 0; ii < b.axisCount; ii++)
+			for (int ii = 0; ii < b.axis.Count; ii++)
 			{
 				var axis = b.axis[ii];
 				float amount = 0.0f;
@@ -492,7 +487,7 @@ namespace Anchored.World.Components
 				WorldRect.Project(axis, ref min, ref max);
 			}
 
-			public void UpdateWorldBounds(Matrix mat, ref RectangleF worldBounds, ref List<Vector2> axis, ref List<Vector2> points, ref int axisCount, ref int pointCount)
+			public void UpdateWorldBounds(Matrix mat, ref RectangleF worldBounds, ref List<Vector2> axis, ref List<Vector2> points)
 			{
 				WorldRect.A = Vector2.Transform(Rect.TopLeft, mat);
 				WorldRect.B = Vector2.Transform(Rect.TopRight, mat);
@@ -507,13 +502,11 @@ namespace Anchored.World.Components
 				axis[2] = new Vector2(-axis[2].Y, axis[2].X);
 				axis[3] = (WorldRect.A - WorldRect.D).NormalizedCopy();
 				axis[3] = new Vector2(-axis[3].Y, axis[3].X);
-				axisCount = 4;
 
 				points[0] = WorldRect.A;
 				points[1] = WorldRect.B;
 				points[2] = WorldRect.C;
 				points[3] = WorldRect.D;
-				pointCount = 4;
 
 				worldBounds.X = MathF.Min(WorldRect.A.X, MathF.Min(WorldRect.B.X, MathF.Min(WorldRect.C.X, WorldRect.D.X)));
 				worldBounds.Y = MathF.Min(WorldRect.A.Y, MathF.Min(WorldRect.B.Y, MathF.Min(WorldRect.C.Y, WorldRect.D.Y)));
@@ -537,7 +530,7 @@ namespace Anchored.World.Components
 				WorldCircle.Project(axis, ref min, ref max);
 			}
 
-			public void UpdateWorldBounds(Matrix mat, ref RectangleF worldBounds, ref List<Vector2> axis, ref List<Vector2> points, ref int axisCount, ref int pointCount)
+			public void UpdateWorldBounds(Matrix mat, ref RectangleF worldBounds, ref List<Vector2> axis, ref List<Vector2> points)
 			{
 				WorldCircle.Center = Vector2.Transform(Circle.Center, mat);
 				WorldCircle.Radius = Circle.Radius;
@@ -546,9 +539,6 @@ namespace Anchored.World.Components
 				worldBounds.Y = WorldCircle.Center.Y - WorldCircle.Radius;
 				worldBounds.Width = WorldCircle.Diameter;
 				worldBounds.Height = WorldCircle.Diameter;
-
-				axisCount = 0;
-				pointCount = 0;
 			}
 		}
 
@@ -567,18 +557,16 @@ namespace Anchored.World.Components
 				WorldLine.Project(axis, ref min, ref max);
 			}
 
-			public void UpdateWorldBounds(Matrix mat, ref RectangleF worldBounds, ref List<Vector2> axis, ref List<Vector2> points, ref int axisCount, ref int pointCount)
+			public void UpdateWorldBounds(Matrix mat, ref RectangleF worldBounds, ref List<Vector2> axis, ref List<Vector2> points)
 			{
 				WorldLine.A = Vector2.Transform(Line.A, mat);
 				WorldLine.B = Vector2.Transform(Line.B, mat);
 
 				axis[0] = (WorldLine.B - WorldLine.A).NormalizedCopy();
 				axis[0] = new Vector2(-axis[0].Y, axis[0].X);
-				axisCount = 1;
 
 				points[0] = WorldLine.A;
 				points[1] = WorldLine.B;
-				pointCount = 2;
 
 				worldBounds.X = MathF.Min(WorldLine.A.X, WorldLine.B.X);
 				worldBounds.Y = MathF.Min(WorldLine.A.Y, WorldLine.B.Y);
@@ -603,11 +591,9 @@ namespace Anchored.World.Components
 				WorldPolygon.Project(axis, ref min, ref max);
 			}
 
-			public void UpdateWorldBounds(Matrix mat, ref RectangleF worldBounds, ref List<Vector2> axis, ref List<Vector2> points, ref int axisCount, ref int pointCount)
+			public void UpdateWorldBounds(Matrix mat, ref RectangleF worldBounds, ref List<Vector2> axis, ref List<Vector2> points)
 			{
 				int vertexCount = Polygon.Vertices.Length;
-				axisCount = vertexCount;
-				pointCount = vertexCount;
 
 				// Update Axis and Points
 				{

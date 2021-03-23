@@ -7,12 +7,12 @@ using System.Text;
 
 namespace Anchored.UI.Elements
 {
-	// todo: maybe also like a hover texture?
-
 	public class UIToggleButton : UIComponent
 	{
 		private TextureRegion textureOn;
 		private TextureRegion textureOff;
+		private TextureRegion textureHov;
+		
 		private UITexture uiTexture;
 
 		public Action OnEnabled = null;
@@ -31,6 +31,13 @@ namespace Anchored.UI.Elements
 		{
 			this.textureOn = texOn;
 			this.textureOff = texOff;
+		}
+		
+		public UIToggleButton(TextureRegion texOff, TextureRegion texOn, TextureRegion texHov)
+		{
+			this.textureOn = texOn;
+			this.textureOff = texOff;
+			this.textureHov = texHov;
 		}
 
 		public override void Init()
@@ -66,6 +73,9 @@ namespace Anchored.UI.Elements
 				Hovering = true;
 				if (OnHovering != null)
 					OnHovering();
+
+				if (textureHov != null && uiTexture.Texture != textureHov)
+					uiTexture.Texture = textureHov;
 			}
 
 			bool mouse = (Instant) ? mousePressed : mouseReleased;

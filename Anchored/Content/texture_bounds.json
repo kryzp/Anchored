@@ -1,0 +1,17 @@
+[
+    {
+        "sheet": "tilesheets\\test_sheet",
+        "texture": "tree1",
+        "bounds": "0 16 48 64"
+    },
+    {
+        "sheet": "ui\\checkbox",
+        "texture": "unchecked",
+        "bounds": "0 0 9 9"
+    },
+    {
+        "sheet": "ui\\checkbox",
+        "texture": "checked",
+        "bounds": "9 0 9 9"
+    }
+]

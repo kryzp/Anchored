@@ -2,6 +2,7 @@
 using Anchored.Debug.Console;
 using Anchored.Streams;
 using Anchored.World;
+using Anchored.World.Types;
 using Microsoft.Xna.Framework;
 
 namespace Anchored.Assets.Prefabs
@@ -17,7 +18,8 @@ namespace Anchored.Assets.Prefabs
 
             foreach (var d in Datas)
             {
-                // todo: check if type is level and if so skip (for future when i implement LevelType entities)
+                if (d.Type.IsAssignableFrom(typeof(LevelType)))
+                    continue;
                 
                 var entityType = (EntityType)Activator.CreateInstance(d.Type);
 
@@ -33,6 +35,8 @@ namespace Anchored.Assets.Prefabs
                 var entity = world.AddEntity(name);
                 entityType.Create(entity);
             }
+            
+            // load leveltype here?
         }
     }
 }

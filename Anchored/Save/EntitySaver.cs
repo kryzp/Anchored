@@ -35,13 +35,19 @@ namespace Anchored.Save
 
 			foreach (var entity in all)
 			{
+				SaveEntityType(entity.Type, writer);
 				SaveEntity(entity, writer);
 			}
 		}
 
+		protected virtual void SaveEntityType(EntityType type, FileWriter writer)
+		{
+			writer.WriteString(type.GetType().FullName?.Replace("Anchored.", ""));
+			type.Save(writer);
+		}
+
 		protected virtual void SaveEntity(Entity entity, FileWriter writer)
 		{
-			writer.WriteString(entity.Type.GetType().FullName.Replace("Anchored.", ""));
 			writer.WriteString(entity.Name);
 
 			writer.Cache = true;
@@ -58,31 +64,37 @@ namespace Anchored.Save
 
 			for (int ii = 0; ii < count; ii++)
 			{
-				ReadEntity(world, reader);
+				var type = ReadEntityType(reader);
+				ReadEntity(world, reader, type);
 			}
 		}
 
-		protected virtual void ReadEntity(EntityWorld world, FileReader reader)
+		protected virtual EntityType ReadEntityType(FileReader reader)
 		{
 			var type = reader.ReadString();
-			var name = reader.ReadString();
+			EntityType entityType = (EntityType)Activator.CreateInstance(Type.GetType($"Anchored.{type}", true, false));
+			
+			if (entityType == null)
+			{
+				DebugConsole.Error($"Could not create EntityType: \'Anchored.{type}\'");
+				return null;
+			}
 
+			entityType.Load(reader);
+
+			return entityType;
+		}
+		
+		protected virtual void ReadEntity(EntityWorld world, FileReader reader, EntityType type)
+		{
+			var name = reader.ReadString();
 			var size = reader.ReadUInt16();
 			var position = reader.Position;
 
 			try
 			{
-				EntityType entityType = (EntityType)Activator.CreateInstance(Type.GetType($"Anchored.{type}", true, false));
-
-				if (entityType == null)
-				{
-					DebugConsole.Error($"Could not create EntityType: \'Anchored.{type}\'");
-					return;
-				}
-				
 				Entity entity = world.AddEntity(name);
-				entityType.Create(entity);
-				
+				type.Create(entity);
 				entity.Load(reader);
 
 				var sum = reader.Position - position - size;

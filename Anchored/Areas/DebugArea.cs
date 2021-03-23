@@ -18,7 +18,7 @@ namespace Anchored.Areas
 		{
 			base.Load(sb);
 
-			SetupTileMap(TileMaps.Get("test_map"), true);
+			SetupLevel(TileMaps.Get("test_map"), true, true);
 
 			var playerEntity = world.AddEntity("Player");
 			{

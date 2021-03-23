@@ -44,6 +44,9 @@
 /processor:TiledMapTilesetProcessor
 /build:maps/tilesheets/water_test.tsx
 
+#begin texture_bounds.json
+/copy:texture_bounds.json
+
 #begin txrs/null.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -68,18 +71,6 @@
 /processorParam:TextureFormat=Color
 /build:txrs/tilesheets/test_sheet.png
 
-#begin txrs/tilesheets/ui/checkbox.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:txrs/tilesheets/ui/checkbox.png
-
 #begin txrs/tilesheets/water_tile_anim.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -91,4 +82,16 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:txrs/tilesheets/water_tile_anim.png
+
+#begin txrs/ui/checkbox.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:txrs/ui/checkbox.png
 

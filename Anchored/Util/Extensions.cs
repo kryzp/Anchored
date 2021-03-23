@@ -62,31 +62,6 @@ namespace Anchored.Util
             Resize(list, sz, new T());
         }
 
-        public static void DrawRoundedRectangle(
-            this SpriteBatch sb,
-            RectangleF rectangle,
-            float r,
-            Color colour,
-            int sides = 15,
-            float layer = 0.95f
-        )
-		{
-            DrawUtil.DrawRoundedRectangle(rectangle, r, colour, layer, sides, sb);
-		}
-
-        public static void DrawOutlinedRoundedRectangle(
-            this SpriteBatch sb,
-            RectangleF rectangle,
-            float r,
-            float t,
-            Color colour,
-            float layer = 0.95f,
-            int sides = 15
-        )
-        {
-            DrawUtil.DrawOutlinedRoundedRectangle(rectangle, r, t, colour, layer, sides, sb);
-        }
-
         public static Texture2D Crop(
             this Texture2D tex,
             Rectangle rect,

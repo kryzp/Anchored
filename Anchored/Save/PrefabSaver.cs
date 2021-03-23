@@ -16,18 +16,15 @@ namespace Anchored.Save
             base.Load(world, reader);
         }
 
-        protected override void ReadEntity(EntityWorld world, FileReader reader)
+        protected override void ReadEntity(EntityWorld world, FileReader reader, EntityType type)
         {
-            var type = reader.ReadString();
             var name = reader.ReadString();
             
             var size = reader.ReadUInt16();
             var position = reader.Position;
 
-            var t = Type.GetType($"Anchored.{type}", true, false);
-
             var prefab = new PrefabData();
-            prefab.Type = t;
+            prefab.Type = type.GetType();
             prefab.Data = new byte[size];
 
             for (int ii = 0; ii < size; ii++)

@@ -69,19 +69,16 @@ namespace Anchored.State
 
         public override void Draw(SpriteBatch sb)
         {
-            // todo: temp
-            
-            sb.Begin();
-            
-            var color = DrawUtil.BlendColours(Color.Aqua, new Color(25, 120, 220), MathF.Sin(Time.TotalSeconds));
-            DrawUtil.DrawRectangle(new RectangleF(10, 10, 64, 64), color, 1f, sb);
-
-            sb.End();
         }
 
         public override void DrawUI(SpriteBatch sb)
         {
             // TODO: draw loading icon and such
+            
+            sb.Begin(SpriteSortMode.Immediate, samplerState: SamplerState.PointClamp);
+            var color = Utility.BlendColours(Color.Aqua, new Color(50, 150, 200), MathF.Sin(Time.TotalSeconds * 10f));
+            Utility.DrawRectangle(new RectangleF(10, 10, 64, 64), color, 1f, sb);
+            sb.End();
         }
 
         public override void DrawDebug()

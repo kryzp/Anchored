@@ -13,6 +13,9 @@ namespace Anchored.World.Components
         public Shader Shader = null;
         public TextureRegion Texture = null;
         
+        public int Width => Texture.Texture.Width;
+        public int Height => Texture.Texture.Height;
+        
         public int Order { get; set; }
 
         public virtual void Update()

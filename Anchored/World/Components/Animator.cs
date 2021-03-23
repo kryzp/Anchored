@@ -41,6 +41,7 @@ namespace Anchored.World.Components
 		public void Play(string name)
 		{
 			CurrentAnimation = animations[name];
+			sprite.Texture = CurrentAnimation.GetCurrentTexture();
 		}
 
 		public void Pause()

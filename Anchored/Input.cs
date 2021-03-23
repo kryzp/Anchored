@@ -14,7 +14,6 @@ namespace Anchored
 		Left,
 		Middle,
 		Right,
-		Max,
 	}
 
 	public enum GamePadButton
@@ -30,14 +29,11 @@ namespace Anchored
 		DPadRight,
 		LeftShoulder,
 		RightShoulder,
-		LeftTrigger,
-		RightTrigger,
 		LeftStick,
 		RightStick,
 		Back,
 		BigButton,
 		Start,
-		Max,
 	}
 
 	public static class Input

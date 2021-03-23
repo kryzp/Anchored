@@ -3,49 +3,89 @@ using Microsoft.Xna.Framework;
 using MonoGame.Extended.TextureAtlases;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using Anchored.Debug.Console;
+using Anchored.Streams;
+using Newtonsoft.Json;
 
 namespace Anchored.Assets
 {
 	public static class TileSheetBounds
 	{
-		private static Dictionary<string, Dictionary<string, Rectangle>> textureBounds = new Dictionary<string, Dictionary<string, Rectangle>>();
-
-		// todo: this should probably be loaded from some external .json file
-
-		/*
+		public class TextureBounds
 		{
+			[JsonProperty("sheet")]
+			public string Sheet;
+			
+			[JsonProperty("texture")]
+			public string Texture;
+
+			[JsonProperty("bounds")]
+			public string StringBounds
 			{
-				"sheet": "<name>"
-				"texture": "<name>"
-				"bounds": "<bounds>"
+				set
+				{
+					Bounds = Utility.ConvertStringToRectangle(value);
+				}
 			}
+			
+			public Rectangle Bounds;
 		}
-		*/
+		
+		private static Dictionary<string, List<TextureBounds>> textureBounds = new Dictionary<string, List<TextureBounds>>();
 
 		public static void Load()
 		{
-			Add("test_sheet", "tree1", new Rectangle(0, 16, 16*3, 16*4));
+			FileHandle file = FileHandle.FromRoot("texture_bounds.json");
+			
+			if (!file.Exists())
+			{
+				DebugConsole.Error($"\'texture_bounds.json\' was not found!");
+				return;
+			}
+			
+			string json = file.ReadAll();
+			LoadFromJson(json);
 
-			Add("ui\\checkbox", "unchecked", new Rectangle(0, 0, 9, 9));
-			Add("ui\\checkbox", "checked", new Rectangle(9, 0, 9, 9));
+			Console.WriteLine("");
 		}
 
 		public static void Add(string sheet, string texture, Rectangle bounds)
 		{
 			if (!textureBounds.ContainsKey(sheet))
-				textureBounds.Add(sheet, new Dictionary<string, Rectangle>());
-			textureBounds[sheet].Add(texture, bounds);
+				textureBounds.Add(sheet, new List<TextureBounds>());
+			textureBounds[sheet].Add(new TextureBounds()
+			{
+				Sheet = sheet,
+				Texture = texture,
+				Bounds = bounds
+			});
 		}
 
 		public static Rectangle GetBounds(string sheet, string texture)
 		{
-			return textureBounds[sheet][texture];
+			return textureBounds[sheet].Find(x => x.Texture == texture).Bounds;
 		}
 
 		public static TextureRegion Get(string sheet, string texture)
 		{
-			return Textures.Get($"tilesheets\\{sheet}", GetBounds(sheet, texture));
+			return Textures.Get(sheet, GetBounds(sheet, texture));
+		}
+
+		private static void LoadFromJson(string json)
+		{
+			try
+			{
+				var bounds = JsonConvert.DeserializeObject<List<TextureBounds>>(json);
+
+				foreach (var bound in bounds)
+					Add(bound.Sheet, bound.Texture, bound.Bounds);
+			}
+			catch (Exception e)
+			{
+				DebugConsole.Error(e);
+			}
 		}
 	}
 }

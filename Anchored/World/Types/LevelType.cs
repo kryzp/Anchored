@@ -3,17 +3,20 @@ using Anchored.World.Components;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended.Tiled;
 using Anchored.Streams;
+using Anchored.Util;
 
 namespace Anchored.World.Types
 {
-	public class TileMapType : EntityType
+	public class LevelType : EntityType
 	{
 		private TiledMap map;
 		private bool loadColliders;
 		private bool loadEntities;
 
-		public TileMapType(TiledMap map, bool loadColliders = true, bool loadEntities = true)
+		public LevelType(TiledMap map, bool loadColliders = true, bool loadEntities = true)
 		{
+			Serializable = true;
+			
 			this.map = map;
 			this.loadColliders = loadColliders;
 			this.loadEntities = loadEntities;
@@ -32,25 +35,6 @@ namespace Anchored.World.Types
 				LoadEntitiesFromTileMap(entity.World, map);
 		}
 
-		protected void LoadEntitiesFromTileMap(EntityWorld world, TiledMap map)
-		{
-			foreach (var obj in map.GetLayer<TiledMapObjectLayer>("Entities").Objects)
-			{
-				// todo: move into external class that inherits from like "TiledMapEntity" or something like that which has a Create method n' stuff!
-
-				TiledMapRectangleObject entityObj = (TiledMapRectangleObject)obj;
-				string entityName = entityObj.Name;
-				Vector2 entityPosition = entityObj.Position;
-				float entityRotation = entityObj.Rotation;
-
-				/*
-				if (entityObj.Type == "Tree")
-				{
-				}
-				*/
-			}
-		}
-		
 		public override void Save(FileWriter stream)
 		{
 			stream.WriteString(map.Name);
@@ -63,8 +47,31 @@ namespace Anchored.World.Types
 			string mapName = stream.ReadString();
 			loadColliders = stream.ReadBoolean();
 			loadEntities = stream.ReadBoolean();
-			
 			map = TileMaps.Get(mapName);
+		}
+		
+		protected void LoadEntitiesFromTileMap(EntityWorld world, TiledMap map)
+		{
+			foreach (var obj in map.GetLayer<TiledMapObjectLayer>("Entities").Objects)
+			{
+				TiledMapRectangleObject entityObj = (TiledMapRectangleObject)obj;
+				string entityName = entityObj.Name;
+				Vector2 entityPosition = entityObj.Position;
+				float entityRotation = entityObj.Rotation;
+
+				var entity = world.AddEntity(entityName);
+
+				if (entityObj.Type == "Tree")
+				{
+					string sheet = entityObj.Properties["Sheet"];
+					string textureName = entityObj.Properties["Texture"];
+					TextureRegion texture = TileSheetBounds.Get($"tilesheets\\{sheet}", textureName);
+					new TreeType(texture).Create(entity);
+				}
+
+				entity.Transform.Position = entityPosition;
+				entity.Transform.RotationDegrees = entityRotation;
+			}
 		}
 	}
 }

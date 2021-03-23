@@ -39,7 +39,7 @@ namespace Anchored.Areas
 
 		public virtual void Draw(SpriteBatch sb)
 		{
-			world.Draw(sb, Camera.Main.GetViewMatrix());
+			world.Draw(sb, Camera.Main.GetPerfectViewMatrix());
 		}
 
 		public virtual void DrawUI(SpriteBatch sb)
@@ -54,10 +54,10 @@ namespace Anchored.Areas
 			return camEntity;
 		}
 
-		protected Entity SetupTileMap(TiledMap map, bool loadColliders = true, bool loadEntities = true)
+		protected Entity SetupLevel(TiledMap map, bool loadColliders = true, bool loadEntities = true)
 		{
 			Entity tileMapEntity = world.AddEntity("TileMap");
-			new TileMapType(map, loadColliders, loadEntities).Create(tileMapEntity);
+			new LevelType(map, loadColliders, loadEntities).Create(tileMapEntity);
 			return tileMapEntity;
 		}
 	}

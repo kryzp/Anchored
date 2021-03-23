@@ -44,8 +44,6 @@ namespace Anchored.World.Components
 		public override void Update()
 		{
 			base.Update();
-			
-			// todo: make this influenced by the DeltaModifier value in the 'Time' Class
 			renderer.Update(Time.GameTime);
 		}
 
@@ -173,8 +171,7 @@ namespace Anchored.World.Components
 		
 		private Matrix GetTileMapMatrix()
 		{
-			// when it was drawn at float positions it left seams between the tiles so making its position only ints fixes this
-			return camera.GetIntPosViewMatrix();
+			return camera.GetPerfectViewMatrix();
 		}
 	}
 }
