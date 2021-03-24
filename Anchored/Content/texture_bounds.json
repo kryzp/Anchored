@@ -13,5 +13,25 @@
         "sheet": "ui\\checkbox",
         "texture": "checked",
         "bounds": "9 0 9 9"
+    },
+    {
+        "sheet": "ui\\textbox",
+        "texture": "nsg",
+        "bounds": "0 0 27 27"
+    },
+    {
+        "sheet": "ui\\textbox",
+        "texture": "nsg_hori",
+        "bounds": "0 27 27 9"
+    },
+    {
+        "sheet": "ui\\textbox",
+        "texture": "nsg_vert",
+        "bounds": "27 0 9 27"
+    },
+    {
+        "sheet": "ui\\textbox",
+        "texture": "nsg_block",
+        "bounds": "27 27 9 9"
     }
 ]

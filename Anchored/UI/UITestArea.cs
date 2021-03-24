@@ -8,40 +8,26 @@ using System.Text;
 
 namespace Anchored.UI
 {
-	public class UITestArea
+	public class UITestArea : UIMenu
 	{
-		public static void CreateUI()
+		public override void Create()
 		{
 			UIComponent display = UIManager.Container;
 
 			var nullTex = Textures.Get("null");
 			var checkBoxOffTex = TileSheetBounds.Get("ui\\checkbox", "unchecked");
 			var checkBoxOnTex = TileSheetBounds.Get("ui\\checkbox", "checked");
+			var textboxTex = TileSheetBounds.Get("ui\\textbox", "nsg");
 
-			// Checkbox
+			// Nine Slice Grid
 			{
-				UIToggleButton uiToggleButton = new UIToggleButton(checkBoxOffTex, checkBoxOnTex);
+				UINineSliceGrid uiNineSliceGrid = new UINineSliceGrid(textboxTex, 9, 9, 9, 3);
 				UIConstraints constraints = new UIConstraints();
 
 				constraints.X = new CenterConstraint();
-				constraints.Y = new PixelConstraint(20);
-				constraints.Width = new PixelConstraint(36);
-				constraints.Height = new PixelConstraint(36);
+				constraints.Y = new PixelConstraint(16);
 
-				display.Add(uiToggleButton, constraints);
-			}
-			
-			// Button
-			{
-				UIButton uiButton = new UIButton(checkBoxOffTex, checkBoxOnTex, checkBoxOffTex);
-				UIConstraints constraints = new UIConstraints();
-				
-				constraints.X = new CenterConstraint();
-				constraints.Y = new PixelConstraint(100);
-				constraints.Width = new PixelConstraint(36);
-				constraints.Height = new PixelConstraint(36);
-
-				display.Add(uiButton, constraints);
+				display.Add(uiNineSliceGrid, constraints);
 			}
 		}
 	}

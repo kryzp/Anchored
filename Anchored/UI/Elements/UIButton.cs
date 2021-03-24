@@ -13,13 +13,13 @@ namespace Anchored.UI.Elements
 {
 	public class UIButton : UIComponent
 	{
-		private TextureRegion texture;
-		private TextureRegion textureHov;
-		private TextureRegion texturePrs;
+		protected TextureRegion texture;
+		protected TextureRegion textureHov;
+		protected TextureRegion texturePrs;
 
-		private UITexture uiTexture;
+		protected UITexture uiTexture;
 
-		private bool hasPressedAndHoldingDown = false;
+		protected bool hasPressedAndHoldingDown = false;
 		
 		public Action OnPressed = null;
 		public Action OnReleased = null;
@@ -29,11 +29,19 @@ namespace Anchored.UI.Elements
 		public bool Released;
 		public bool Hovering;
 
+		public bool BlockInputOnHover = false;
+
 		public UIButton(TextureRegion tex)
 		{
 			this.texture = tex;
 		}
-		
+
+		public UIButton(TextureRegion tex, TextureRegion prs)
+		{
+			this.texture = tex;
+			this.texturePrs = prs;
+		}
+
 		public UIButton(TextureRegion tex, TextureRegion prs, TextureRegion hov)
 		{
 			this.texture = tex;
@@ -61,12 +69,10 @@ namespace Anchored.UI.Elements
 		{
 			base.Update();
 
-			Point mousePos = Input.MouseScreenPosition();
-			Rectangle mouseRect = new Rectangle(mousePos.X, mousePos.Y, 1, 1);
-			Rectangle boundingBox = new Rectangle(X, Y, Width, Height);
+			bool mousePressed = Input.IsPressed(MouseButton.Left, true);
+			bool mouseReleased = Input.IsReleased(MouseButton.Left, true);
 
-			bool mousePressed = Input.IsPressed(MouseButton.Left);
-			bool mouseReleased = Input.IsReleased(MouseButton.Left);
+			UpdateVariables();
 
 			if (!hasPressedAndHoldingDown)
 			{
@@ -74,31 +80,31 @@ namespace Anchored.UI.Elements
 					uiTexture.Texture = texture;
 			}
 
-			Hovering = false;
-			if (mouseRect.Intersects(boundingBox))
+			if (MouseHovering())
 			{
+				if (BlockInputOnHover)
+					Input.EnableGuiFocus = true;
+
 				Hovering = true;
 				if (OnHovering != null)
 					OnHovering();
-				
+
 				if (textureHov != null && uiTexture.Texture != textureHov)
 					uiTexture.Texture = textureHov;
 			}
 
-			Pressed = false;
 			if ((mousePressed && Hovering) || hasPressedAndHoldingDown)
 			{
 				Pressed = true;
 				if (OnPressed != null)
 					OnPressed();
-				
+
 				if (texturePrs != null && uiTexture.Texture != texturePrs)
 					uiTexture.Texture = texturePrs;
 
 				hasPressedAndHoldingDown = true;
 			}
 
-			Released = false;
 			if (mouseReleased)
 			{
 				Released = true;
@@ -107,6 +113,13 @@ namespace Anchored.UI.Elements
 
 				hasPressedAndHoldingDown = false;
 			}
+		}
+
+		private void UpdateVariables()
+		{
+			Hovering = false;
+			Pressed = false;
+			Released = false;
 		}
 	}
 }

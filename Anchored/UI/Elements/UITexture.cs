@@ -25,6 +25,8 @@ namespace Anchored.UI.Elements
 
 		public override void Draw(SpriteBatch sb)
 		{
+			base.Draw(sb);
+
 			Texture.Draw(
 				Position,
 				Vector2.Zero,

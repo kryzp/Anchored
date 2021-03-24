@@ -107,7 +107,7 @@ namespace Anchored
 					return;
 			}
 
-			Time.TotalSeconds = Time.TotalSeconds;
+			Time.PrevTotalSeconds = Time.TotalSeconds;
 			Time.TotalSeconds += Time.Delta;
 			Time.GameTime = gt;
 
@@ -115,7 +115,7 @@ namespace Anchored
 			{
 				CurrentState?.Unload();
 				CurrentState = NextState;
-				Input.EnableImGuiFocus = false;
+				Input.EnableGuiFocus = false;
 				CurrentState.Load(SpriteBatch);
 				NextState = null;
 			}

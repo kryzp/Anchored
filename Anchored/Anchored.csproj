@@ -56,5 +56,6 @@
     <Folder Include="Debug\DearImGui\" />
     <Folder Include="Debug\Tools\" />
     <Folder Include="Items\" />
+    <Folder Include="UI\Menus\" />
   </ItemGroup>
 </Project>

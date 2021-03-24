@@ -16,6 +16,7 @@ namespace Anchored.UI
 
 		public static void Update()
 		{
+			Input.EnableGuiFocus = false;
 			Container.Update();
 		}
 

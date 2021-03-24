@@ -53,8 +53,6 @@ namespace Anchored.World.Components
 			);
 		}
 
-		
-		
 		public Matrix GetViewMatrix()
 		{
 			return _GetViewMatrix();

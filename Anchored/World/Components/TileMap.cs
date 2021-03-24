@@ -21,8 +21,6 @@ namespace Anchored.World.Components
 		
 		private Camera camera;
 
-		public int Order { get; set; } = 0;
-
 		public TiledMap Map => map;
 		public TiledMapRenderer Renderer => renderer;
 

@@ -1,12 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using Anchored.Assets;
 using Anchored.Assets.Prefabs;
 using Anchored.Debug.Console;
+using Anchored.Graphics.Animating;
 using Anchored.Save;
+using Anchored.Streams;
+using Anchored.UI;
+using Anchored.UI.Constraints;
+using Anchored.UI.Elements;
 using Anchored.Util;
 using Anchored.World;
+using Anchored.World.Components;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
@@ -21,8 +28,15 @@ namespace Anchored.State
         private string currentlyLoadingLabel;
         private EntityWorld world;
         
+        public AssetLoadState()
+		{
+            SetupUI();
+        }
+
         public override void Load(SpriteBatch sb)
         {
+            var loaderTexture = AssetManager.Content.Load<Texture2D>("txrs\\ui\\loading_icon");
+
             var thread = new Thread(() =>
             {
                 var sw = Stopwatch.StartNew();
@@ -62,9 +76,10 @@ namespace Anchored.State
         public override void Update()
         {
             if (ready)
-            {
+			{
                 Game1.ChangeState(new PlayingState());
-            }
+                UIManager.Container.Clear();
+			}
         }
 
         public override void Draw(SpriteBatch sb)
@@ -73,12 +88,6 @@ namespace Anchored.State
 
         public override void DrawUI(SpriteBatch sb)
         {
-            // TODO: draw loading icon and such
-            
-            sb.Begin(SpriteSortMode.Immediate, samplerState: SamplerState.PointClamp);
-            var color = Utility.BlendColours(Color.Aqua, new Color(50, 150, 200), MathF.Sin(Time.TotalSeconds * 10f));
-            Utility.DrawRectangle(new RectangleF(10, 10, 64, 64), color, 1f, sb);
-            sb.End();
         }
 
         public override void DrawDebug()
@@ -97,6 +106,81 @@ namespace Anchored.State
 
             if (SECTIONAL_LOAD_TIME_LOGGING)
                 DebugConsole.Engine($"Loaded section '{name}' in {sw.ElapsedMilliseconds} ms.");
+        }
+
+        private void SetupUI()
+		{
+            float delay = 0.1f;
+            var loadTex = new TextureRegion(AssetManager.Content.Load<Texture2D>("txrs\\ui\\loading_icon"));
+
+            UIComponent display = UIManager.Container;
+
+            AnimationData loadAnimData = new AnimationData();
+            {
+                loadAnimData.Layers.Add("Main", new List<AnimationFrame>()
+                {
+                    new AnimationFrame()
+                    {
+                        Duration = delay,
+                        Bounds = new Rectangle(0, 0, 9, 9),
+                        Texture = loadTex
+                    },
+                    new AnimationFrame()
+                    {
+                        Duration = delay,
+                        Bounds = new Rectangle(9, 0, 9, 9),
+                        Texture = loadTex
+                    },
+                    new AnimationFrame()
+                    {
+                        Duration = delay,
+                        Bounds = new Rectangle(18, 0, 9, 9),
+                        Texture = loadTex
+                    },
+                    new AnimationFrame()
+                    {
+                        Duration = delay,
+                        Bounds = new Rectangle(27, 0, 9, 9),
+                        Texture = loadTex
+                    },
+                    new AnimationFrame()
+                    {
+                        Duration = delay,
+                        Bounds = new Rectangle(36, 0, 9, 9),
+                        Texture = loadTex
+                    },
+                    new AnimationFrame()
+                    {
+                        Duration = delay,
+                        Bounds = new Rectangle(45, 0, 9, 9),
+                        Texture = loadTex
+                    },
+                    new AnimationFrame()
+                    {
+                        Duration = delay,
+                        Bounds = new Rectangle(54, 0, 9, 9),
+                        Texture = loadTex
+                    }
+                });
+
+                loadAnimData.Tags.Add("Main", new AnimationTag()
+                {
+                    StartFrame = 0,
+                    EndFrame = 6,
+                    Direction = AnimationDirection.Forward
+                });
+            }
+
+            UIAnimatedTexture uiLoader = new UIAnimatedTexture(loadAnimData.CreateAnimation());
+
+            UIConstraints constraints = new UIConstraints();
+
+            constraints.X = new PixelConstraint(Game1.WINDOW_WIDTH-32-8);
+            constraints.Y = new PixelConstraint(Game1.WINDOW_HEIGHT-32-8);
+            constraints.Width = new PixelConstraint(36);
+            constraints.Height = new PixelConstraint(36);
+
+            display.Add(uiLoader, constraints);
         }
     }
 }

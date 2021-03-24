@@ -52,7 +52,7 @@ namespace Anchored.Debug.Console
 			if (Input.IsPressed(Keys.F1))
 			{
 				Open = !Open;
-				Input.EnableImGuiFocus = Open;
+				Input.EnableGuiFocus = Open;
 			}
 		}
 

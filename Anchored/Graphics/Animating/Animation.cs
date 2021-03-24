@@ -103,6 +103,8 @@ namespace Anchored.Graphics.Animating
 			}
 		}
 
+		public AnimationFrame CurrentFrame => frame;
+
 		public bool PingGoingForward;
 		public bool SkipNextFrame;
 

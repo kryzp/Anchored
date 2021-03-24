@@ -17,7 +17,7 @@ namespace Anchored.State
 
 		public override void Load(SpriteBatch sb)
 		{
-			UITestArea.CreateUI();
+			new UITestArea().Create();
 			
 			world = new EntityWorld();
 			DebugConsole.World = world;

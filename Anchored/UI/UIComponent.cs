@@ -15,7 +15,7 @@ namespace Anchored.UI
 		public int Y;
 		public int Width;
 		public int Height;
-		public int Alpha;
+		public float Alpha;
 
 		public Vector2 Position
 		{
@@ -73,9 +73,22 @@ namespace Anchored.UI
 
 		public void Add(UIComponent component, UIConstraints constraints)
 		{
-			constraints?.Constrain(component);
 			component.Init();
+			constraints?.Constrain(component);
 			components.Add(component, constraints);
+		}
+
+		public void Clear()
+		{
+			components.Clear();
+		}
+
+		public bool MouseHovering()
+		{
+			Point mousePos = Input.MouseScreenPosition();
+			Rectangle mouseRect = new Rectangle(mousePos.X, mousePos.Y, 1, 1);
+			Rectangle boundingBox = new Rectangle(X, Y, Width, Height);
+			return mouseRect.Intersects(boundingBox);
 		}
 	}
 }

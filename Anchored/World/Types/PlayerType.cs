@@ -55,7 +55,7 @@ namespace Anchored.World.Types
 						Direction = AnimationDirection.Forward
 					});
 				}
-				var walkAnim = new Animation(walkAnimData);
+				var walkAnim = walkAnimData.CreateAnimation();
 
 				animator = entity.AddComponent(new Animator(sprite, new Dictionary<string, Animation>()
 				{

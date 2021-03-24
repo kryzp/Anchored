@@ -12,6 +12,7 @@ namespace Anchored.Debug.Info
 	{
 		private static bool debugCameraMove;
 		private static float debugCameraMoveSpeed = 200f;
+		private static System.Numerics.Vector2 debugCameraPos;
 
 		public const float MAX_CAMERA_SPEED = 500f;
 
@@ -38,6 +39,12 @@ namespace Anchored.Debug.Info
 			var camera = Camera.Main;
 
 			ImGui.SliderFloat("Move Camera Speed", ref debugCameraMoveSpeed, 0f, MAX_CAMERA_SPEED);
+
+			ImGui.InputFloat2("Camera Position", ref debugCameraPos);
+			if (ImGui.Button("Update Camera Position"))
+			{
+				camera.Position = new Microsoft.Xna.Framework.Vector2(debugCameraPos.X, debugCameraPos.Y);
+			}
 			
 			if (debugCameraMove)
 			{
@@ -48,7 +55,7 @@ namespace Anchored.Debug.Info
 
 				float mspd = debugCameraMoveSpeed * Time.RawDelta;
 				
-				Input.EnableImGuiFocus = true;
+				Input.EnableGuiFocus = true;
 
 				if (Input.IsDown(Keys.W, true))
 					my -= 1;

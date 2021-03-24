@@ -22,10 +22,7 @@ namespace Anchored.UI.Elements
 		public bool Enabled;
 		public bool Hovering;
 
-		/// <summary>
-		/// When set to true, the button will activate upon being pressed, otherwise it will activate upon being released.
-		/// </summary>
-		public bool Instant = true;
+		public bool BlockInputOnHover = false;
 
 		public UIToggleButton(TextureRegion texOff, TextureRegion texOn)
 		{
@@ -60,16 +57,15 @@ namespace Anchored.UI.Elements
 		{
 			base.Update();
 
-			Point mousePos = Input.MouseScreenPosition();
-			Rectangle mouseRect = new Rectangle(mousePos.X, mousePos.Y, 1, 1);
-			Rectangle boundingBox = new Rectangle(X, Y, Width, Height);
-
-			bool mousePressed = Input.IsPressed(MouseButton.Left);
-			bool mouseReleased = Input.IsReleased(MouseButton.Left);
+			bool mousePressed = Input.IsPressed(MouseButton.Left, true);
+			bool mouseReleased = Input.IsReleased(MouseButton.Left, true);
 
 			Hovering = false;
-			if (mouseRect.Intersects(boundingBox))
+			if (MouseHovering())
 			{
+				if (BlockInputOnHover)
+					Input.EnableGuiFocus = true;
+
 				Hovering = true;
 				if (OnHovering != null)
 					OnHovering();
@@ -78,7 +74,7 @@ namespace Anchored.UI.Elements
 					uiTexture.Texture = textureHov;
 			}
 
-			bool mouse = (Instant) ? mousePressed : mouseReleased;
+			bool mouse = mousePressed;
 
 			if (mouse && Hovering)
 			{

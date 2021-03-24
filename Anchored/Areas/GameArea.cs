@@ -20,7 +20,7 @@ namespace Anchored.Areas
 		public GameArea(EntityWorld world)
 		{
 			this.world = world;
-			cameraEntity = SetupCamera(320, 180, 180, 90);
+			cameraEntity = SetupCamera(320, 180, 160, 90);
 			Camera.Main = Camera;
 		}
 

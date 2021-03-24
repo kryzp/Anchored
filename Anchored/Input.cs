@@ -36,22 +36,26 @@ namespace Anchored
 		Start,
 	}
 
+	public class VirtualButton
+	{
+		public List<Keys> Keys = new List<Keys>();
+		public List<MouseButton> MouseButtons = new List<MouseButton>();
+		public List<GamePadButton> GamePadButtons = new List<GamePadButton>();
+
+		public bool IsDown() => Input.IsDown(this);
+		public bool IsPressed() => Input.IsPressed(this);
+		public bool IsReleased() => Input.IsReleased(this);
+	}
+
 	public static class Input
 	{
-		public class VirtualButton
-		{
-			public List<Keys> Keys = new List<Keys>();
-			public List<MouseButton> MouseButtons = new List<MouseButton>();
-			public List<GamePadButton> GamePadButtons = new List<GamePadButton>();
-		}
-
 		private static KeyboardState prevKeyboardState;
 		private static KeyboardState keyboardState;
-		private static bool guiBlocksKeyboard => AssetManager.ImGuiEnabled && Input.EnableImGuiFocus && ImGui.GetIO().WantCaptureKeyboard;
+		private static bool guiBlocksKeyboard => Input.EnableGuiFocus || (AssetManager.ImGuiEnabled && ImGui.GetIO().WantCaptureKeyboard);
 
 		private static MouseState prevMouseState;
 		private static MouseState mouseState;
-		private static bool guiBlocksMouse => AssetManager.ImGuiEnabled && Input.EnableImGuiFocus && ImGui.GetIO().WantCaptureMouse;
+		private static bool guiBlocksMouse =>  Input.EnableGuiFocus || (AssetManager.ImGuiEnabled && ImGui.GetIO().WantCaptureMouse);
 		
 		private static GamePadState[] prevGamePadState;
 		private static GamePadState[] gamePadState;
@@ -59,7 +63,7 @@ namespace Anchored
 		private static string textInput;
 		public static string TextInput => textInput;
 
-		public static bool EnableImGuiFocus;
+		public static bool EnableGuiFocus;
 
 		static Input()
 		{

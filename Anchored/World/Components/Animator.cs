@@ -42,9 +42,15 @@ namespace Anchored.World.Components
 		{
 			CurrentAnimation = animations[name];
 			sprite.Texture = CurrentAnimation.GetCurrentTexture();
+			Resume();
 		}
 
 		public void Pause()
+		{
+			Paused = true;
+		}
+
+		public void Resume()
 		{
 			Paused = true;
 		}

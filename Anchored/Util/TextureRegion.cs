@@ -26,15 +26,15 @@ namespace Anchored.Util
 			Source = texture.Bounds;
 		}
 
-		public TextureRegion(TextureRegion texture, int w, int h)
+		public TextureRegion(TextureRegion texture, int width, int height)
 		{
 			Texture = texture.Texture;
 			Source = new Rectangle()
 			{
 				X = texture.Source.X,
 				Y = texture.Source.Y,
-				Width = w,
-				Height = h
+				Width = width,
+				Height = height
 			};
 		}
 
