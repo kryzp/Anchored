@@ -4,6 +4,7 @@ using Anchored.World.Components;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Anchored.World.Types;
+using Anchored.Assets.Textures;
 
 namespace Anchored.Areas
 {
@@ -18,7 +19,7 @@ namespace Anchored.Areas
 		{
 			base.Load(sb);
 
-			SetupLevel(TileMaps.Get("test_map"), true, true);
+			SetupLevel(TileMapManager.Get("test_map"), true, true);
 
 			var playerEntity = world.AddEntity("Player");
 			{
@@ -31,7 +32,7 @@ namespace Anchored.Areas
 				dummyEntity.Transform.Position = new Vector2(64, 64);
 				dummyEntity.Transform.Origin = new Vector2(8, 16);
 				
-				var sprite = dummyEntity.AddComponent(new Sprite(Textures.Get("null")));
+				var sprite = dummyEntity.AddComponent(new Sprite(TextureManager.Get("null")));
 				var depth = dummyEntity.AddComponent(new DepthSorter(sprite));
 			}
 

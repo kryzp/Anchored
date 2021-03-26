@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace Anchored.Util.Math.Tween
+namespace Anchored.Math.Tween
 {
 	public class TweenValue
 	{

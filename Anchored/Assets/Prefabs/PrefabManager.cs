@@ -9,7 +9,7 @@ using Anchored.World;
 
 namespace Anchored.Assets.Prefabs
 {
-    public static class PrefabHolder
+    public static class PrefabManager
     {
         private static Dictionary<string, Prefab> loaded = new Dictionary<string, Prefab>();
         private static List<string> paths = new List<string>();

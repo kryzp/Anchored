@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Anchored.Assets
 {
-	public class TileMaps
+	public class TileMapManager
 	{
 		private static Dictionary<string, TiledMap> maps = new Dictionary<string, TiledMap>();
 

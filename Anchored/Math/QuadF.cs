@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 
-namespace Anchored.Util.Math
+namespace Anchored.Math
 {
 	public class QuadF
 	{

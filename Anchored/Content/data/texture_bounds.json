@@ -33,5 +33,20 @@
         "sheet": "ui\\textbox",
         "texture": "nsg_block",
         "bounds": "27 27 9 9"
+    },
+    {
+        "sheet": "ui\\dropdown_list",
+        "texture": "button",
+        "bounds": "9 0 27 9"
+    },
+    {
+        "sheet": "ui\\dropdown_list",
+        "texture": "list",
+        "bounds": "9 9 27 9"
+    },
+    {
+        "sheet": "ui\\dropdown_list",
+        "texture": "arrow",
+        "bounds": "0 0 9 9"
     }
 ]

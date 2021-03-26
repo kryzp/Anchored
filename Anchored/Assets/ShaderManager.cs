@@ -7,7 +7,7 @@ using Anchored.Assets.Shaders;
 
 namespace Anchored.Assets
 {
-	public static class ShaderHolder
+	public static class ShaderManager
 	{
 		public static WaveShader WaveShader;
 		public static RainbowShader RainbowShader;

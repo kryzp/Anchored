@@ -13,55 +13,93 @@ namespace Anchored.UI.Elements
 {
 	public class UIButton : UIComponent
 	{
-		protected TextureRegion texture;
-		protected TextureRegion textureHov;
-		protected TextureRegion texturePrs;
+		private string initText = "";
 
 		protected UITexture uiTexture;
+		protected UIText uiText;
 
 		protected bool hasPressedAndHoldingDown = false;
 		
-		public Action OnPressed = null;
+		public Action OnClicked = null;
 		public Action OnReleased = null;
 		public Action OnHovering = null;
 
-		public bool Pressed;
+		public bool Clicked;
 		public bool Released;
 		public bool Hovering;
 
 		public bool BlockInputOnHover = false;
 
+		public SpriteFont Font;
+		public string Text
+		{
+			get
+			{
+				if (uiText != null)
+				{
+					return uiText.Text;
+				}
+
+				return "<UI_BUTTON_TEXT_NOT_SETUP>";
+			}
+
+			set
+			{
+				if (uiText != null)
+				{
+					uiText.Text = value;
+				}
+			}
+		}
+
+		public TextureRegion Texture = null;
+		public TextureRegion TextureHov = null;
+		public TextureRegion TexturePrs = null;
+
+		public float LayerDepth = 0.95f;
+
 		public UIButton(TextureRegion tex)
 		{
-			this.texture = tex;
+			this.Texture = tex;
 		}
 
-		public UIButton(TextureRegion tex, TextureRegion prs)
+		public UIButton(TextureRegion tex, string text, SpriteFont font)
+			: this(tex)
 		{
-			this.texture = tex;
-			this.texturePrs = prs;
-		}
-
-		public UIButton(TextureRegion tex, TextureRegion prs, TextureRegion hov)
-		{
-			this.texture = tex;
-			this.texturePrs = prs;
-			this.textureHov = hov;
+			this.initText = text;
+			this.Font = font;
 		}
 
 		public override void Init()
 		{
 			// Texture
+			if (Texture != null)
 			{
-				uiTexture = new UITexture(texture);
+				uiTexture = new UITexture(Texture);
+				uiTexture.LayerDepth = LayerDepth - 0.01f;
+
 				UIConstraints uiTextureConstraints = new UIConstraints();
 
-				uiTextureConstraints.X = new CenterConstraint();
-				uiTextureConstraints.Y = new PixelConstraint(Y);
-				uiTextureConstraints.Width = new PixelConstraint(Width);
-				uiTextureConstraints.Height = new PixelConstraint(Height);
+				uiTextureConstraints.X = new PixelConstraint();
+				uiTextureConstraints.Y = new PixelConstraint();
+				uiTextureConstraints.Width = new TextureConstraint(Texture);
+				uiTextureConstraints.Height = new TextureConstraint(Texture);
 				
 				base.Add(uiTexture, uiTextureConstraints);
+			}
+
+			// Text
+			if (Font != null && initText != "")
+			{
+				uiText = new UIText(initText, Font);
+				uiText.LayerDepth = LayerDepth;
+
+				UIConstraints uiTextConstraints = new UIConstraints();
+
+				uiTextConstraints.X = new CenterConstraint();
+				uiTextConstraints.Y = new CenterConstraint();
+
+				base.Add(uiText, uiTextConstraints);
 			}
 		}
 
@@ -76,11 +114,11 @@ namespace Anchored.UI.Elements
 
 			if (!hasPressedAndHoldingDown)
 			{
-				if (texture != null && uiTexture.Texture != texture)
-					uiTexture.Texture = texture;
+				if (Texture != null && uiTexture.Texture != Texture)
+					uiTexture.Texture = Texture;
 			}
 
-			if (MouseHovering())
+			if (MouseHoveringOver())
 			{
 				if (BlockInputOnHover)
 					Input.EnableGuiFocus = true;
@@ -89,18 +127,21 @@ namespace Anchored.UI.Elements
 				if (OnHovering != null)
 					OnHovering();
 
-				if (textureHov != null && uiTexture.Texture != textureHov)
-					uiTexture.Texture = textureHov;
+				if (TextureHov != null && uiTexture.Texture != TextureHov)
+					uiTexture.Texture = TextureHov;
 			}
 
-			if ((mousePressed && Hovering) || hasPressedAndHoldingDown)
+			if ((mousePressed && Hovering))
 			{
-				Pressed = true;
-				if (OnPressed != null)
-					OnPressed();
+				Clicked = true;
+				if (OnClicked != null)
+					OnClicked();
 
-				if (texturePrs != null && uiTexture.Texture != texturePrs)
-					uiTexture.Texture = texturePrs;
+				if (hasPressedAndHoldingDown)
+				{
+					if (TexturePrs != null && uiTexture.Texture != TexturePrs)
+						uiTexture.Texture = TexturePrs;
+				}
 
 				hasPressedAndHoldingDown = true;
 			}
@@ -118,7 +159,7 @@ namespace Anchored.UI.Elements
 		private void UpdateVariables()
 		{
 			Hovering = false;
-			Pressed = false;
+			Clicked = false;
 			Released = false;
 		}
 	}

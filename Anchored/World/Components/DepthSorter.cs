@@ -1,5 +1,5 @@
-﻿using System;
-using Anchored.Util.Math;
+﻿using Anchored.Math;
+using System;
 
 namespace Anchored.World.Components
 {

@@ -14,6 +14,16 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin data/texture_bounds.json
+/copy:data/texture_bounds.json
+
+#begin fonts/small_font.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:fonts/small_font.spritefont
+
 #begin fx/rainbow_fx.fx
 /importer:EffectImporter
 /processor:EffectProcessor
@@ -43,9 +53,6 @@
 /importer:TiledMapTilesetImporter
 /processor:TiledMapTilesetProcessor
 /build:maps/tilesheets/water_test.tsx
-
-#begin texture_bounds.json
-/copy:texture_bounds.json
 
 #begin txrs/null.png
 /importer:TextureImporter
@@ -94,6 +101,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:txrs/ui/checkbox.png
+
+#begin txrs/ui/dropdown_list.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:txrs/ui/dropdown_list.png
 
 #begin txrs/ui/loading_icon.png
 /importer:TextureImporter

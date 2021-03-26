@@ -3,6 +3,7 @@ using Anchored.World.Components;
 using ImGuiNET;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -65,6 +66,8 @@ namespace Anchored
 
 		public static bool EnableGuiFocus;
 
+		public const int TabSize = 4;
+
 		static Input()
 		{
 			prevGamePadState = new GamePadState[4];
@@ -107,17 +110,27 @@ namespace Anchored
 			return MouseWorldPosition(camera.GetViewMatrix());
 		}
 
-		public static bool IsDown(VirtualButton button, PlayerIndex index = PlayerIndex.One)
+		public static int MouseScroll()
+		{
+			return mouseState.ScrollWheelValue / 120;
+		}
+
+		public static int MouseScrollChange()
+		{
+			return (mouseState.ScrollWheelValue - prevMouseState.ScrollWheelValue) / 120;
+		}
+
+		public static bool IsDown(VirtualButton button, bool ignoreGui = false, PlayerIndex index = PlayerIndex.One)
 		{
 			foreach (var key in button.Keys)
 			{
-				if (IsDown(key))
+				if (IsDown(key, ignoreGui))
 					return true;
 			}
 
 			foreach (var mb in button.MouseButtons)
 			{
-				if (IsDown(mb))
+				if (IsDown(mb, ignoreGui))
 					return true;
 			}
 
@@ -130,17 +143,17 @@ namespace Anchored
 			return false;
 		}
 
-		public static bool IsPressed(VirtualButton button, PlayerIndex index = PlayerIndex.One)
+		public static bool IsPressed(VirtualButton button, bool ignoreGui = false, PlayerIndex index = PlayerIndex.One)
 		{
 			foreach (var key in button.Keys)
 			{
-				if (IsPressed(key))
+				if (IsPressed(key, ignoreGui))
 					return true;
 			}
 
 			foreach (var mb in button.MouseButtons)
 			{
-				if (IsPressed(mb))
+				if (IsPressed(mb, ignoreGui))
 					return true;
 			}
 
@@ -153,17 +166,17 @@ namespace Anchored
 			return false;
 		}
 
-		public static bool IsReleased(VirtualButton button, PlayerIndex index = PlayerIndex.One)
+		public static bool IsReleased(VirtualButton button, bool ignoreGui = false, PlayerIndex index = PlayerIndex.One)
 		{
 			foreach (var key in button.Keys)
 			{
-				if (IsReleased(key))
+				if (IsReleased(key, ignoreGui))
 					return true;
 			}
 
 			foreach (var mb in button.MouseButtons)
 			{
-				if (IsReleased(mb))
+				if (IsReleased(mb, ignoreGui))
 					return true;
 			}
 
@@ -181,23 +194,20 @@ namespace Anchored
 			if (button == MouseButton.Left)
 			{
 				return (
-					mouseState.LeftButton == ButtonState.Pressed &&
-					ignoreGui || !guiBlocksMouse
-				);
+					mouseState.LeftButton == ButtonState.Pressed
+				) && (ignoreGui || !guiBlocksMouse);
 			}
 			else if (button == MouseButton.Middle)
 			{
 				return (
-					mouseState.MiddleButton == ButtonState.Pressed &&
-					ignoreGui || !guiBlocksMouse
-				);
+					mouseState.LeftButton == ButtonState.Pressed
+				) && (ignoreGui || !guiBlocksMouse);
 			}
 			else if (button == MouseButton.Right)
 			{
 				return (
-					mouseState.RightButton == ButtonState.Pressed &&
-					ignoreGui || !guiBlocksMouse
-				);
+					mouseState.LeftButton == ButtonState.Pressed
+				) && (ignoreGui || !guiBlocksMouse);
 			}
 
 			return false;
@@ -572,7 +582,26 @@ namespace Anchored
 
 		public static void HandleTextInput(Keys key, char ch)
 		{
-			textInput += ch;
+			if (key == Keys.Enter)
+			{
+				textInput += "\n";
+			}
+			else if (key == Keys.Tab)
+			{
+				for (int ii = 0; ii < TabSize; ii++)
+					textInput += " ";
+			}
+			else if (key == Keys.Back)
+			{
+				if (textInput.Length > 0)
+				{
+					textInput = textInput[0..(textInput.Length - 1)];
+				}
+			}
+			else
+			{
+				textInput += ch;
+			}
 		}
 	}
 }

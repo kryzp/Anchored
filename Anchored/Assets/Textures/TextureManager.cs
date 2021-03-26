@@ -6,9 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Anchored.Assets
+namespace Anchored.Assets.Textures
 {
-	public class Textures
+	public class TextureManager
 	{
 		private static Dictionary<string, TextureRegion> textures = new Dictionary<string, TextureRegion>();
 		public static TextureRegion NULL;
@@ -76,7 +76,7 @@ namespace Anchored.Assets
 			if (textures.TryGetValue(id, out var region))
 				return new TextureRegion(region.Texture, (bounds != null) ? (Rectangle)bounds : region.Source);
 
-			return Textures.NULL;
+			return TextureManager.NULL;
 		}
 	}
 }

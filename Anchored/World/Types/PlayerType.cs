@@ -1,4 +1,5 @@
 ﻿using Anchored.Assets;
+using Anchored.Assets.Textures;
 using Anchored.Graphics.Animating;
 using Anchored.World.Components;
 using Microsoft.Xna.Framework;
@@ -33,7 +34,7 @@ namespace Anchored.World.Types
 			
 			Animator animator = null;
 			{
-				var texture = Textures.Get("null");
+				var texture = TextureManager.Get("null");
 
 				// Walk Animation
 				AnimationData walkAnimData = new AnimationData();

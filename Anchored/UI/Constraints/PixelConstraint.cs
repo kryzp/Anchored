@@ -8,7 +8,7 @@ namespace Anchored.UI.Constraints
 	{
 		public int Pixels;
 
-		public PixelConstraint(int px)
+		public PixelConstraint(int px = 0)
 		{
 			this.Pixels = px;
 		}

@@ -1,5 +1,5 @@
 ﻿using System;
-using Anchored.Util.Math;
+using Anchored.Math;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 
-namespace Anchored.Util.Math.Tween
+namespace Anchored.Math.Tween
 {
 	public static class Tween
 	{

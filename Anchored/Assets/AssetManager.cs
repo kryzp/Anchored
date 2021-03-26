@@ -1,4 +1,5 @@
-﻿using Anchored.World;
+﻿using Anchored.Assets.Textures;
+using Anchored.World;
 using Microsoft.Xna.Framework.Content;
 using System;
 using System.Collections;
@@ -54,13 +55,16 @@ namespace Anchored.Assets
 				progress += 1;
 			}
 
-			Effects.Load();
+			EffectManager.Load();
 			progress += 1;
 		
-			Textures.Load();
+			TextureManager.Load();
 			progress += 1;
 
-			TileMaps.Load();
+			TileMapManager.Load();
+			progress += 1;
+
+			FontManager.Load();
 			progress += 1;
 
 			if (LoadSfx)
@@ -77,9 +81,10 @@ namespace Anchored.Assets
 
 		private static void DestroyAssets()
 		{
-			Effects.Destroy();
-			Textures.Destroy();
-			TileMaps.Destroy();
+			EffectManager.Destroy();
+			TextureManager.Destroy();
+			TileMapManager.Destroy();
+			FontManager.Destroy();
 			Audio.Destroy();
 		}
 	}

@@ -5,7 +5,7 @@ using System.Linq;
 using Anchored.Util;
 using Microsoft.Xna.Framework.Graphics;
 using Anchored.Util.Physics;
-using Anchored.Util.Math;
+using Anchored.Math;
 using MonoGame.Extended.Shapes;
 using System.Collections.Generic;
 using Anchored.Debug.Console;

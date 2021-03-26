@@ -9,9 +9,9 @@ using Anchored.Debug.Console;
 using Anchored.Streams;
 using Newtonsoft.Json;
 
-namespace Anchored.Assets
+namespace Anchored.Assets.Textures
 {
-	public static class TileSheetBounds
+	public static class TextureBoundManager
 	{
 		public class TextureBounds
 		{
@@ -37,7 +37,7 @@ namespace Anchored.Assets
 
 		public static void Load()
 		{
-			FileHandle file = FileHandle.FromRoot("texture_bounds.json");
+			FileHandle file = FileHandle.FromRoot("data\\texture_bounds.json");
 			
 			if (!file.Exists())
 			{
@@ -70,7 +70,7 @@ namespace Anchored.Assets
 
 		public static TextureRegion Get(string sheet, string texture)
 		{
-			return Textures.Get(sheet, GetBounds(sheet, texture));
+			return TextureManager.Get(sheet, GetBounds(sheet, texture));
 		}
 
 		private static void LoadFromJson(string json)

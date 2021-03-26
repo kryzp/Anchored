@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using MonoGame.Extended.Tiled;
 using Anchored.Streams;
 using Anchored.Util;
+using Anchored.Assets.Textures;
 
 namespace Anchored.World.Types
 {
@@ -47,7 +48,7 @@ namespace Anchored.World.Types
 			string mapName = stream.ReadString();
 			loadColliders = stream.ReadBoolean();
 			loadEntities = stream.ReadBoolean();
-			map = TileMaps.Get(mapName);
+			map = TileMapManager.Get(mapName);
 		}
 		
 		protected void LoadEntitiesFromTileMap(EntityWorld world, TiledMap map)
@@ -65,7 +66,7 @@ namespace Anchored.World.Types
 				{
 					string sheet = entityObj.Properties["Sheet"];
 					string textureName = entityObj.Properties["Texture"];
-					TextureRegion texture = TileSheetBounds.Get($"tilesheets\\{sheet}", textureName);
+					TextureRegion texture = TextureBoundManager.Get($"tilesheets\\{sheet}", textureName);
 					new TreeType(texture).Create(entity);
 				}
 

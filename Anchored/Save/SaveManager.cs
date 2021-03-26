@@ -38,6 +38,15 @@ namespace Anchored.Save
 			}
 		}
 
+		public static string GetKeybindFilePath()
+		{
+			return System.IO.Path.Combine(
+				Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+				"Anchored",
+				"keybinds.json"
+			);
+		}
+
 		public static string GetSaveDirectory()
 		{
 			return System.IO.Path.Combine(

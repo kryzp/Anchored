@@ -15,7 +15,7 @@ namespace Anchored.Assets
 
         public Shader(string fx)
         {
-            this.Effect = Effects.Get(fx);
+            this.Effect = EffectManager.Get(fx);
         }
 
         public abstract void Update();

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Anchored.Util.Math.Tween
+namespace Anchored.Math.Tween
 {
 	// e n g i n e e r   g a m i n g
 	public static class Ease

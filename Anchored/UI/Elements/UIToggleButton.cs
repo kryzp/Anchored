@@ -19,7 +19,7 @@ namespace Anchored.UI.Elements
 		public Action WhileEnabled = null;
 		public Action OnHovering = null;
 
-		public bool Enabled;
+		public bool Toggled;
 		public bool Hovering;
 
 		public bool BlockInputOnHover = false;
@@ -45,7 +45,7 @@ namespace Anchored.UI.Elements
 				UIConstraints uiTextureConstraints = new UIConstraints();
 
 				uiTextureConstraints.X = new CenterConstraint();
-				uiTextureConstraints.Y = new PixelConstraint(Y);
+				uiTextureConstraints.Y = new PixelConstraint();
 				uiTextureConstraints.Width = new PixelConstraint(Width);
 				uiTextureConstraints.Height = new PixelConstraint(Height);
 
@@ -61,7 +61,7 @@ namespace Anchored.UI.Elements
 			bool mouseReleased = Input.IsReleased(MouseButton.Left, true);
 
 			Hovering = false;
-			if (MouseHovering())
+			if (MouseHoveringOver())
 			{
 				if (BlockInputOnHover)
 					Input.EnableGuiFocus = true;
@@ -78,9 +78,9 @@ namespace Anchored.UI.Elements
 
 			if (mouse && Hovering)
 			{
-				Enabled = !Enabled;
+				Toggled = !Toggled;
 
-				if (Enabled)
+				if (Toggled)
 				{
 					uiTexture.Texture = textureOn;
 
@@ -93,7 +93,7 @@ namespace Anchored.UI.Elements
 				}
 			}
 
-			if (Enabled)
+			if (Toggled)
 			{
 				if (WhileEnabled != null)
 					WhileEnabled();

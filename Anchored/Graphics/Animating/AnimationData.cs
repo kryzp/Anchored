@@ -1,4 +1,5 @@
 ﻿using Anchored.Assets;
+using Anchored.Assets.Textures;
 using Anchored.Util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -50,7 +51,7 @@ namespace Anchored.Graphics.Animating
 			if (!error)
 				return null;
 
-			return Textures.NULL;
+			return TextureManager.NULL;
 		}
 
 		public AnimationFrame? GetFrame(string layer, uint id)

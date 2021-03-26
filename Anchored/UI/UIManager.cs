@@ -12,6 +12,8 @@ namespace Anchored.UI
 		static UIManager()
 		{
 			Container = new UIComponent();
+			Container.Width = Game1.WINDOW_WIDTH;
+			Container.Height = Game1.WINDOW_HEIGHT;
 		}
 
 		public static void Update()

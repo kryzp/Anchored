@@ -4,11 +4,39 @@ using MonoGame.Extended;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
-namespace Anchored.Util
+namespace Anchored
 {
 	public static class Utility
 	{
+		public static string WordWrap(SpriteFont font, string text, float maxLineWidth)
+		{
+			string[] words = text.Split(' ');
+			StringBuilder sb = new StringBuilder();
+
+			float lineWidth = 0f;
+			float spaceWidth = font.MeasureString(" ").X;
+
+			foreach (string word in words)
+			{
+				Vector2 size = font.MeasureString(word);
+
+				if (lineWidth + size.X < maxLineWidth)
+				{
+					sb.Append(word + " ");
+					lineWidth += size.X + spaceWidth;
+				}
+				else
+				{
+					sb.Append("\n" + word + " ");
+					lineWidth = size.X + spaceWidth;
+				}
+			}
+
+			return sb.ToString();
+		}
+
 		public static Rectangle ConvertStringToRectangle(string raw)
 		{
 			List<string> values = raw.Split(' ').ToList();
@@ -49,7 +77,7 @@ namespace Anchored.Util
 			return texture;
 		}
 
-		public static void DrawRectangle(RectangleF rectangle, Color color, float layer = 0.95f, SpriteBatch spriteBatch = null)
+		public static void DrawRectangle(Rectangle rectangle, Color color, float layer = 0.95f, SpriteBatch spriteBatch = null)
 		{
 			if (spriteBatch == null)
 				spriteBatch = Game1.SpriteBatch;

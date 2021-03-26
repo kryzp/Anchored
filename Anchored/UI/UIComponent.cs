@@ -11,11 +11,40 @@ namespace Anchored.UI
 	{
 		private Dictionary<UIComponent, UIConstraints> components = new Dictionary<UIComponent, UIConstraints>();
 
-		public int X;
-		public int Y;
-		public int Width;
-		public int Height;
+		private int x;
+		private int y;
+		private int width;
+		private int height;
+
+		public int X
+		{
+			get => x;
+			set => x = value + ((Parent != null) ? Parent.X : 0);
+		}
+
+		public int Y
+		{
+			get => y;
+			set => y = value + ((Parent != null) ? Parent.Y : 0);
+		}
+
+		public int Width
+		{
+			get => width;
+			set => width = value;
+		}
+
+		public int Height
+		{
+			get => height;
+			set => height = value;
+		}
+
 		public float Alpha;
+
+		public UIComponent Parent = null;
+
+		public bool Enabled = true;
 
 		public Vector2 Position
 		{
@@ -58,6 +87,9 @@ namespace Anchored.UI
 				var component = pair.Key;
 				var constraints = pair.Value;
 
+				if (!component.Enabled)
+					continue;
+
 				constraints?.Constrain(component);
 				component.Update();
 			}
@@ -67,14 +99,18 @@ namespace Anchored.UI
 		{
 			foreach (var component in components.Keys)
 			{
+				if (!component.Enabled)
+					continue;
+
 				component.Draw(sb);
 			}
 		}
 
 		public void Add(UIComponent component, UIConstraints constraints)
 		{
-			component.Init();
+			component.Parent = this;
 			constraints?.Constrain(component);
+			component.Init();
 			components.Add(component, constraints);
 		}
 
@@ -83,12 +119,39 @@ namespace Anchored.UI
 			components.Clear();
 		}
 
-		public bool MouseHovering()
+		public virtual bool MouseHoveringOver(bool includeChildren = true)
 		{
+			bool hovering = false;
+
 			Point mousePos = Input.MouseScreenPosition();
 			Rectangle mouseRect = new Rectangle(mousePos.X, mousePos.Y, 1, 1);
-			Rectangle boundingBox = new Rectangle(X, Y, Width, Height);
-			return mouseRect.Intersects(boundingBox);
+
+			Rectangle parentBoundingBox = new Rectangle(X, Y, Width, Height);
+			hovering = mouseRect.Intersects(parentBoundingBox);
+
+			if (!hovering && includeChildren)
+			{
+				foreach (var child in components.Keys)
+				{
+					Rectangle boundingBox = new Rectangle(child.X, child.Y, child.Width, child.Height);
+					hovering = mouseRect.Intersects(boundingBox);
+
+					if (hovering)
+						break;
+				}
+			}
+
+			return hovering;
+		}
+
+		public virtual bool MouseClickedOnMe(bool includeChildren = true)
+		{
+			return MouseHoveringOver(includeChildren) && MouseClicked();
+		}
+
+		public bool MouseClicked()
+		{
+			return Input.IsPressed(MouseButton.Left);
 		}
 	}
 }

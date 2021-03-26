@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Anchored.Util.Math
+namespace Anchored.Math
 {
 	public static class Calc
 	{

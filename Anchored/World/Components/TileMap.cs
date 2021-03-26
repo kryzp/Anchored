@@ -7,7 +7,7 @@ using MonoGame.Extended.Tiled;
 using MonoGame.Extended.Tiled.Renderers;
 using System.Collections.Generic;
 using System.Linq;
-using Anchored.Util.Math;
+using Anchored.Math;
 
 namespace Anchored.World.Components
 {

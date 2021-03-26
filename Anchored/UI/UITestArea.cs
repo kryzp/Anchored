@@ -1,4 +1,5 @@
 ﻿using Anchored.Assets;
+using Anchored.Assets.Textures;
 using Anchored.UI.Constraints;
 using Anchored.UI.Elements;
 using Microsoft.Xna.Framework;
@@ -14,20 +15,36 @@ namespace Anchored.UI
 		{
 			UIComponent display = UIManager.Container;
 
-			var nullTex = Textures.Get("null");
-			var checkBoxOffTex = TileSheetBounds.Get("ui\\checkbox", "unchecked");
-			var checkBoxOnTex = TileSheetBounds.Get("ui\\checkbox", "checked");
-			var textboxTex = TileSheetBounds.Get("ui\\textbox", "nsg");
+			var nullTex = TextureManager.Get("null");
+			var checkBoxOffTex = TextureBoundManager.Get("ui\\checkbox", "unchecked");
+			var checkBoxOnTex = TextureBoundManager.Get("ui\\checkbox", "checked");
+			var textboxTex = TextureBoundManager.Get("ui\\textbox", "nsg");
+			var textboxFont = FontManager.Get("small_font");
+			var dropdownButton = TextureBoundManager.Get("ui\\dropdown_list", "button");
+			var dropdownListTex = TextureBoundManager.Get("ui\\dropdown_list", "list");
+			var dropdownArrowTex = TextureBoundManager.Get("ui\\dropdown_list", "arrow");
 
-			// Nine Slice Grid
+			// Drop Down List
 			{
-				UINineSliceGrid uiNineSliceGrid = new UINineSliceGrid(textboxTex, 9, 9, 9, 3);
+				UIDropDownList uiDropDownList = new UIDropDownList(dropdownButton, dropdownListTex, dropdownArrowTex, textboxFont, new List<string>()
+				{
+					"Option A",
+					"Option B",
+					"Option C",
+					"Option D"
+				});
+
+				uiDropDownList.OnSelectedItem = (item) =>
+				{
+					System.Diagnostics.Debug.WriteLine(item);
+				};
+
 				UIConstraints constraints = new UIConstraints();
 
 				constraints.X = new CenterConstraint();
 				constraints.Y = new PixelConstraint(16);
 
-				display.Add(uiNineSliceGrid, constraints);
+				display.Add(uiDropDownList, constraints);
 			}
 		}
 	}

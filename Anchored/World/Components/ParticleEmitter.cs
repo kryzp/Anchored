@@ -1,6 +1,6 @@
 ﻿using Anchored.Assets;
 using Anchored.Graphics.Particles;
-using Anchored.Util.Math;
+using Anchored.Math;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;

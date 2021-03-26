@@ -30,6 +30,11 @@ namespace Anchored.UI.Elements
 
 		public float LayerDepth = 0.95f;
 
+		public int PixelWidth => (int)(width * textureWidth * scale.X);
+		public int PixelHeight => (int)(height * textureHeight * scale.Y);
+
+		public Vector2 Scale => scale;
+
 		public UINineSliceGrid(TextureRegion texture, int gridW, int gridH, int width, int height, float scale = 4)
 		{
 			this.texture = texture;

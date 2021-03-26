@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Threading;
 using Anchored.Assets;
 using Anchored.Assets.Prefabs;
+using Anchored.Assets.Textures;
 using Anchored.Debug.Console;
 using Anchored.Graphics.Animating;
 using Anchored.Save;
@@ -48,9 +49,10 @@ namespace Anchored.State
 
                 progress += 1;
                 
-                LoadSection(ShaderHolder.Load, "Shaders");
-                LoadSection(TileSheetBounds.Load, "Tile Sheets");
-                LoadSection(PrefabHolder.Load, "Prefabs");
+                LoadSection(ShaderManager.Load, "Shaders");
+                LoadSection(TextureBoundManager.Load, "Tile Sheets");
+                LoadSection(PrefabManager.Load, "Prefabs");
+                LoadSection(KeyBinds.Load, "Keybinds");
 
                 progress += 1;
                 

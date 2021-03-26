@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Anchored.Util.Math.Tween;
+using Anchored.Math.Tween;
 using Anchored.Save;
 
 namespace Anchored
@@ -79,6 +79,8 @@ namespace Anchored
 
 			SaveManager.Init();
 			ChangeState(new AssetLoadState());
+
+			KeyBinds.Load();
 		}
 
 		protected override void UnloadContent()

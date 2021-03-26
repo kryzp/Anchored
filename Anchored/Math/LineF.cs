@@ -2,7 +2,7 @@
 using MonoGame.Extended;
 using System;
 
-namespace Anchored.Util.Math
+namespace Anchored.Math
 {
 	public struct LineF
 	{

@@ -6,9 +6,9 @@ using System.Text;
 
 namespace Anchored.Assets
 {
-	public static class Effects
+	public static class EffectManager
 	{
-		public static Dictionary<string, Effect> EffectMap = new Dictionary<string, Effect>();
+		public static Dictionary<string, Effect> Map = new Dictionary<string, Effect>();
 
 		public static void Load()
 		{
@@ -34,20 +34,20 @@ namespace Anchored.Assets
 
 			string id = folder + handle.NameWithoutExtension;
 
-			EffectMap[handle.NameWithoutExtension] = AssetManager.Content.Load<Effect>($"fx\\{id}");
+			Map[handle.NameWithoutExtension] = AssetManager.Content.Load<Effect>($"fx\\{id}");
 		}
 
 		public static void Destroy()
 		{
-			foreach (var e in EffectMap)
+			foreach (var e in Map)
 				e.Value.Dispose();
 
-			EffectMap.Clear();
+			Map.Clear();
 		}
 
 		public static Effect Get(string id)
 		{
-			return EffectMap.TryGetValue(id, out var o) ? o : null;
+			return Map.TryGetValue(id, out var o) ? o : null;
 		}
 	}
 }
