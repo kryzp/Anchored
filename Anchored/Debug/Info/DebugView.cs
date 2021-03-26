@@ -57,16 +57,16 @@ namespace Anchored.Debug.Info
 				
 				Input.EnableGuiFocus = true;
 
-				if (Input.IsDown(Keys.W, true))
+				if (Input.IsDown("player_move_up", true))
 					my -= 1;
 
-				if (Input.IsDown(Keys.S, true))
+				if (Input.IsDown("player_move_down", true))
 					my += 1;
 
-				if (Input.IsDown(Keys.A, true))
+				if (Input.IsDown("player_move_left", true))
 					mx -= 1;
 				
-				if (Input.IsDown(Keys.D, true))
+				if (Input.IsDown("player_move_right", true))
 					mx += 1;
 
 				camera.Position.X += mspd * mx;

@@ -34,16 +34,16 @@ namespace Anchored.World.Components
 			int mx = 0;
 			int my = 0;
 
-			if (KeyBinds.IsDown("player_move_up"))
+			if (Input.IsDown("player_move_up"))
 				my -= 1;
 
-			if (KeyBinds.IsDown("player_move_down"))
+			if (Input.IsDown("player_move_down"))
 				my += 1;
 
-			if (KeyBinds.IsDown("player_move_left"))
+			if (Input.IsDown("player_move_left"))
 				mx -= 1;
 
-			if (KeyBinds.IsDown("player_move_right"))
+			if (Input.IsDown("player_move_right"))
 				mx += 1;
 
 			float angle = MathF.Atan2(my, mx);

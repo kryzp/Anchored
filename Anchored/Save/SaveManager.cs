@@ -38,12 +38,12 @@ namespace Anchored.Save
 			}
 		}
 
-		public static string GetKeybindFilePath()
+		public static string GetOptionsFilePath()
 		{
 			return System.IO.Path.Combine(
 				Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
 				"Anchored",
-				"keybinds.json"
+				"options.json"
 			);
 		}
 

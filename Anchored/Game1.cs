@@ -80,7 +80,7 @@ namespace Anchored
 			SaveManager.Init();
 			ChangeState(new AssetLoadState());
 
-			KeyBinds.Load();
+			Options.Load();
 		}
 
 		protected override void UnloadContent()

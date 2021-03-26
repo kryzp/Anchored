@@ -110,6 +110,24 @@ namespace Anchored
 			return MouseWorldPosition(camera.GetViewMatrix());
 		}
 
+		public static Rectangle MouseScreenRectangle()
+		{
+			var pos = MouseScreenPosition();
+			return new Rectangle(pos.X, pos.Y, 1, 1);
+		}
+
+		public static Rectangle MouseWorldRectangle(Matrix transform)
+		{
+			var pos = MouseWorldPosition(transform).ToPoint();
+			return new Rectangle(pos.X, pos.Y, 1, 1);
+		}
+
+		public static Rectangle MouseWorldRectangle(Camera camera)
+		{
+			var pos = MouseWorldPosition(camera.GetViewMatrix()).ToPoint();
+			return new Rectangle(pos.X, pos.Y, 1, 1);
+		}
+
 		public static int MouseScroll()
 		{
 			return mouseState.ScrollWheelValue / 120;
@@ -118,6 +136,21 @@ namespace Anchored
 		public static int MouseScrollChange()
 		{
 			return (mouseState.ScrollWheelValue - prevMouseState.ScrollWheelValue) / 120;
+		}
+
+		public static bool IsDown(string vbutton, bool ignoreGui = false, PlayerIndex index = PlayerIndex.One)
+		{
+			return Options.KeyBinds.IsDown(vbutton, ignoreGui, index);
+		}
+
+		public static bool IsPressed(string vbutton, bool ignoreGui = false, PlayerIndex index = PlayerIndex.One)
+		{
+			return Options.KeyBinds.IsPressed(vbutton, ignoreGui, index);
+		}
+
+		public static bool IsReleased(string vbutton, bool ignoreGui = false, PlayerIndex index = PlayerIndex.One)
+		{
+			return Options.KeyBinds.IsReleased(vbutton, ignoreGui, index);
 		}
 
 		public static bool IsDown(VirtualButton button, bool ignoreGui = false, PlayerIndex index = PlayerIndex.One)

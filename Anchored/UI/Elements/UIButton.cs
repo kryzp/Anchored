@@ -107,8 +107,8 @@ namespace Anchored.UI.Elements
 		{
 			base.Update();
 
-			bool mousePressed = Input.IsPressed(MouseButton.Left, true);
-			bool mouseReleased = Input.IsReleased(MouseButton.Left, true);
+			bool mousePressed = Input.IsPressed("select", true);
+			bool mouseReleased = Input.IsReleased("select", true);
 
 			UpdateVariables();
 

@@ -57,9 +57,6 @@ namespace Anchored.UI.Elements
 		{
 			base.Update();
 
-			bool mousePressed = Input.IsPressed(MouseButton.Left, true);
-			bool mouseReleased = Input.IsReleased(MouseButton.Left, true);
-
 			Hovering = false;
 			if (MouseHoveringOver())
 			{
@@ -74,9 +71,7 @@ namespace Anchored.UI.Elements
 					uiTexture.Texture = textureHov;
 			}
 
-			bool mouse = mousePressed;
-
-			if (mouse && Hovering)
+			if (MouseClicked() && Hovering)
 			{
 				Toggled = !Toggled;
 

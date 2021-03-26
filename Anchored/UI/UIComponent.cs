@@ -151,7 +151,7 @@ namespace Anchored.UI
 
 		public bool MouseClicked()
 		{
-			return Input.IsPressed(MouseButton.Left);
+			return Input.IsPressed("select", true);
 		}
 	}
 }

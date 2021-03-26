@@ -11,8 +11,7 @@ using System.Text;
 
 namespace Anchored
 {
-	// todo: move to json?
-	public static class KeyBinds
+	public class KeyBinds
 	{
 		private class SimpleVirtualButton
 		{
@@ -26,13 +25,13 @@ namespace Anchored
 			public List<string> GamePadButtons = new List<string>();
 		}
 
-		private static Dictionary<string, VirtualButton> buttons = new Dictionary<string, VirtualButton>();
+		private Dictionary<string, VirtualButton> buttons = new Dictionary<string, VirtualButton>();
 
-		public static void Save()
+		public void Save(string path)
 		{
 			JsonSerializer serializer = new JsonSerializer();
 			
-			using (StreamWriter sw = new StreamWriter(SaveManager.GetKeybindFilePath()))
+			using (StreamWriter sw = new StreamWriter(path))
 			{
 				using (JsonWriter writer = new JsonTextWriter(sw))
 				{
@@ -41,9 +40,8 @@ namespace Anchored
 			}
 		}
 
-		public static void Load()
+		public void Load(string path)
 		{
-			string path = SaveManager.GetKeybindFilePath();
 			FileHandle file = new FileHandle(path);
 
 			if (!file.Exists())
@@ -81,17 +79,17 @@ namespace Anchored
 			}
 		}
 
-		public static bool IsDown(string name, bool ignoreGui = false, PlayerIndex index = PlayerIndex.One)
+		public bool IsDown(string name, bool ignoreGui = false, PlayerIndex index = PlayerIndex.One)
 		{
 			return Input.IsDown(buttons[name], ignoreGui, index);
 		}
 
-		public static bool IsPressed(string name, bool ignoreGui = false, PlayerIndex index = PlayerIndex.One)
+		public bool IsPressed(string name, bool ignoreGui = false, PlayerIndex index = PlayerIndex.One)
 		{
 			return Input.IsPressed(buttons[name], ignoreGui, index);
 		}
 
-		public static bool IsReleased(string name, bool ignoreGui = false, PlayerIndex index = PlayerIndex.One)
+		public bool IsReleased(string name, bool ignoreGui = false, PlayerIndex index = PlayerIndex.One)
 		{
 			return Input.IsReleased(buttons[name], ignoreGui, index);
 		}
