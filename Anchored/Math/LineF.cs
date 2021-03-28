@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoGame.Extended;
 using System;
 
 namespace Anchored.Math
@@ -13,7 +12,7 @@ namespace Anchored.Math
 		{
 			get
 			{
-				return (float)(MathF.Atan2(A.Y - B.Y, A.X - B.X) + (180f * (MathF.PI / 180f)));
+				return (float)(MathF.Atan2(A.Y - B.Y, A.X - B.X) + MathF.PI);
 			}
 		}
 
@@ -22,7 +21,7 @@ namespace Anchored.Math
 			get
 			{
 				// engineer gaming
-				return (float)((MathF.Atan2(A.Y - B.Y, A.X - B.X) + (180f * (MathF.PI / 180f))) * (180f / MathF.PI));
+				return (float)((MathF.Atan2(A.Y - B.Y, A.X - B.X) + MathF.PI) * (180f / MathF.PI));
 			}
 		}
 

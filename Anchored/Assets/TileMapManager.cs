@@ -1,7 +1,7 @@
-﻿using Anchored.Streams;
+﻿using Anchored.Graphics.TileMaps;
+using Anchored.Streams;
 using Anchored.Util;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGame.Extended.Tiled;
 using System.Collections.Generic;
 using System.IO;
 
@@ -9,7 +9,7 @@ namespace Anchored.Assets
 {
 	public class TileMapManager
 	{
-		private static Dictionary<string, TiledMap> maps = new Dictionary<string, TiledMap>();
+		private static Dictionary<string, TileMapData> maps = new Dictionary<string, TileMapData>();
 
 		internal static void Load()
 		{
@@ -36,7 +36,7 @@ namespace Anchored.Assets
 
 			string id = folder + handle.NameWithoutExtension;
 
-			TiledMap tilemap = AssetManager.Content.Load<TiledMap>($"maps\\tilemaps\\{id}");
+			TileMapData tilemap = AssetManager.Content.Load<TileMapData>($"maps\\tilemaps\\{id}");
 			maps[id] = tilemap;
 		}
 
@@ -45,7 +45,7 @@ namespace Anchored.Assets
 			maps.Clear();
 		}
 
-		public static TiledMap Get(string id)
+		public static TileMapData Get(string id)
 		{
 			if (maps.TryGetValue(id, out var map))
 				return map;

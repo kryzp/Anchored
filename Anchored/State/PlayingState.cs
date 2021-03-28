@@ -17,12 +17,10 @@ namespace Anchored.State
 
 		public override void Load(SpriteBatch sb)
 		{
-			new UITestArea().Create();
-			
 			world = new EntityWorld();
 			DebugConsole.World = world;
 
-			currentArea = new DebugArea(world);
+			currentArea = new TutorialIslandStartBeach(world);
 			currentArea.Load(sb);
 			camera = currentArea.Camera;
 

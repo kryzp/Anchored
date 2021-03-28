@@ -10,7 +10,6 @@
 
 #-------------------------------- References --------------------------------#
 
-/reference:C:\Users\KrysP\.nuget\packages\monogame.extended.content.pipeline\3.8.0\tools\MonoGame.Extended.Content.Pipeline.dll
 
 #---------------------------------- Content ---------------------------------#
 
@@ -39,21 +38,6 @@
 #begin locales/en.json
 /copy:locales/en.json
 
-#begin maps/tilemaps/test_map.tmx
-/importer:TiledMapImporter
-/processor:TiledMapProcessor
-/build:maps/tilemaps/test_map.tmx
-
-#begin maps/tilesheets/ground_test.tsx
-/importer:TiledMapTilesetImporter
-/processor:TiledMapTilesetProcessor
-/build:maps/tilesheets/ground_test.tsx
-
-#begin maps/tilesheets/water_test.tsx
-/importer:TiledMapTilesetImporter
-/processor:TiledMapTilesetProcessor
-/build:maps/tilesheets/water_test.tsx
-
 #begin txrs/null.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -66,7 +50,7 @@
 /processorParam:TextureFormat=Color
 /build:txrs/null.png
 
-#begin txrs/tilesheets/test_sheet.png
+#begin txrs/tilesheets/decor.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -76,9 +60,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:txrs/tilesheets/test_sheet.png
+/build:txrs/tilesheets/decor.png
 
-#begin txrs/tilesheets/water_tile_anim.png
+#begin txrs/tilesheets/tutorial_island_beach.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -88,53 +72,5 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:txrs/tilesheets/water_tile_anim.png
-
-#begin txrs/ui/checkbox.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:txrs/ui/checkbox.png
-
-#begin txrs/ui/dropdown_list.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:txrs/ui/dropdown_list.png
-
-#begin txrs/ui/loading_icon.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:txrs/ui/loading_icon.png
-
-#begin txrs/ui/textbox.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:txrs/ui/textbox.png
+/build:txrs/tilesheets/tutorial_island_beach.png
 

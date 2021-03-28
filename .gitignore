@@ -33,6 +33,8 @@ bld/
 [Ll]og/
 [Ll]ogs/
 
+.idea/
+
 # Secret Stuff
 [Ii]nternal/
 

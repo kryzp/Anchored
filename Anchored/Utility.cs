@@ -1,6 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Anchored.Math;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGame.Extended;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -77,12 +77,12 @@ namespace Anchored
 			return texture;
 		}
 
-		public static void DrawRectangle(Rectangle rectangle, Color color, float layer = 0.95f, SpriteBatch spriteBatch = null)
+		public static void DrawRectangle(Rectangle rectangle, Color color, float layer = 0.95f, SpriteBatch sb = null)
 		{
-			if (spriteBatch == null)
-				spriteBatch = Game1.SpriteBatch;
+			if (sb == null)
+				sb = Game1.SpriteBatch;
 			Texture2D rect = new Texture2D(
-				spriteBatch.GraphicsDevice,
+				sb.GraphicsDevice,
 				(int)rectangle.Width,
 				(int)rectangle.Height
 			);
@@ -91,70 +91,100 @@ namespace Anchored
 				data[ii] = color;
 			rect.SetData(data);
 			Vector2 coor = new Vector2(rectangle.X, rectangle.Y);
-			spriteBatch.Draw(rect, coor, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, layer);
+			sb.Draw(rect, coor, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, layer);
+		}
+		
+		public static void DrawRectangleOutline(RectangleF rectangle, Color color, float thickness = 1f, float layer = 0.95f, SpriteBatch sb = null)
+		{
+			if (sb == null)
+				sb = Game1.SpriteBatch;
+			DrawLine(rectangle.TopLeft, rectangle.TopRight, color, thickness, layer, sb);
+			DrawLine(rectangle.TopRight, rectangle.BottomRight, color, thickness, layer, sb);
+			DrawLine(rectangle.BottomRight, rectangle.BottomLeft, color, thickness, layer, sb);
+			DrawLine(rectangle.BottomLeft, rectangle.TopLeft, color, thickness, layer, sb);
 		}
 
-		public static void DrawLine(Vector2 point1, Vector2 point2, Color color, float thickness = 1f, float Layer = 0.98f, SpriteBatch spriteBatch = null)
+		public static void DrawLine(LineF line, Color color, float thickness = 1f, float layer = 0.98f, SpriteBatch sb = null)
 		{
-			if (spriteBatch == null)
-				spriteBatch = Game1.SpriteBatch;
+			if (sb == null)
+				sb = Game1.SpriteBatch;
+			DrawLine(line.A, line.B, color, thickness, layer, sb);
+		}
+
+		public static void DrawLine(Vector2 point1, Vector2 point2, Color color, float thickness = 1f, float Layer = 0.98f, SpriteBatch sb = null)
+		{
+			if (sb == null)
+				sb = Game1.SpriteBatch;
 			var distance = Vector2.Distance(point1, point2);
 			var angle = MathF.Atan2(point2.Y - point1.Y, point2.X - point1.X);
-			DrawLine(point1, distance, angle, color, thickness, Layer, spriteBatch);
+			DrawLine(point1, distance, angle, color, thickness, Layer, sb);
 		}
 
-		public static void DrawLine(Vector2 point, float length, float angle, Color color, float thickness = 1f, float layer = 0.98f, SpriteBatch spriteBatch = null)
+		public static void DrawLine(Vector2 point, float length, float angle, Color color, float thickness = 1f, float layer = 0.98f, SpriteBatch sb = null)
 		{
-			if (spriteBatch == null)
-				spriteBatch = Game1.SpriteBatch;
+			if (sb == null)
+				sb = Game1.SpriteBatch;
 			var origin = new Vector2(0f, 0.5f);
 			var scale = new Vector2(length, thickness);
-			spriteBatch.Draw(GetWhitePixel(spriteBatch), point, null, color, angle, origin, scale, SpriteEffects.None, layer);
+			sb.Draw(GetWhitePixel(sb), point, null, color, angle, origin, scale, SpriteEffects.None, layer);
 		}
 
-		public static Texture2D CreateTexture(int width, int height, Func<int, Color> paint, SpriteBatch spriteBatch = null)
+		public static void DrawCircleOutline(Circle circle, int steps, Color color, float thickness = 1f, float layer = 0.95f, SpriteBatch sb = null)
 		{
-			if (spriteBatch == null)
-				spriteBatch = Game1.SpriteBatch;
-			var texture = new Texture2D(spriteBatch.GraphicsDevice, width, height);
+			Vector2 lastInner = new Vector2(circle.Center.X + circle.Radius - thickness, circle.Center.Y);
+			Vector2 lastOuter = new Vector2(circle.Center.X + circle.Radius, circle.Center.Y);
+
+			for (int ii = 1; ii <= steps; ii++)
+			{
+				float radians = (ii / (float)steps) * MathHelper.Tau;
+				Vector2 normal = new Vector2(MathF.Cos(radians), MathF.Sin(radians));
+
+				Vector2 nextInner = new Vector2(
+					circle.Center.X + (normal.X * (circle.Radius - thickness)),
+					circle.Center.Y + (normal.Y * (circle.Radius - thickness))
+				);
+
+				Vector2 nextOuter = new Vector2(
+					circle.Center.X + (normal.X * circle.Radius),
+					circle.Center.Y + (normal.Y * circle.Radius)
+				);
+
+				Polygon polygon = new Polygon(
+					new List<Vector2>()
+					{
+						lastInner,
+						lastOuter,
+						nextOuter,
+						nextInner
+					}
+				);
+
+				DrawPolygonOutline(polygon, color, thickness, layer, sb);
+
+				lastInner = nextInner;
+				lastOuter = nextOuter;
+			}
+		}
+
+		public static void DrawPolygonOutline(Polygon polygon, Color color, float thickness = 1f, float layer = 0.95f, SpriteBatch sb = null)
+		{
+			polygon.ForeachPoint((ii, vertex, nextVertex) =>
+			{
+				LineF line = new LineF(vertex, nextVertex);
+				DrawLine(line, color, thickness, layer, sb);
+			});
+		}
+
+		public static Texture2D CreateTexture(int width, int height, Func<int, Color> paint, SpriteBatch sb = null)
+		{
+			if (sb == null)
+				sb = Game1.SpriteBatch;
+			var texture = new Texture2D(sb.GraphicsDevice, width, height);
 			Color[] data = new Color[width * height];
 			for (int pixel = 0; pixel < data.Length; pixel++)
 				data[pixel] = paint(pixel);
 			texture.SetData(data);
 			return texture;
 		}
-
-		/*
-		public static void DrawRoundedRectangle(
-			RectangleF rectangle,
-			float r,
-			Color colour,
-			float layer = 0.95f,
-			int sides = 15,
-			SpriteBatch sb = null
-		)
-		{
-			float d = r * 2;
-
-			int x0 = (int)(rectangle.X + r);
-			int y0 = (int)(rectangle.Y + r);
-			int x1 = (int)(x0 + rectangle.Width);
-			int y1 = (int)(y0 + rectangle.Height);
-
-			RectangleF horiRect = new RectangleF(x0-r, y0, rectangle.Width+r, rectangle.Height-r);
-			RectangleF vertRect = new RectangleF(x0, y0-r, rectangle.Width-r, rectangle.Height+r);
-
-			// Draw Rectangles
-			DrawRectangle(horiRect, colour, layer, sb);
-			DrawRectangle(vertRect, colour, layer, sb);
-
-			// Draw Circles
-			int variableThatFixesThingsLmao = 1;
-			ShapeExtensions.DrawCircle(sb, x0+variableThatFixesThingsLmao, y0+variableThatFixesThingsLmao, r, sides, colour, d, layer);
-			ShapeExtensions.DrawCircle(sb, x1-r-variableThatFixesThingsLmao, y0, r, sides, colour, d, layer);
-			ShapeExtensions.DrawCircle(sb, x0, y1-r-variableThatFixesThingsLmao, r, sides, colour, d, layer);
-			ShapeExtensions.DrawCircle(sb, x1-r-variableThatFixesThingsLmao, y1-r-variableThatFixesThingsLmao, r, sides, colour, d, layer);
-		}
-		*/
 	}
 }

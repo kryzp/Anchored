@@ -1,8 +1,8 @@
 ﻿using Anchored.Graphics;
+using Anchored.Math;
 using Anchored.Util;
 using Anchored.World.Components;
 using Microsoft.Xna.Framework;
-using MonoGame.Extended;
 
 namespace Anchored.World.Types
 {

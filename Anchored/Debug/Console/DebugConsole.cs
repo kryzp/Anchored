@@ -14,7 +14,7 @@ namespace Anchored.Debug.Console
 {
 	public static unsafe class DebugConsole
 	{
-		private static System.Numerics.Vector2 size = new System.Numerics.Vector2(323, 435);
+		private static System.Numerics.Vector2 size = new System.Numerics.Vector2(450, 435);
 		private static System.Numerics.Vector2 spacer = new System.Numerics.Vector2(4, 1);
 		private static System.Numerics.Vector4 color = new System.Numerics.Vector4(1, 0.4f, 0.4f, 1f);
 

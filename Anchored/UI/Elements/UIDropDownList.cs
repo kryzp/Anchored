@@ -90,8 +90,6 @@ namespace Anchored.UI.Elements
 				if (OnSelectedItem != null && Open)
 					OnSelectedItem(uiDropDownButton.Text);
 
-				PushItemToFront(Items.FirstOrDefault());
-
 				Open = !Open;
 			};
 
@@ -141,7 +139,7 @@ namespace Anchored.UI.Elements
 				if (OnSelectedItem != null)
 					OnSelectedItem(btn.Text);
 
-				PushItemToFront(Items[ii]);
+				PushItemToFront(ii);
 				
 				Open = false;
 			};
@@ -155,11 +153,16 @@ namespace Anchored.UI.Elements
 			return btn;
 		}
 
-		private void PushItemToFront(string item)
+		private void PushItemToFront(int item)
 		{
-			string temp = item;
-			Items.Remove(item);
-			Items.Insert(0, temp);
+			string temp = Items[0];
+			string temp2 = Items[item];
+
+			Items.RemoveAt(item);
+			Items.RemoveAt(0);
+			Items.Insert(0, temp2);
+			Items.Insert(item, temp);
+
 			UpdateButtonData();
 		}
 

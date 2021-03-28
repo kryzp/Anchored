@@ -2,7 +2,6 @@
 using Anchored.Util.Physics;
 using Anchored.Math;
 using Microsoft.Xna.Framework;
-using MonoGame.Extended;
 using System;
 
 namespace Anchored.World.Components
@@ -49,8 +48,8 @@ namespace Anchored.World.Components
 		{
 			if (adjustSpeed)
 			{
-				var pushoutNormal = hit.Pushout.NormalizedCopy();
-				var velocityNormal = Velocity.NormalizedCopy();
+				var pushoutNormal = hit.Pushout.Normalized();
+				var velocityNormal = Velocity.Normalized();
 				var dot = MathF.Min(0f, Vector2.Dot(velocityNormal, pushoutNormal));
 				var amount = pushoutNormal * Velocity.Length() * dot;
 				Velocity -= amount;
@@ -114,7 +113,7 @@ namespace Anchored.World.Components
 					) / 4f;
 
 					float distance = amount.Length();
-					Vector2 normal = amount.NormalizedCopy();
+					Vector2 normal = amount.Normalized();
 
 					while (distance > 0)
 					{

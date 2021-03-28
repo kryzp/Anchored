@@ -3,7 +3,6 @@ using Anchored.Assets.Textures;
 using Anchored.Graphics.Animating;
 using Anchored.World.Components;
 using Microsoft.Xna.Framework;
-using MonoGame.Extended;
 using System.Collections.Generic;
 
 namespace Anchored.World.Types
@@ -20,8 +19,9 @@ namespace Anchored.World.Types
 			base.Create(entity);
 			entity.Transform.Origin = new Vector2(8, 16);
 			
-			var collider = entity.AddComponent(new Collider(new RectangleF(0, 0, 16, 16)));
-			
+			var collider = entity.AddComponent(new Collider());
+			collider.MakeRect(0, 13, 16, 5);
+
 			var mover = entity.AddComponent(new Mover(collider));
 			mover.Friction = 500f;
 			mover.Solids = Masks.Solid;

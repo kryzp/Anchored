@@ -39,7 +39,6 @@ namespace Anchored
 		public static RenderTarget2D AppRenderTarget; // the entire window surface in a rendertarget
 
 		public static Entity Player;
-
 		public static Int32 Seed = 745321968;
 
 		public Game1()
@@ -79,8 +78,6 @@ namespace Anchored
 
 			SaveManager.Init();
 			ChangeState(new AssetLoadState());
-
-			Options.Load();
 		}
 
 		protected override void UnloadContent()

@@ -13,7 +13,7 @@ namespace Anchored
 {
 	public class KeyBinds
 	{
-		private class SimpleVirtualButton
+		public class SimpleVirtualButton
 		{
 			[JsonProperty("keys")]
 			public List<string> Keys = new List<string>();
@@ -52,9 +52,9 @@ namespace Anchored
 
 			try
 			{
-				var root = JsonConvert.DeserializeObject<Dictionary<string, SimpleVirtualButton>>(file.ReadAll());
+				var options = JsonConvert.DeserializeObject<OptionsJsonData>(file.ReadAll());
 
-				foreach (var pair in root)
+				foreach (var pair in options.KeyBinds)
 				{
 					var name = pair.Key;
 					var btn = pair.Value;

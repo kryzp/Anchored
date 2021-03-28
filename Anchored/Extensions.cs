@@ -1,7 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGame.Extended;
-using MonoGame.Extended.Shapes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +22,13 @@ namespace Anchored
             if (set)
                 tex = croppedTexture;
             return croppedTexture;
+		}
+
+        public static Vector2 Normalized(this Vector2 v)
+		{
+            Vector2 vv = v;
+            vv.Normalize();
+            return vv;
 		}
     }
 }

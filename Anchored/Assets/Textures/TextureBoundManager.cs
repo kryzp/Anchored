@@ -1,6 +1,5 @@
 ﻿using Anchored.Util;
 using Microsoft.Xna.Framework;
-using MonoGame.Extended.TextureAtlases;
 using System;
 using System.Collections.Generic;
 using System.Linq;

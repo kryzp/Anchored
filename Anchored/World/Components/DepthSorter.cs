@@ -35,16 +35,21 @@ namespace Anchored.World.Components
             
             float min = +Single.MaxValue;
             float max = -Single.MaxValue;
+            float layer = 1f;
             
-            World.ForeachEntity((entity) =>
-            {
-                if (entity.Transform.Position.Y < min)
-                    min = entity.Transform.Position.Y;
-                else if (entity.Transform.Position.Y > max)
-                    max = entity.Transform.Position.Y;
-            });
+            if (World.Entities.Count > 1)
+			{
+                World.ForeachEntity((entity) =>
+                {
+                    if (entity.Transform.Position.Y < min)
+                        min = entity.Transform.Position.Y;
+                    else if (entity.Transform.Position.Y > max)
+                        max = entity.Transform.Position.Y;
+                });
 
-            float layer = Calc.MapValue(0f, 1f, min, max, position);
+                layer = Calc.MapValue(0f, 1f, min, max, position);
+            }
+            
             graphicsComponent.LayerDepth = layer;
         }
     }

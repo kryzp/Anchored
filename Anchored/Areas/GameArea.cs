@@ -1,11 +1,11 @@
 ﻿using Anchored.Assets;
+using Anchored.Graphics.TileMaps;
 using Anchored.Util;
 using Anchored.World;
 using Anchored.World.Components;
 using Anchored.World.Types;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGame.Extended.Tiled;
 using System;
 
 namespace Anchored.Areas
@@ -54,7 +54,7 @@ namespace Anchored.Areas
 			return camEntity;
 		}
 
-		protected Entity SetupLevel(TiledMap map, bool loadColliders = true, bool loadEntities = true)
+		protected Entity SetupLevel(TileMapData map, bool loadColliders = true, bool loadEntities = true)
 		{
 			Entity tileMapEntity = world.AddEntity("TileMap");
 			new LevelType(map, loadColliders, loadEntities).Create(tileMapEntity);

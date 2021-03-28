@@ -1,20 +1,21 @@
 ﻿using Anchored.Assets;
 using Anchored.World.Components;
 using Microsoft.Xna.Framework;
-using MonoGame.Extended.Tiled;
 using Anchored.Streams;
 using Anchored.Util;
 using Anchored.Assets.Textures;
+using System;
+using Anchored.Graphics.TileMaps;
 
 namespace Anchored.World.Types
 {
 	public class LevelType : EntityType
 	{
-		private TiledMap map;
+		private TileMapData map;
 		private bool loadColliders;
 		private bool loadEntities;
 
-		public LevelType(TiledMap map, bool loadColliders = true, bool loadEntities = true)
+		public LevelType(TileMapData map, bool loadColliders = true, bool loadEntities = true)
 		{
 			Serializable = true;
 			
@@ -51,28 +52,40 @@ namespace Anchored.World.Types
 			map = TileMapManager.Get(mapName);
 		}
 		
-		protected void LoadEntitiesFromTileMap(EntityWorld world, TiledMap map)
+		protected void LoadEntitiesFromTileMap(EntityWorld world, TileMapData map)
 		{
+			/*
 			foreach (var obj in map.GetLayer<TiledMapObjectLayer>("Entities").Objects)
 			{
-				TiledMapRectangleObject entityObj = (TiledMapRectangleObject)obj;
+				TiledMapTileObject entityObj = (TiledMapTileObject)obj;
 				string entityName = entityObj.Name;
 				Vector2 entityPosition = entityObj.Position;
 				float entityRotation = entityObj.Rotation;
 
 				var entity = world.AddEntity(entityName);
 
-				if (entityObj.Type == "Tree")
+				if (entityObj.Tile.Type == "Destructible")
 				{
-					string sheet = entityObj.Properties["Sheet"];
-					string textureName = entityObj.Properties["Texture"];
-					TextureRegion texture = TextureBoundManager.Get($"tilesheets\\{sheet}", textureName);
-					new TreeType(texture).Create(entity);
+					string entityTypeName = entityObj.Tile.Properties["Entity"];
+					var tileRegion = entityObj.Tileset.GetTileRegion(entityObj.Tile.LocalTileIdentifier);
+					var sprite = new TextureRegion(entityObj.Tileset.Texture, tileRegion);
+
+					EntityType entityType = (EntityType)Activator.CreateInstance(
+						Type.GetType(
+							$"Anchored.World.Types.{entityTypeName}Type",
+							true,
+							false
+						),
+						sprite
+					);
+
+					entityType.Create(entity);
 				}
 
 				entity.Transform.Position = entityPosition;
 				entity.Transform.RotationDegrees = entityRotation;
 			}
+			*/
 		}
 	}
 }

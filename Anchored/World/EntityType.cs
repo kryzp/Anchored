@@ -1,4 +1,5 @@
 ﻿using Anchored.Streams;
+using System;
 
 namespace Anchored.World
 {
@@ -17,6 +18,11 @@ namespace Anchored.World
 		
 		public virtual void Load(FileReader stream)
 		{
+		}
+
+		public static explicit operator EntityType(Type v)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

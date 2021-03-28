@@ -17,7 +17,6 @@ using Anchored.World;
 using Anchored.World.Components;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGame.Extended;
 
 namespace Anchored.State
 {
@@ -31,12 +30,11 @@ namespace Anchored.State
         
         public AssetLoadState()
 		{
-            SetupUI();
         }
 
         public override void Load(SpriteBatch sb)
         {
-            var loaderTexture = AssetManager.Content.Load<Texture2D>("txrs\\ui\\loading_icon");
+            //SetupUI();
 
             var thread = new Thread(() =>
             {
@@ -52,7 +50,7 @@ namespace Anchored.State
                 LoadSection(ShaderManager.Load, "Shaders");
                 LoadSection(TextureBoundManager.Load, "Tile Sheets");
                 LoadSection(PrefabManager.Load, "Prefabs");
-                LoadSection(KeyBinds.Load, "Keybinds");
+                LoadSection(Options.Load, "Keybinds");
 
                 progress += 1;
                 

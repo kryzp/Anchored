@@ -1,52 +1,17 @@
 [
     {
-        "sheet": "tilesheets\\test_sheet",
-        "texture": "tree1",
-        "bounds": "0 16 48 64"
+        "sheet": "tilesheets\\decor",
+        "texture": "bush1",
+        "bounds": "0 0 16 16"
     },
     {
-        "sheet": "ui\\checkbox",
-        "texture": "unchecked",
-        "bounds": "0 0 9 9"
+        "sheet": "tilesheets\\decor",
+        "texture": "bush2",
+        "bounds": "16 0 16 16"
     },
     {
-        "sheet": "ui\\checkbox",
-        "texture": "checked",
-        "bounds": "9 0 9 9"
-    },
-    {
-        "sheet": "ui\\textbox",
-        "texture": "nsg",
-        "bounds": "0 0 27 27"
-    },
-    {
-        "sheet": "ui\\textbox",
-        "texture": "nsg_hori",
-        "bounds": "0 27 27 9"
-    },
-    {
-        "sheet": "ui\\textbox",
-        "texture": "nsg_vert",
-        "bounds": "27 0 9 27"
-    },
-    {
-        "sheet": "ui\\textbox",
-        "texture": "nsg_block",
-        "bounds": "27 27 9 9"
-    },
-    {
-        "sheet": "ui\\dropdown_list",
-        "texture": "button",
-        "bounds": "9 0 27 9"
-    },
-    {
-        "sheet": "ui\\dropdown_list",
-        "texture": "list",
-        "bounds": "9 9 27 9"
-    },
-    {
-        "sheet": "ui\\dropdown_list",
-        "texture": "arrow",
-        "bounds": "0 0 9 9"
+        "sheet": "tilesheets\\decor",
+        "texture": "large_rock1",
+        "bounds": "32 0 48 32"
     }
 ]

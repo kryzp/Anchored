@@ -1,12 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoGame.Extended;
 using System;
 using System.Linq;
 using Anchored.Util;
 using Microsoft.Xna.Framework.Graphics;
 using Anchored.Util.Physics;
 using Anchored.Math;
-using MonoGame.Extended.Shapes;
 using System.Collections.Generic;
 using Anchored.Debug.Console;
 
@@ -67,7 +65,7 @@ namespace Anchored.World.Components
 			this.points.Populate(4, Vector2.Zero);
 		}
 
-		public Collider(CircleF circle)
+		public Collider(Circle circle)
 			: this()
 		{
 			this.currentColliderType = ColliderType.Circle;
@@ -105,17 +103,16 @@ namespace Anchored.World.Components
 			if (!DebugConsole.GetVariable<bool>("showcolliders"))
 				return;
 
-			sb.DrawRectangle(
+			Utility.DrawRectangleOutline(
 				GetWorldBounds(),
-				((Overlaps(Masks.Player, out _)) ? Color.Green : Color.Red) * 0.6f,
+				Color.Red * 0.6f,
 				1f,
 				0.95f
 			);
 
 			if (data is RectColliderData)
 			{
-				sb.DrawPolygon(
-					Vector2.Zero,
+				Utility.DrawPolygonOutline(
 					new Polygon(new List<Vector2>()
 					{
 						RectData.WorldRect.A,
@@ -130,17 +127,17 @@ namespace Anchored.World.Components
 			}
 			else if (data is CircleColliderData)
 			{
-				sb.DrawCircle(
+				Utility.DrawCircleOutline(
 					CircleData.WorldCircle,
-					50,
+					20,
 					Color.Red,
-					1f,
+					0.6f,
 					0.95f
 				);
 			}
 			else if (data is LineColliderData)
 			{
-				sb.DrawLine(
+				Utility.DrawLine(
 					LineData.WorldLine.A,
 					LineData.WorldLine.B,
 					Color.Red,
@@ -150,8 +147,7 @@ namespace Anchored.World.Components
 			}
 			else if (data is PolygonColliderData)
 			{
-				sb.DrawPolygon(
-					Vector2.Zero,
+				Utility.DrawPolygonOutline(
 					PolygonData.WorldPolygon,
 					Color.Red,
 					1f,
@@ -169,10 +165,26 @@ namespace Anchored.World.Components
 			UpdateWorldBounds();
 		}
 
-		public void MakeCircle(CircleF circle)
+		public void MakeRect(float x, float y, float width, float height)
+		{
+			this.currentColliderType = ColliderType.Rect;
+			this.data = new RectColliderData(new RectangleF(x, y, width, height));
+			this.axis.Populate(4, Vector2.Zero);
+			this.points.Populate(4, Vector2.Zero);
+			UpdateWorldBounds();
+		}
+
+		public void MakeCircle(Circle circle)
 		{
 			this.currentColliderType = ColliderType.Circle;
 			this.data = new CircleColliderData(circle);
+			UpdateWorldBounds();
+		}
+
+		public void MakeCircle(Vector2 center, float radius)
+		{
+			this.currentColliderType = ColliderType.Circle;
+			this.data = new CircleColliderData(new Circle(center, radius));
 			UpdateWorldBounds();
 		}
 
@@ -358,8 +370,8 @@ namespace Anchored.World.Components
 			if (!a.worldBounds.Intersects(b.worldBounds))
 				return false;
 
-			CircleF circle_a = ((CircleColliderData)a.data).WorldCircle;
-			CircleF circle_b = ((CircleColliderData)b.data).WorldCircle;
+			Circle circle_a = ((CircleColliderData)a.data).WorldCircle;
+			Circle circle_b = ((CircleColliderData)b.data).WorldCircle;
 
 			Vector2 center_a = new Vector2(circle_a.Center.X, circle_a.Center.Y);
 			Vector2 center_b = new Vector2(circle_b.Center.X, circle_b.Center.Y);
@@ -391,7 +403,7 @@ namespace Anchored.World.Components
 			if (!a.worldBounds.Intersects(b.worldBounds))
 				return false;
 
-			CircleF circle_b = ((CircleColliderData)b.data).WorldCircle;
+			Circle circle_b = ((CircleColliderData)b.data).WorldCircle;
 
 			float distance = 0.0f;
 
@@ -412,7 +424,7 @@ namespace Anchored.World.Components
 
 			for (int ii = 0; ii < a.points.Count; ii++)
 			{
-				Vector2 axis = (a.points[ii] - new Vector2(circle_b.Center.X, circle_b.Center.Y)).NormalizedCopy();
+				Vector2 axis = (a.points[ii] - new Vector2(circle_b.Center.X, circle_b.Center.Y)).Normalized();
 				float amount = 0.0f;
 
 				if (!AxisOverlaps(a, b, axis, ref amount))
@@ -494,13 +506,13 @@ namespace Anchored.World.Components
 				WorldRect.C = Vector2.Transform(Rect.BottomRight, mat);
 				WorldRect.D = Vector2.Transform(Rect.BottomLeft, mat);
 
-				axis[0] = (WorldRect.B - WorldRect.A).NormalizedCopy();
+				axis[0] = (WorldRect.B - WorldRect.A).Normalized();
 				axis[0] = new Vector2(-axis[0].Y, axis[0].X);
-				axis[1] = (WorldRect.C - WorldRect.B).NormalizedCopy();
+				axis[1] = (WorldRect.C - WorldRect.B).Normalized();
 				axis[1] = new Vector2(-axis[1].Y, axis[1].X);
-				axis[2] = (WorldRect.D - WorldRect.C).NormalizedCopy();
+				axis[2] = (WorldRect.D - WorldRect.C).Normalized();
 				axis[2] = new Vector2(-axis[2].Y, axis[2].X);
-				axis[3] = (WorldRect.A - WorldRect.D).NormalizedCopy();
+				axis[3] = (WorldRect.A - WorldRect.D).Normalized();
 				axis[3] = new Vector2(-axis[3].Y, axis[3].X);
 
 				points[0] = WorldRect.A;
@@ -517,10 +529,10 @@ namespace Anchored.World.Components
 
 		public class CircleColliderData : IColliderData
 		{
-			public CircleF Circle;
-			public CircleF WorldCircle;
+			public Circle Circle;
+			public Circle WorldCircle;
 
-			public CircleColliderData(CircleF circle)
+			public CircleColliderData(Circle circle)
 			{
 				this.Circle = circle;
 			}
@@ -562,7 +574,7 @@ namespace Anchored.World.Components
 				WorldLine.A = Vector2.Transform(Line.A, mat);
 				WorldLine.B = Vector2.Transform(Line.B, mat);
 
-				axis[0] = (WorldLine.B - WorldLine.A).NormalizedCopy();
+				axis[0] = (WorldLine.B - WorldLine.A).Normalized();
 				axis[0] = new Vector2(-axis[0].Y, axis[0].X);
 
 				points[0] = WorldLine.A;
@@ -604,7 +616,7 @@ namespace Anchored.World.Components
 						Vector2 currentVertex = WorldPolygon.Vertices[ii];
 						Vector2 nextVertex = WorldPolygon.Vertices[((ii+1)>=vertexCount)?0:(ii+1)];
 
-						axis[ii] = (nextVertex - currentVertex).NormalizedCopy();
+						axis[ii] = (nextVertex - currentVertex).Normalized();
 						axis[ii] = new Vector2(-axis[ii].Y, axis[ii].X);
 
 						points[ii] = WorldPolygon.Vertices[ii];
