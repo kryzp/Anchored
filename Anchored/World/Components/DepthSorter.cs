@@ -1,5 +1,5 @@
-﻿using Anchored.Math;
-using System;
+﻿using Arch;
+using Arch.World;
 
 namespace Anchored.World.Components
 {
@@ -27,29 +27,7 @@ namespace Anchored.World.Components
         {
             float position = Entity.Transform.Position.Y;
             float bottom = graphicsComponent.Texture.Texture.Bounds.Bottom + position;
-
-            // if you're wondering why this isn't just position / 100000f then its because then
-            // there can't be negative values. though, it might not be worth the performance hit
-            // research into this at some point lol
-            //  * could be inefficient though...
-            
-            float min = +Single.MaxValue;
-            float max = -Single.MaxValue;
-            float layer = 1f;
-            
-            if (World.Entities.Count > 1)
-			{
-                World.ForeachEntity((entity) =>
-                {
-                    if (entity.Transform.Position.Y < min)
-                        min = entity.Transform.Position.Y;
-                    else if (entity.Transform.Position.Y > max)
-                        max = entity.Transform.Position.Y;
-                });
-
-                layer = Calc.MapValue(0f, 1f, min, max, position);
-            }
-            
+            float layer = bottom / Constants.LAYER_DEPTH_DIVIDER;
             graphicsComponent.LayerDepth = layer;
         }
     }

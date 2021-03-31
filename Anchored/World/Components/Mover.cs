@@ -1,8 +1,10 @@
 ﻿using Anchored.Util;
 using Anchored.Util.Physics;
-using Anchored.Math;
 using Microsoft.Xna.Framework;
 using System;
+using Arch;
+using Arch.Math;
+using Arch.World;
 
 namespace Anchored.World.Components
 {

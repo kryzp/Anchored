@@ -1,10 +1,12 @@
-﻿using Anchored.Debug.Console;
+﻿using Anchored.Debug;
 using ImGuiNET;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using Anchored.World.Components;
 using Microsoft.Xna.Framework.Input;
+using Arch;
+using Arch.World.Components;
 
 namespace Anchored.Debug.Info
 {

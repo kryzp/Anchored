@@ -10,6 +10,7 @@
 
 #-------------------------------- References --------------------------------#
 
+/reference:..\..\Arch\bin\Debug\netcoreapp3.1\Arch.dll
 
 #---------------------------------- Content ---------------------------------#
 
@@ -38,6 +39,11 @@
 #begin locales/en.json
 /copy:locales/en.json
 
+#begin maps/debug_map.amap
+/importer:
+/processor:
+/build:maps/debug_map.amap
+
 #begin txrs/null.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -50,27 +56,27 @@
 /processorParam:TextureFormat=Color
 /build:txrs/null.png
 
-#begin txrs/tilesheets/decor.png
+#begin txrs/sheets/decor.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
+/processorParam:ColorKeyEnabled=False
 /processorParam:GenerateMipmaps=False
 /processorParam:PremultiplyAlpha=True
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:txrs/tilesheets/decor.png
+/build:txrs/sheets/decor.png
 
-#begin txrs/tilesheets/tutorial_island_beach.png
+#begin txrs/sheets/tutorial_island_beach.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
+/processorParam:ColorKeyEnabled=False
 /processorParam:GenerateMipmaps=False
 /processorParam:PremultiplyAlpha=True
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:txrs/tilesheets/tutorial_island_beach.png
+/build:txrs/sheets/tutorial_island_beach.png
 

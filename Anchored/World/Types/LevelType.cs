@@ -1,21 +1,20 @@
 ﻿using Anchored.Assets;
 using Anchored.World.Components;
-using Microsoft.Xna.Framework;
-using Anchored.Streams;
-using Anchored.Util;
-using Anchored.Assets.Textures;
-using System;
-using Anchored.Graphics.TileMaps;
+using Arch.Assets.Maps;
+using Arch.World.Components;
+using Arch.World;
+using Arch.Streams;
+using Arch.Assets;
 
 namespace Anchored.World.Types
 {
 	public class LevelType : EntityType
 	{
-		private TileMapData map;
+		private Map map;
 		private bool loadColliders;
 		private bool loadEntities;
 
-		public LevelType(TileMapData map, bool loadColliders = true, bool loadEntities = true)
+		public LevelType(Map map, bool loadColliders = true, bool loadEntities = true)
 		{
 			Serializable = true;
 			
@@ -28,7 +27,7 @@ namespace Anchored.World.Types
 		{
 			base.Create(entity);
 
-			var tileMap = entity.AddComponent(new TileMap(map, Camera.Main));
+			var tileMap = entity.AddComponent(new TileMapRenderer(map, Camera.Main));
 
 			if (loadColliders)
 				tileMap.LoadColliders();
@@ -49,10 +48,10 @@ namespace Anchored.World.Types
 			string mapName = stream.ReadString();
 			loadColliders = stream.ReadBoolean();
 			loadEntities = stream.ReadBoolean();
-			map = TileMapManager.Get(mapName);
+			map = MapManager.Get(mapName);
 		}
 		
-		protected void LoadEntitiesFromTileMap(EntityWorld world, TileMapData map)
+		protected void LoadEntitiesFromTileMap(EntityWorld world, Map map)
 		{
 			/*
 			foreach (var obj in map.GetLayer<TiledMapObjectLayer>("Entities").Objects)

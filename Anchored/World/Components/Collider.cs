@@ -1,14 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using System;
-using System.Linq;
-using Anchored.Util;
-using Microsoft.Xna.Framework.Graphics;
-using Anchored.Util.Physics;
-using Anchored.Math;
-using System.Collections.Generic;
-using Anchored.Debug.Console;
-
-// note to anyone reading:
+﻿// note to anyone reading:
 // im super proud of myself for making this lol
 // didn't know anything about matrices and physics systems (super annoying to research good algorithm implementations for them that work well
 // with my setup, most guides just give the general theory behind it)
@@ -16,6 +6,17 @@ using Anchored.Debug.Console;
 // its based on SAT (Seperating Axis Theorem) collisions and not AABB (Axis Aligned Bounding Boxes) collision
 // so it can handle any shape i need it to so long as i define a check function and a resulution function for it and it isn't concave!
 // (concave shapes can be created by just combining different colliders together)
+
+using Anchored.Debug;
+using Anchored.Util.Physics;
+using Arch;
+using Arch.Math;
+using Arch.World;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Anchored.World.Components
 {
@@ -72,7 +73,7 @@ namespace Anchored.World.Components
 			this.data = new CircleColliderData(circle);
 		}
 
-		public Collider(LineF line)
+		public Collider(Line line)
 			: this()
 		{
 			this.currentColliderType = ColliderType.Line;
@@ -188,7 +189,7 @@ namespace Anchored.World.Components
 			UpdateWorldBounds();
 		}
 
-		public void MakeLine(LineF line)
+		public void MakeLine(Line line)
 		{
 			this.currentColliderType = ColliderType.Line;
 			this.data = new LineColliderData(line);
@@ -290,8 +291,8 @@ namespace Anchored.World.Components
 
 			int index = 0;
 
-			Hit[] populateTemp = new Hit[populate.Count()];
-			for (int ii = 0; ii < populate.Count(); ii++)
+			Hit[] populateTemp = new Hit[populate.Length];
+			for (int ii = 0; ii < populate.Length; ii++)
 				populateTemp[ii] = new Hit();
 
 			World.ForeachComponentStoppable<Collider>(mask, (other) =>
@@ -486,12 +487,12 @@ namespace Anchored.World.Components
 		public class RectColliderData : IColliderData
 		{
 			public RectangleF Rect;
-			public QuadF WorldRect;
+			public Quad WorldRect;
 
 			public RectColliderData(RectangleF rect)
 			{
 				this.Rect = rect;
-				this.WorldRect = new QuadF();
+				this.WorldRect = new Quad();
 			}
 
 			public void Project(Vector2 axis, ref float min, ref float max)
@@ -556,10 +557,10 @@ namespace Anchored.World.Components
 
 		public class LineColliderData : IColliderData
 		{
-			public LineF Line;
-			public LineF WorldLine;
+			public Line Line;
+			public Line WorldLine;
 
-			public LineColliderData(LineF line)
+			public LineColliderData(Line line)
 			{
 				this.Line = line;
 			}

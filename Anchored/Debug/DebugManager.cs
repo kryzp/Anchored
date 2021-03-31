@@ -1,11 +1,7 @@
-﻿using Anchored.Debug.Console;
-using Anchored.Debug.Info;
-using Anchored.World;
+﻿using Arch;
+using Arch.World;
 using ImGuiNET;
 using Microsoft.Xna.Framework;
-using System;
-using System.Numerics;
-using System.Runtime.CompilerServices;
 
 namespace Anchored.Debug
 {
@@ -24,7 +20,7 @@ namespace Anchored.Debug
 
 		static DebugManager()
 		{
-			var vec3 = Game1.BackgroundColor.ToVector3();
+			var vec3 = Engine.BackgroundColor.ToVector3();
 			bgcol = new System.Numerics.Vector3(vec3.X, vec3.Y, vec3.Z);
 		}
 
@@ -35,7 +31,13 @@ namespace Anchored.Debug
 			Anchored.Debug.Info.DebugView.Draw();
 			Anchored.Debug.Info.RunInfo.Draw();
 
-			ImGui.SetNextWindowPos(new System.Numerics.Vector2(Game1.WINDOW_WIDTH - 10 - size.X, Game1.WINDOW_HEIGHT - 10 - size.Y));
+			ImGui.SetNextWindowPos(
+				new System.Numerics.Vector2(
+					Engine.WindowWidth - 10 - size.X,
+					Engine.WindowHeight - 10 - size.Y
+				)
+			);
+
 			ImGui.Begin(
 				"Windows",
 				ImGuiWindowFlags.NoCollapse |
@@ -98,7 +100,7 @@ namespace Anchored.Debug
 
 			if (ImGui.ColorPicker3("Background Colour", ref bgcol))
 			{
-				Game1.BackgroundColor = new Color(bgcol.X, bgcol.Y, bgcol.Z, 255);
+				Engine.BackgroundColor = new Color(bgcol.X, bgcol.Y, bgcol.Z, 255);
 			}
 
 			ImGui.End();

@@ -1,10 +1,11 @@
 ﻿using Anchored.Areas;
 using Anchored.Assets;
 using Anchored.Debug;
-using Anchored.Debug.Console;
-using Anchored.UI;
 using Anchored.World;
 using Anchored.World.Components;
+using Arch.State;
+using Arch.World;
+using Arch.World.Components;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Anchored.State
@@ -20,7 +21,7 @@ namespace Anchored.State
 			world = new EntityWorld();
 			DebugConsole.World = world;
 
-			currentArea = new TutorialIslandStartBeach(world);
+			currentArea = new DebugArea(world);
 			currentArea.Load(sb);
 			camera = currentArea.Camera;
 
@@ -37,6 +38,7 @@ namespace Anchored.State
 		public override void Update()
 		{
 			currentArea.Update();
+			DebugConsole.Update();
 		}
 
 		public override void Draw(SpriteBatch sb)
@@ -61,6 +63,7 @@ namespace Anchored.State
 			if (!DebugConsole.Open)
 				return;
 
+			DebugConsole.Draw();
 			DebugManager.Draw(world);
 		}
 	}

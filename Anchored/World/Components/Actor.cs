@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Anchored.Util.Timing;
+using Arch;
+using Arch.Util.Timing;
+using Arch.World;
 
 namespace Anchored.World.Components
 {

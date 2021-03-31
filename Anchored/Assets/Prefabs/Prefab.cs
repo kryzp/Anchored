@@ -1,9 +1,10 @@
 ﻿using System;
-using Anchored.Debug.Console;
-using Anchored.Streams;
+using Arch.Streams;
 using Anchored.World;
 using Anchored.World.Types;
+using Arch.World;
 using Microsoft.Xna.Framework;
+using Arch;
 
 namespace Anchored.Assets.Prefabs
 {
@@ -25,7 +26,7 @@ namespace Anchored.Assets.Prefabs
 
                 if (entityType == null)
                 {
-                    DebugConsole.Error("Tried to place prefab with a non-existent entity type!");
+                    Log.Error("Tried to place prefab with a non-existent entity type!");
                     return;
                 }
                 

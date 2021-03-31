@@ -1,6 +1,7 @@
-﻿using Anchored.Debug.Console;
-using Anchored.Streams;
-using Anchored.World;
+﻿using Anchored.World;
+using Arch;
+using Arch.Streams;
+using Arch.World;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,7 +20,7 @@ namespace Anchored.Save
 
 		public static void Init()
 		{
-			DebugConsole.Log($"Save directory is '{GetSaveFilePath(SlotName)}'");
+			Log.Info($"Save directory is '{GetSaveFilePath(SlotName)}'");
 
 			// these are here because i plan to do them in the future, so i dont forget lol
 
@@ -34,7 +35,7 @@ namespace Anchored.Save
 			if (!saveDirectory.Exists())
 			{
 				saveDirectory.MakeDirectory();
-				DebugConsole.Log("Creating the save directory...");
+				Log.Info("Creating the save directory...");
 			}
 		}
 
@@ -101,7 +102,7 @@ namespace Anchored.Save
 
 				if (readSaveType != (byte)saveType)
 				{
-					DebugConsole.Error("Read SaveType did NOT match its loader type!");
+					Log.Error("Read SaveType did NOT match its loader type!");
 					return;
 				}
 

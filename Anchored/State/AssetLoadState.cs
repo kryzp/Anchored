@@ -4,19 +4,21 @@ using System.Diagnostics;
 using System.Threading;
 using Anchored.Assets;
 using Anchored.Assets.Prefabs;
-using Anchored.Assets.Textures;
-using Anchored.Debug.Console;
-using Anchored.Graphics.Animating;
 using Anchored.Save;
-using Anchored.Streams;
-using Anchored.UI;
-using Anchored.UI.Constraints;
-using Anchored.UI.Elements;
-using Anchored.Util;
+using Arch.UI;
+using Arch.Util;
 using Anchored.World;
 using Anchored.World.Components;
+using Arch.State;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Arch.Assets.Textures;
+using Arch;
+using Arch.World;
+using Arch.Assets;
+using Arch.Graphics.Animating;
+using Anchored.UI.Constraints;
+using Anchored.UI.Elements;
 
 namespace Anchored.State
 {
@@ -36,11 +38,13 @@ namespace Anchored.State
         {
             //SetupUI();
 
+            Options.Load(SaveManager.GetOptionsFilePath());
+
             var thread = new Thread(() =>
             {
                 var sw = Stopwatch.StartNew();
                 
-                DebugConsole.Engine("Loading Assets...");
+                Log.Engine("Loading Assets...");
                 
                 LoadSection(() => SaveManager.Load(world, SaveType.Global), "Global Saves");
                 LoadSection(() => AssetManager.Load(ref progress), "Assets");
@@ -50,7 +54,6 @@ namespace Anchored.State
                 LoadSection(ShaderManager.Load, "Shaders");
                 LoadSection(TextureBoundManager.Load, "Tile Sheets");
                 LoadSection(PrefabManager.Load, "Prefabs");
-                LoadSection(Options.Load, "Keybinds");
 
                 progress += 1;
                 
@@ -61,8 +64,8 @@ namespace Anchored.State
                 LoadSection(() => SaveManager.Load(world, SaveType.Player), "Player Saves");
 
                 progress += 1;
-                
-                DebugConsole.Engine($"Finished Loading in {sw.ElapsedMilliseconds} ms!");
+
+                Log.Engine($"Finished Loading in {sw.ElapsedMilliseconds} ms!");
                 ready = true;
             });
 
@@ -105,7 +108,7 @@ namespace Anchored.State
             progress += 1;
 
             if (SECTIONAL_LOAD_TIME_LOGGING)
-                DebugConsole.Engine($"Loaded section '{name}' in {sw.ElapsedMilliseconds} ms.");
+                Log.Engine($"Loaded section '{name}' in {sw.ElapsedMilliseconds} ms.");
         }
 
         private void SetupUI()
@@ -175,8 +178,8 @@ namespace Anchored.State
 
             UIConstraints constraints = new UIConstraints();
 
-            constraints.X = new PixelConstraint(Game1.WINDOW_WIDTH-32-8);
-            constraints.Y = new PixelConstraint(Game1.WINDOW_HEIGHT-32-8);
+            constraints.X = new PixelConstraint(Game1.WindowWidth-32-8);
+            constraints.Y = new PixelConstraint(Game1.WindowHeight-32-8);
             constraints.Width = new PixelConstraint(36);
             constraints.Height = new PixelConstraint(36);
 

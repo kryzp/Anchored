@@ -1,112 +1,44 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using System.Linq;
-using Anchored.Math;
-using Anchored.Graphics.TileMaps;
 using Microsoft.Xna.Framework.Graphics;
+using Arch.World.Components;
+using Arch.Assets.Maps;
+using Arch.World;
 
 namespace Anchored.World.Components
 {
-	public class TileMap : GraphicsComponent
+	public class TileMapRenderer : GraphicsComponent
 	{
-		private TileMapData map;
-		private TileMapRenderer renderer;
+		private Map map;
 		private List<Collider> colliders;
-		private int currentDrawingLayer;
 		
 		private Camera camera;
 
-		public TileMapData Map => map;
-		public TileMapRenderer Renderer => renderer;
+		public Map Map => map;
 
-		public TileMap()
+		public TileMapRenderer()
 		{
 			this.colliders = new List<Collider>();
 			this.LayerDepth = 0.5f;
 		}
 
-		public TileMap(TileMapData map, Camera camera)
+		public TileMapRenderer(Map map, Camera camera)
 			: this()
 		{
 			this.map = map;
 			this.camera = camera;
-			this.renderer = new TileMapRenderer(map);
-		}
-
-		public override void Update()
-		{
-			base.Update();
-			//renderer.Update(Time.GameTime);
 		}
 
 		public override void DrawBegin(SpriteBatch sb)
 		{
-			/*
-			Game1.GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
-
-			for (int ii = 0; ii < map.Layers.Count; ii++)
-			{
-				var layer = map.Layers[ii];
-				
-				if (layer.Name == "Entities" || layer.Name == "Depth")
-				{
-					currentDrawingLayer = ii;
-					break;
-				}
-				
-				renderer.Draw(
-					layer,
-					viewMatrix: GetTileMapMatrix(),
-					effect: Shader?.Effect,
-					depth: 0f
-				);
-			}
-			*/
 		}
 
 		public override void Draw(SpriteBatch sb)
 		{
-			/*
-			Game1.GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
-
-			for (int ii = currentDrawingLayer; ii < map.Layers.Count; ii++)
-			{
-				var layer = map.Layers[ii];
-
-				if (layer.Name == "Front" || layer.Name == "FrontObj")
-				{
-					currentDrawingLayer = ii;
-					break;
-				}
-
-				renderer.Draw(
-					layer,
-					viewMatrix: GetTileMapMatrix(),
-					effect: Shader?.Effect,
-					depth: 0.5f
-				);
-			}
-			*/
 		}
 
 		public override void DrawEnd(SpriteBatch sb)
 		{
-			/*
-			Game1.GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
-
-			for (int ii = currentDrawingLayer; ii < map.Layers.Count; ii++)
-			{
-				var layer = map.Layers[ii];
-
-				renderer.Draw(
-					layer,
-					viewMatrix: GetTileMapMatrix(),
-					effect: Shader?.Effect,
-					depth: 1f
-				);
-			}
-			*/
 		}
 
 		public void LoadColliders()

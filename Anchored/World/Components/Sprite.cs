@@ -1,4 +1,5 @@
 ﻿using Anchored.Util;
+using Arch.Util;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Anchored.World.Components
@@ -29,8 +30,8 @@ namespace Anchored.World.Components
 				Colour,
 				Entity.Transform.RotationDegrees,
 				Entity.Transform.Scale,
-				sb,
-				LayerDepth
+				LayerDepth,
+				sb
 			);
 
 			Shader?.End(sb);

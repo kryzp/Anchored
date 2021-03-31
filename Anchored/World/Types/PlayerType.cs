@@ -1,7 +1,9 @@
 ﻿using Anchored.Assets;
-using Anchored.Assets.Textures;
-using Anchored.Graphics.Animating;
 using Anchored.World.Components;
+using Arch;
+using Arch.Assets.Textures;
+using Arch.Graphics.Animating;
+using Arch.World;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 

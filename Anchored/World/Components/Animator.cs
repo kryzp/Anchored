@@ -1,4 +1,6 @@
-﻿using Anchored.Graphics.Animating;
+﻿using Arch;
+using Arch.Graphics.Animating;
+using Arch.World;
 using System.Collections.Generic;
 
 namespace Anchored.World.Components

@@ -1,9 +1,11 @@
 ﻿using Anchored.Assets;
-using Anchored.Graphics.TileMaps;
 using Anchored.Util;
 using Anchored.World;
 using Anchored.World.Components;
 using Anchored.World.Types;
+using Arch.Assets.Maps;
+using Arch.World;
+using Arch.World.Components;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -16,7 +18,7 @@ namespace Anchored.Areas
 		protected Entity cameraEntity;
 
 		public Camera Camera => cameraEntity.GetComponent<Camera>();
-
+		
 		public GameArea(EntityWorld world)
 		{
 			this.world = world;
@@ -54,7 +56,7 @@ namespace Anchored.Areas
 			return camEntity;
 		}
 
-		protected Entity SetupLevel(TileMapData map, bool loadColliders = true, bool loadEntities = true)
+		protected Entity SetupLevel(Map map, bool loadColliders = true, bool loadEntities = true)
 		{
 			Entity tileMapEntity = world.AddEntity("TileMap");
 			new LevelType(map, loadColliders, loadEntities).Create(tileMapEntity);

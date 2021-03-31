@@ -1,9 +1,7 @@
-﻿using Anchored.Util;
+﻿using Arch.UI;
+using Arch.Util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Anchored.UI.Elements
 {
@@ -67,8 +65,8 @@ namespace Anchored.UI.Elements
 					Color.White,
 					0f,
 					scale,
-					sb,
-					LayerDepth
+					LayerDepth,
+					sb
 				);
 
 				for (int xx = 1; xx < width - 1; xx++)
@@ -82,8 +80,8 @@ namespace Anchored.UI.Elements
 						Color.White,
 						0f,
 						scale,
-						sb,
-						LayerDepth
+						LayerDepth,
+						sb
 					);
 				}
 
@@ -93,8 +91,8 @@ namespace Anchored.UI.Elements
 					Color.White,
 					0f,
 					scale,
-					sb,
-					LayerDepth
+					LayerDepth,
+					sb
 				);
 			}
 
@@ -110,8 +108,8 @@ namespace Anchored.UI.Elements
 						Color.White,
 						0f,
 						scale,
-						sb,
-						LayerDepth
+						LayerDepth,
+						sb
 					);
 
 					for (int xx = 1; xx < width - 1; xx++)
@@ -125,8 +123,8 @@ namespace Anchored.UI.Elements
 							Color.White,
 							0f,
 							scale,
-							sb,
-							LayerDepth
+							LayerDepth,
+							sb
 						);
 					}
 
@@ -136,8 +134,8 @@ namespace Anchored.UI.Elements
 						Color.White,
 						0f,
 						scale,
-						sb,
-						LayerDepth
+						LayerDepth,
+						sb
 					);
 				}
 			}
@@ -152,8 +150,8 @@ namespace Anchored.UI.Elements
 					Color.White,
 					0f,
 					scale,
-					sb,
-					LayerDepth
+					LayerDepth,
+					sb
 				);
 
 				for (int xx = 1; xx < width - 1; xx++)
@@ -167,8 +165,8 @@ namespace Anchored.UI.Elements
 						Color.White,
 						0f,
 						scale,
-						sb,
-						LayerDepth
+						LayerDepth,
+						sb
 					);
 				}
 
@@ -178,8 +176,8 @@ namespace Anchored.UI.Elements
 					Color.White,
 					0f,
 					scale,
-					sb,
-					LayerDepth
+					LayerDepth,
+					sb
 				);
 			}
 		}
