@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Arch.Assets.Maps.Serialization;
 using Arch.Assets.Textures;
 using Microsoft.Xna.Framework;
@@ -45,11 +46,7 @@ namespace Arch.Assets.Maps
             YDistance = data.Distance;
             MoveSpeed = new Vector2(data.MoveSpeed.X, data.MoveSpeed.Y);
             Data = data.Data;
-            Tileset = new Tileset();
-            {
-                Tileset.Texture = TextureManager.Get(data.TilesetName).Texture;
-                Tileset.TileSize = data.TileSize;
-            }
+            Tileset = TilesetManager.Get(data.TilesetName);
         }
 
         public void Update()

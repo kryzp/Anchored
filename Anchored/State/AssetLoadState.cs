@@ -19,6 +19,7 @@ using Arch.Assets;
 using Arch.Graphics.Animating;
 using Anchored.UI.Constraints;
 using Anchored.UI.Elements;
+using Anchored.Assets.Maps;
 
 namespace Anchored.State
 {
@@ -54,6 +55,7 @@ namespace Anchored.State
                 LoadSection(ShaderManager.Load, "Shaders");
                 LoadSection(TextureBoundManager.Load, "Tile Sheets");
                 LoadSection(PrefabManager.Load, "Prefabs");
+                LoadSection(MapManager.Load, "Maps");
 
                 progress += 1;
                 

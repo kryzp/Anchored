@@ -4,17 +4,18 @@ using Microsoft.Xna.Framework.Graphics;
 using Arch.World.Components;
 using Arch.Assets.Maps;
 using Arch.World;
+using Anchored.Assets.Maps;
 
 namespace Anchored.World.Components
 {
 	public class TileMapRenderer : GraphicsComponent
 	{
-		private Map map;
+		private AnchoredMap map;
 		private List<Collider> colliders;
 		
 		private Camera camera;
 
-		public Map Map => map;
+		public AnchoredMap Map => map;
 
 		public TileMapRenderer()
 		{
@@ -22,7 +23,7 @@ namespace Anchored.World.Components
 			this.LayerDepth = 0.5f;
 		}
 
-		public TileMapRenderer(Map map, Camera camera)
+		public TileMapRenderer(AnchoredMap map, Camera camera)
 			: this()
 		{
 			this.map = map;

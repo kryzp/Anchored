@@ -5,13 +5,13 @@ using Newtonsoft.Json;
 
 namespace Arch.Assets.Maps
 {
-	[ContentImporter(".amap", DefaultProcessor = "MapProcessor", DisplayName = "Map Importer - Arch")]
+	[ContentImporter(".map", DefaultProcessor = "MapProcessor", DisplayName = "Map Importer - Arch")]
 	public class MapImporter : ContentImporter<MapContentItem>
 	{
 		public override MapContentItem Import(string filename, ContentImporterContext context)
 		{
 			string json = new FileHandle(filename).ReadAll();
-			var data = JsonConvert.DeserializeObject<MapJson>(json);
+			MapJson data = JsonConvert.DeserializeObject<MapJson>(json);
 			return new MapContentItem(data);
 		}
 	}

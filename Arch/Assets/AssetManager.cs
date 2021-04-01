@@ -1,4 +1,5 @@
-﻿using Arch.Assets.Textures;
+﻿using Arch.Assets.Maps;
+using Arch.Assets.Textures;
 using Microsoft.Xna.Framework.Content;
 using System.IO;
 
@@ -53,9 +54,7 @@ namespace Arch.Assets
 			progress += 1;
 		
 			TextureManager.Load();
-			progress += 1;
-
-			MapManager.Load();
+			TilesetManager.Load();
 			progress += 1;
 
 			FontManager.Load();
@@ -77,7 +76,6 @@ namespace Arch.Assets
 		{
 			EffectManager.Destroy();
 			TextureManager.Destroy();
-			MapManager.Destroy();
 			FontManager.Destroy();
 			Audio.Destroy();
 		}

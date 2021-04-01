@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework.Content.Pipeline;
-using System.Collections.Generic;
 
 namespace Arch.Assets
 {

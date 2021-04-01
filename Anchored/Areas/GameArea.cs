@@ -1,4 +1,5 @@
 ﻿using Anchored.Assets;
+using Anchored.Assets.Maps;
 using Anchored.Util;
 using Anchored.World;
 using Anchored.World.Components;
@@ -56,7 +57,7 @@ namespace Anchored.Areas
 			return camEntity;
 		}
 
-		protected Entity SetupLevel(Map map, bool loadColliders = true, bool loadEntities = true)
+		protected Entity SetupLevel(AnchoredMap map, bool loadColliders = true, bool loadEntities = true)
 		{
 			Entity tileMapEntity = world.AddEntity("TileMap");
 			new LevelType(map, loadColliders, loadEntities).Create(tileMapEntity);

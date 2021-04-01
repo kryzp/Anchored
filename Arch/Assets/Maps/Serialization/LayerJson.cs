@@ -3,7 +3,6 @@ using System;
 
 namespace Arch.Assets.Maps.Serialization
 {
-    [JsonObject("layer")]
     public class LayerJson
     {
         [JsonProperty("name")]
@@ -41,10 +40,10 @@ namespace Arch.Assets.Maps.Serialization
         
         [JsonProperty("tile_size")]
         public Int32 TileSize;
-        
+
         [JsonProperty("move_speed")]
-        public Vector2Json MoveSpeed;
-        
+        public Vector2Json MoveSpeed = new Vector2Json();
+
         [JsonProperty("data")]
         public UInt16[,] Data;
     }

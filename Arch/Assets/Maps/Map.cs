@@ -14,12 +14,15 @@ namespace Arch.Assets.Maps
 		
 		public int MasterLevel = 0;
 		public List<Level> Levels = new List<Level>();
-		
-		public List<MapEntity> Entities = new List<MapEntity>();
+
 		public List<Layer> Layers = new List<Layer>();
+
+		public MapJson Data;
 
 		public Map(MapJson data)
 		{
+			this.Data = data;
+
 			this.Name = data.Name;
 
 			this.MapWidth = data.MapWidth;
@@ -29,9 +32,6 @@ namespace Arch.Assets.Maps
 
 			foreach (var d in data.Levels)
 				Levels.Add(new Level(d));
-
-			foreach (var d in data.Entities)
-				Entities.Add(new MapEntity(d));
 
 			foreach (var d in data.Layers)
 				Layers.Add(new Layer(d));

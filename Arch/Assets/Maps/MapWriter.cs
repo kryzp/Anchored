@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
 using System;
+using System.Collections.Generic;
 
 namespace Arch.Assets.Maps
 {
@@ -24,9 +25,9 @@ namespace Arch.Assets.Maps
 			return "Arch.Assets.Maps.MapReader, Arch";
 		}
 
-		private void WriteLevels(ContentWriter writer, LevelJson[] levels)
+		private void WriteLevels(ContentWriter writer, List<LevelJson> levels)
 		{
-			writer.Write(levels.Length);
+			writer.Write(levels.Count);
 
 			foreach (var level in levels)
 			{
@@ -34,9 +35,9 @@ namespace Arch.Assets.Maps
 			}
 		}
 
-		private void WriteEntities(ContentWriter writer, MapEntityJson[] entities)
+		private void WriteEntities(ContentWriter writer, List<MapEntityJson> entities)
 		{
-			writer.Write(entities.Length);
+			writer.Write(entities.Count);
 
 			foreach (var entity in entities)
 			{
@@ -49,9 +50,9 @@ namespace Arch.Assets.Maps
 			}
 		}
 
-		private void WriteLayers(ContentWriter writer, LayerJson[] layers)
+		private void WriteLayers(ContentWriter writer, List<LayerJson> layers)
 		{
-			writer.Write(layers.Length);
+			writer.Write(layers.Count);
 
 			foreach (var layer in layers)
 			{

@@ -5,16 +5,17 @@ using Arch.World.Components;
 using Arch.World;
 using Arch.Streams;
 using Arch.Assets;
+using Anchored.Assets.Maps;
 
 namespace Anchored.World.Types
 {
 	public class LevelType : EntityType
 	{
-		private Map map;
+		private AnchoredMap map;
 		private bool loadColliders;
 		private bool loadEntities;
 
-		public LevelType(Map map, bool loadColliders = true, bool loadEntities = true)
+		public LevelType(AnchoredMap map, bool loadColliders = true, bool loadEntities = true)
 		{
 			Serializable = true;
 			
@@ -38,7 +39,7 @@ namespace Anchored.World.Types
 
 		public override void Save(FileWriter stream)
 		{
-			stream.WriteString(map.Name);
+			stream.WriteString(map.Map.Name);
 			stream.WriteBoolean(loadColliders);
 			stream.WriteBoolean(loadEntities);
 		}
@@ -51,7 +52,7 @@ namespace Anchored.World.Types
 			map = MapManager.Get(mapName);
 		}
 		
-		protected void LoadEntitiesFromTileMap(EntityWorld world, Map map)
+		protected void LoadEntitiesFromTileMap(EntityWorld world, AnchoredMap map)
 		{
 			/*
 			foreach (var obj in map.GetLayer<TiledMapObjectLayer>("Entities").Objects)

@@ -1,6 +1,7 @@
 ﻿using Arch.Assets.Maps.Serialization;
 using Microsoft.Xna.Framework.Content;
 using System;
+using System.Collections.Generic;
 
 namespace Arch.Assets.Maps
 {
@@ -20,72 +21,78 @@ namespace Arch.Assets.Maps
 			return new Map(data);
 		}
 
-		private LevelJson[] ReadLevels(ContentReader reader)
+		private List<LevelJson> ReadLevels(ContentReader reader)
 		{
 			Int32 length = reader.ReadInt32();
-			LevelJson[] result = new LevelJson[length];
+			List<LevelJson> result = new List<LevelJson>();
 
 			for (int ii = 0; ii < length; ii++)
 			{
-				result[ii] = new LevelJson();
-				result[ii].Height = reader.ReadInt32();
+				LevelJson l = new LevelJson();
+				l.Height = reader.ReadInt32();
+				result.Add(l);
 			}
 
 			return result;
 		}
 
-		private MapEntityJson[] ReadEntities(ContentReader reader)
+		private List<MapEntityJson> ReadEntities(ContentReader reader)
 		{
 			Int32 length = reader.ReadInt32();
-			MapEntityJson[] result = new MapEntityJson[length];
+			List<MapEntityJson> result = new List<MapEntityJson>();
 
 			for (int ii = 0; ii < length; ii++)
 			{
-				result[ii] = new MapEntityJson();
-				result[ii].Name = reader.ReadString();
-				result[ii].Type = reader.ReadString();
-				result[ii].Level = reader.ReadInt32();
-				result[ii].X = reader.ReadInt32();
-				result[ii].Y = reader.ReadInt32();
-				result[ii].Z = reader.ReadInt32();
+				MapEntityJson e = new MapEntityJson();
+				e.Name = reader.ReadString();
+				e.Type = reader.ReadString();
+				e.Level = reader.ReadInt32();
+				e.X = reader.ReadInt32();
+				e.Y = reader.ReadInt32();
+				e.Z = reader.ReadInt32();
+				result.Add(e);
 			}
 
 			return result;
 		}
 
-		private LayerJson[] ReadLayers(ContentReader reader)
+		private List<LayerJson> ReadLayers(ContentReader reader)
 		{
 			Int32 length = reader.ReadInt32();
-			LayerJson[] result = new LayerJson[length];
+			List<LayerJson> result = new List<LayerJson>();
 
 			for (int ii = 0; ii < length; ii++)
 			{
-				result[ii] = new LayerJson();
-				result[ii].Name = reader.ReadString();
-				result[ii].Type = reader.ReadString();
-				result[ii].ID = reader.ReadInt32();
-				result[ii].Level = reader.ReadInt32();
-				result[ii].Width = reader.ReadUInt32();
-				result[ii].Height = reader.ReadUInt32();
-				result[ii].TilesetName = reader.ReadString();
-				result[ii].Opacity = reader.ReadSingle();
-				result[ii].Repeat = reader.ReadBoolean();
-				result[ii].Distance = reader.ReadInt32();
-				result[ii].YDistance = reader.ReadInt32();
-				result[ii].TileSize = reader.ReadInt32();
-				result[ii].MoveSpeed.X = reader.ReadSingle();
-				result[ii].MoveSpeed.Y = reader.ReadSingle();
+				LayerJson l = new LayerJson();
+				l.Name = reader.ReadString();
+				l.Type = reader.ReadString();
+				l.ID = reader.ReadInt32();
+				l.Level = reader.ReadInt32();
+				l.Width = reader.ReadUInt32();
+				l.Height = reader.ReadUInt32();
+				l.TilesetName = reader.ReadString();
+				l.Opacity = reader.ReadSingle();
+				l.Repeat = reader.ReadBoolean();
+				l.Distance = reader.ReadInt32();
+				l.YDistance = reader.ReadInt32();
+				l.TileSize = reader.ReadInt32();
+				l.MoveSpeed.X = reader.ReadSingle();
+				l.MoveSpeed.Y = reader.ReadSingle();
 
 				Int32 dataLengthY = reader.ReadInt32();
 				Int32 dataLengthX = reader.ReadInt32();
+
+				l.Data = new UInt16[dataLengthX, dataLengthY];
 
 				for (int yy = 0; yy < dataLengthY; yy++)
 				{
 					for (int xx = 0; xx < dataLengthX; xx++)
 					{
-						result[ii].Data[yy, xx] = reader.ReadUInt16();
+						l.Data[yy, xx] = reader.ReadUInt16();
 					}
 				}
+
+				result.Add(l);
 			}
 
 			return result;

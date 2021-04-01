@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using Arch.Assets.Maps.Serialization;
 using Arch.Assets.Maps;
+using Arch.Assets;
 
-namespace Arch.Assets
+namespace Anchored.Assets.Maps
 {
 	public class MapManager
 	{
-		private static Dictionary<string, Map> maps = new Dictionary<string, Map>();
+		private static Dictionary<string, AnchoredMap> maps = new Dictionary<string, AnchoredMap>();
 
-		internal static void Load()
+		public static void Load()
 		{
 			var mapDir = FileHandle.FromRoot("maps\\");
 
@@ -34,8 +35,8 @@ namespace Arch.Assets
 
 			string id = folder + handle.NameWithoutExtension;
 
-			MapJson data = AssetManager.Content.Load<MapJson>($"maps\\{id}");
-			Map map = new Map(data);
+			Map data = AssetManager.Content.Load<Map>($"maps\\{id}");
+			AnchoredMap map = new AnchoredMap(data);
 
 			maps[id] = map;
 		}
@@ -45,7 +46,7 @@ namespace Arch.Assets
 			maps.Clear();
 		}
 
-		public static Map Get(string id)
+		public static AnchoredMap Get(string id)
 		{
 			if (maps.TryGetValue(id, out var map))
 				return map;

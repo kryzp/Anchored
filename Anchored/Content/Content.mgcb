@@ -10,7 +10,7 @@
 
 #-------------------------------- References --------------------------------#
 
-/reference:..\..\Arch\bin\Debug\netcoreapp3.1\Arch.dll
+/reference:..\bin\Debug\netcoreapp3.1\Arch.dll
 
 #---------------------------------- Content ---------------------------------#
 
@@ -39,10 +39,15 @@
 #begin locales/en.json
 /copy:locales/en.json
 
-#begin maps/debug_map.amap
-/importer:
-/processor:
-/build:maps/debug_map.amap
+#begin maps/test.map
+/importer:MapImporter
+/processor:MapProcessor
+/build:maps/test.map
+
+#begin tilesets/test.tst
+/importer:TilesetImporter
+/processor:TilesetProcessor
+/build:tilesets/test.tst
 
 #begin txrs/null.png
 /importer:TextureImporter

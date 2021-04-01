@@ -16,6 +16,9 @@ using Arch;
 using Arch.Assets;
 using Arch.World;
 using Arch.UI;
+using Arch.Assets.Maps.Serialization;
+using Newtonsoft.Json;
+using Anchored.Assets.Maps;
 
 namespace Anchored
 {
@@ -28,7 +31,7 @@ namespace Anchored
 		{
 		}
 
-		protected override void Initialize()
+        protected override void Initialize()
 		{
 			base.Initialize();
 		}
@@ -43,6 +46,7 @@ namespace Anchored
 
 		protected override void UnloadContent()
 		{
+			MapManager.Destroy();
 			AssetManager.Destroy();
 		}
 

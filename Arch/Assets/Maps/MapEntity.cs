@@ -19,11 +19,16 @@ namespace Arch.Assets.Maps
         public MapEntity(MapEntityJson data)
 		{
             Name = data.Name;
-            Type = (EntityType)Activator.CreateInstance(System.Type.GetType($"Anchored.{data.Type}", true, false));
+            Type = Load(data.Type);
             Level = data.Level;
             Transform = new Transform();
             Transform.Position = new Vector2(data.X, data.Y);
             Transform.Z = data.Z;
         }
+
+        protected virtual EntityType Load(string type)
+		{
+            throw new NotImplementedException();
+		}
     }
 }

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Xna.Framework;
+using Newtonsoft.Json;
 
 namespace Arch.Assets.Maps.Serialization
 {
@@ -15,5 +16,7 @@ namespace Arch.Assets.Maps.Serialization
 
 		[JsonProperty("height")]
 		public int Height;
+
+		public Rectangle ToRectangle() => new Rectangle(X, Y, Width, Height);
 	}
 }

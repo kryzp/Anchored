@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Anchored.Assets;
+using Anchored.Assets.Maps;
 using Anchored.World;
 using Arch.Assets.Maps;
 using Arch.World;
@@ -11,11 +12,13 @@ namespace Anchored.Areas
 {
     public class DebugArea : GameArea
     {
-        private Map testMap;
+        private AnchoredMap testMap;
         
         public DebugArea(EntityWorld world)
             : base(world)
         {
+            testMap = MapManager.Get("test");
+
             /*
             testMap = new Map();
             testMap.Name = "Debug Map";
@@ -129,23 +132,22 @@ namespace Anchored.Areas
         public override void Update()
         {
             base.Update();
-            //testMap.Update();
+            testMap.Map.Update();
         }
 
         public override void Draw(SpriteBatch sb)
         {
             base.Draw(sb);
-            /*
+
             sb.Begin(
                 SpriteSortMode.FrontToBack,
                 samplerState: SamplerState.PointClamp,
                 transformMatrix: Camera.GetViewMatrix()
             );
 
-            testMap.Draw(sb);
+            testMap.Map.Draw(sb);
             
             sb.End();
-            */
         }
     }
 }
