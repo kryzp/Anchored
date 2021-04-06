@@ -1,11 +1,9 @@
-﻿using Arch;
-using Arch.Assets;
+﻿using Arch.Assets;
 using Arch.Util;
-using Arch.World;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Anchored.World.Components
+namespace Arch.World.Components
 {
     public abstract class GraphicsComponent : Component, IRenderable, IUpdatable
     {

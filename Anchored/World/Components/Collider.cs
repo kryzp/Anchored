@@ -107,7 +107,7 @@ namespace Anchored.World.Components
 			Utility.DrawRectangleOutline(
 				GetWorldBounds(),
 				Color.Red * 0.6f,
-				1f,
+				1,
 				0.95f
 			);
 
@@ -122,7 +122,7 @@ namespace Anchored.World.Components
 						RectData.WorldRect.D
 					}),
 					Color.Red,
-					1f,
+					1,
 					0.95f
 				);
 			}
@@ -132,7 +132,7 @@ namespace Anchored.World.Components
 					CircleData.WorldCircle,
 					20,
 					Color.Red,
-					0.6f,
+					MathHelper.Tau,
 					0.95f
 				);
 			}
@@ -168,11 +168,7 @@ namespace Anchored.World.Components
 
 		public void MakeRect(float x, float y, float width, float height)
 		{
-			this.currentColliderType = ColliderType.Rect;
-			this.data = new RectColliderData(new RectangleF(x, y, width, height));
-			this.axis.Populate(4, Vector2.Zero);
-			this.points.Populate(4, Vector2.Zero);
-			UpdateWorldBounds();
+			MakeRect(new RectangleF(x, y, width, height));
 		}
 
 		public void MakeCircle(Circle circle)

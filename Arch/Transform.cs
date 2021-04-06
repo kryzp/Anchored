@@ -15,6 +15,8 @@ namespace Arch
 
 		public Action OnTransformed;
 
+		public bool Dirty => dirty;
+
 		public float Z;
 
 		public Vector2 Position
@@ -103,6 +105,7 @@ namespace Arch
 					
 					matrix = result;
 				}
+
 				dirty = false;
 			}
 			return matrix;

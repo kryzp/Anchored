@@ -17,6 +17,8 @@ namespace Arch
 		private static int initialWindowHeight;
 
 		private static Shader gameShader;
+		private static Shader appShader;
+
 		private static ImGuiRenderer imGuiRenderer;
 
 		public static GraphicsDeviceManager Graphics;
@@ -134,7 +136,7 @@ namespace Arch
 			gameShader?.Update();
 
 			UIManager.Update();
-			CurrentState.Update();
+			CurrentState?.Update();
 
 			base.Update(gt);
 		}
@@ -143,27 +145,24 @@ namespace Arch
 		{
 			GraphicsDevice.SetRenderTarget(GameRenderTarget);
 			GraphicsDevice.Clear(BackgroundColor);
-
-			CurrentState.Draw(SpriteBatch);
-
+			CurrentState?.Draw(SpriteBatch);
 			GraphicsDevice.SetRenderTarget(AppRenderTarget);
 
 			SpriteBatch.Begin(SpriteSortMode.Immediate, samplerState: SamplerState.PointClamp);
 			gameShader?.Effect.CurrentTechnique.Passes[0].Apply();
-
 			SpriteBatch.Draw(GameRenderTarget, new Rectangle(0, 0, WindowWidth, WindowHeight), Color.White);
 			SpriteBatch.End();
-			CurrentState.DrawUI(SpriteBatch);
+			CurrentState?.DrawUI(SpriteBatch);
 			UIManager.Draw(SpriteBatch);
-
 			GraphicsDevice.SetRenderTarget(null);
 
 			SpriteBatch.Begin(SpriteSortMode.Immediate, samplerState: SamplerState.PointClamp);
+			appShader?.Effect.CurrentTechnique.Passes[0].Apply();
 			SpriteBatch.Draw(AppRenderTarget, new Rectangle(0, 0, WindowWidth, WindowHeight), Color.White);
 			SpriteBatch.End();
 
 			imGuiRenderer.BeforeLayout(gt);
-			CurrentState.DrawDebug();
+			CurrentState?.DrawDebug();
 			imGuiRenderer.AfterLayout();
 
 			base.Draw(gt);
@@ -171,6 +170,7 @@ namespace Arch
 
 		public static GameState ChangeState(GameState state)
 		{
+			UIManager.Container.Clear();
 			NextState = state;
 			return state;
 		}
@@ -178,6 +178,11 @@ namespace Arch
 		public static void SetGameShader(Shader shader)
 		{
 			gameShader = shader;
+		}
+
+		public static void SetAppShader(Shader shader)
+		{
+			appShader = shader;
 		}
 
 		private void TextInputHandler(object sender, TextInputEventArgs args)

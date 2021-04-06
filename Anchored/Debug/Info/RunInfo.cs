@@ -19,7 +19,7 @@ namespace Anchored.Debug.Info
 				return;
 			}
 
-			float fps = 1f / Time.Delta;
+			float fps = 1f / Time.RawDelta;
 			ImGui.TextUnformatted($"FPS: {fps}");
 
 			ImGui.End();

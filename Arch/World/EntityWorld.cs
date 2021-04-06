@@ -302,7 +302,7 @@ namespace Arch.World
 
 		public T GetComponent<T>() where T : Component
 		{
-			return (T)components[typeof(T)].FirstOrDefault();
+			return (T)((components.ContainsKey(typeof(T))) ? components[typeof(T)].FirstOrDefault() : null);
 		}
 
 		public Component GetComponent(Type type)

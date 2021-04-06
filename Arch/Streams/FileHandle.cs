@@ -133,8 +133,9 @@ namespace Arch.Streams
 			{
 				return File.GetAttributes(path).HasFlag(FileAttributes.Directory);
 			}
-			catch (Exception)
+			catch (Exception e)
 			{
+				Log.Error(e);
 				return false;
 			}
 		}

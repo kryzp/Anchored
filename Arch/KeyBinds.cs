@@ -1,4 +1,5 @@
-﻿using Arch.Streams;
+﻿using Arch;
+using Arch.Streams;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Newtonsoft.Json;
@@ -20,11 +21,6 @@ namespace Arch
 
 			[JsonProperty("gamepadbuttons")]
 			public List<string> GamePadButtons = new List<string>();
-		}
-
-		internal void Save(object p)
-		{
-			throw new NotImplementedException();
 		}
 
 		private Dictionary<string, VirtualButton> buttons = new Dictionary<string, VirtualButton>();

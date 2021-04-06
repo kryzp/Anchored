@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 
 namespace Arch.Assets.Maps.Serialization
 {
@@ -22,5 +23,8 @@ namespace Arch.Assets.Maps.Serialization
 
 		[JsonProperty("z")]
 		public Int32 Z;
+
+		[JsonProperty("settings")]
+		public Dictionary<string, object> Settings = new Dictionary<string, object>();
 	}
 }

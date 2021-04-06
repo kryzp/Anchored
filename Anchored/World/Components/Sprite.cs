@@ -1,5 +1,6 @@
 ﻿using Anchored.Util;
 using Arch.Util;
+using Arch.World.Components;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Anchored.World.Components

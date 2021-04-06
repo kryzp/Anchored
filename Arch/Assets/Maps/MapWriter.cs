@@ -47,6 +47,7 @@ namespace Arch.Assets.Maps
 				writer.Write(entity.X);
 				writer.Write(entity.Y);
 				writer.Write(entity.Z);
+				WriteSettings(writer, entity.Settings);
 			}
 		}
 
@@ -77,6 +78,26 @@ namespace Arch.Assets.Maps
 				foreach (UInt16 id in layer.Data)
 				{
 					writer.Write(id);
+				}
+			}
+		}
+
+		private void WriteSettings(ContentWriter writer, Dictionary<string, object> settings)
+		{
+			unsafe
+			{
+				writer.Write(settings.Count);
+
+				foreach (var setting in settings)
+				{
+					var key = setting.Key;
+					var val = setting.Value;
+
+					var bytes = Utility.ToByteArray<object>(val);
+
+					writer.Write(key);
+					writer.Write(bytes.Length);
+					writer.Write(bytes);
 				}
 			}
 		}

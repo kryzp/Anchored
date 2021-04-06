@@ -6,6 +6,7 @@ using Arch.World;
 using Arch.Streams;
 using Arch.Assets;
 using Anchored.Assets.Maps;
+using Arch.Graphics;
 
 namespace Anchored.World.Types
 {
@@ -28,18 +29,18 @@ namespace Anchored.World.Types
 		{
 			base.Create(entity);
 
-			var tileMap = entity.AddComponent(new TileMapRenderer(map, Camera.Main));
+			var tileMap = entity.AddComponent(new TileMap(map, Camera.Main));
 
 			if (loadColliders)
 				tileMap.LoadColliders();
 
 			if (loadEntities)
-				LoadEntitiesFromTileMap(entity.World, map);
+				tileMap.LoadEntities();
 		}
 
 		public override void Save(FileWriter stream)
 		{
-			stream.WriteString(map.Map.Name);
+			stream.WriteString(map.Name);
 			stream.WriteBoolean(loadColliders);
 			stream.WriteBoolean(loadEntities);
 		}

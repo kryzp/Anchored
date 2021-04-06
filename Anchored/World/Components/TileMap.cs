@@ -5,10 +5,14 @@ using Arch.World.Components;
 using Arch.Assets.Maps;
 using Arch.World;
 using Anchored.Assets.Maps;
+using Arch;
+using System.Reflection;
+using System.Linq;
+using Arch.Graphics;
 
 namespace Anchored.World.Components
 {
-	public class TileMapRenderer : GraphicsComponent
+	public class TileMap : GraphicsComponent
 	{
 		private AnchoredMap map;
 		private List<Collider> colliders;
@@ -17,17 +21,24 @@ namespace Anchored.World.Components
 
 		public AnchoredMap Map => map;
 
-		public TileMapRenderer()
+		public TileMap()
 		{
 			this.colliders = new List<Collider>();
 			this.LayerDepth = 0.5f;
 		}
 
-		public TileMapRenderer(AnchoredMap map, Camera camera)
+		public TileMap(AnchoredMap map, Camera camera)
 			: this()
 		{
 			this.map = map;
 			this.camera = camera;
+		}
+
+		public override void Update()
+		{
+			base.Update();
+
+			Map.Update();
 		}
 
 		public override void DrawBegin(SpriteBatch sb)
@@ -36,10 +47,52 @@ namespace Anchored.World.Components
 
 		public override void Draw(SpriteBatch sb)
 		{
+			Map.Draw(sb);
 		}
 
 		public override void DrawEnd(SpriteBatch sb)
 		{
+		}
+
+		public void LoadEntities()
+		{
+			EntityWorld world = Entity.World;
+
+			foreach (var e in Map.Entities)
+			{
+				var name = e.Name;
+				var type = e.Type;
+				var level = e.Level;
+				var position = e.Position;
+				var z = e.Z;
+				var settings = e.Settings;
+
+				foreach (var field in type.GetType().GetFields())
+				{
+					object[] attribs = field.GetCustomAttributes(true);
+
+					foreach (var attrib in attribs)
+					{
+						if (attrib.GetType() == typeof(Arch.World.EntityTypeSetting))
+						{
+							var entityAttrib = (EntityTypeSetting)attrib;
+
+							byte[] data = (byte[])settings[entityAttrib.Name];
+
+							var variable = Utility.FromByteArray(field.FieldType, data);
+							field.SetValue(type, variable);
+						}
+					}
+				}
+
+				Entity entity = world.AddEntity(name);
+
+				entity.Transform.Position = position;
+				entity.Transform.Z = z;
+				entity.Level = level;
+
+				type.Create(entity);
+			}
 		}
 
 		public void LoadColliders()
@@ -101,11 +154,6 @@ namespace Anchored.World.Components
 			}
 
 			colliders.Clear();
-		}
-		
-		private Matrix GetTileMapMatrix()
-		{
-			return camera.GetPerfectViewMatrix();
 		}
 	}
 }

@@ -54,7 +54,7 @@ namespace Arch.Assets.Maps
             // todo: apply stuff like movepseed, update animating tiles
 		}
 
-        public void Draw(SpriteBatch sb)
+        public void Draw(SpriteBatch sb, float scale = 1f)
         {
             for (int yy = 0; yy < Height; yy++)
 			{
@@ -70,10 +70,10 @@ namespace Arch.Assets.Maps
                         int y = yy * Tileset.TileSize;
 
                         var tileDest = new Rectangle(
-                            x,
-                            y,
-                            Tileset.TileSize,
-                            Tileset.TileSize
+                            (int)(x * scale),
+                            (int)(y * scale),
+                            (int)(Tileset.TileSize * scale),
+                            (int)(Tileset.TileSize * scale)
                         );
 
                         sb.Draw(
@@ -84,7 +84,7 @@ namespace Arch.Assets.Maps
                             0f,
                             Vector2.Zero,
                             SpriteEffects.None,
-                            Level / Constants.LAYER_DEPTH_DIVIDER
+                            Level / ARCH_CONSTANTS.LAYER_DEPTH_DIVIDER
                         );
 					}
                 }

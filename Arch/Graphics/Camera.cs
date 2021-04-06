@@ -1,12 +1,14 @@
 ﻿using System;
-using Anchored.World.Components;
 using Arch.Math;
+using Arch.Graphics.CameraDrivers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Arch.World;
+using Arch.World.Components;
 
-namespace Arch.World.Components
+namespace Arch.Graphics
 {
-	public class Camera : Component, IUpdatable
+	public class Camera
 	{
 		public Vector2 Position = Vector2.Zero;
 		public float Rotation = 0f;
@@ -32,6 +34,21 @@ namespace Arch.World.Components
 		
 		public bool DoFollow = false;
 		public float FollowLerp = 0.2f;
+
+		private CameraDriver driver;
+
+		public CameraDriver Driver
+		{
+			get => driver;
+
+			set
+			{
+				driver?.Destroy();
+				driver = value;
+				driver.Camera = this;
+				driver?.Init();
+			}
+		}
 		
 		public Camera()
 		{
@@ -119,23 +136,17 @@ namespace Arch.World.Components
 		
 		public void Update()
 		{
-			if (Follow != null && DoFollow)
-			{
-				Position = new Vector2(
-					MathHelper.Lerp(Position.X, Follow.Transform.Position.X, FollowLerp),
-					MathHelper.Lerp(Position.Y, Follow.Transform.Position.Y, FollowLerp)
-				);
-			}
+			driver?.Update();
 		}
 		
 		private Matrix _GetViewMatrix()
 		{
 			return (
-				Matrix.CreateTranslation(new Vector3(-Position.X - Entity.Transform.Position.X, -Position.Y - Entity.Transform.Position.Y, 0)) *
+				Matrix.CreateTranslation(new Vector3(-Position.X, -Position.Y, 0f)) *
 				Matrix.CreateRotationZ(Rotation) *
-				Matrix.CreateScale(new Vector3(Zoom, Zoom, 1)) *
-				Matrix.CreateTranslation(Origin.X, Origin.Y, 0) *
-				Matrix.CreateScale(new Vector3(Scale.X, Scale.Y, 1))
+				Matrix.CreateScale(new Vector3(Zoom, Zoom, 1f)) *
+				Matrix.CreateTranslation(Origin.X, Origin.Y, 0f) *
+				Matrix.CreateScale(new Vector3(Scale.X, Scale.Y, 1f))
 			);
 		}
 	}

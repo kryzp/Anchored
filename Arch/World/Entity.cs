@@ -21,6 +21,8 @@ namespace Arch.World
 		public UInt32 TransformStamp => transformStamp;
 		public Transform Transform;
 
+		public int Level = 0;
+
 		public EntityType Type = null;
 
 		public Entity()

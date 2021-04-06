@@ -12,20 +12,20 @@ namespace Anchored.World.Types
 {
     public class TreeType : EntityType
     {
-        private TextureRegion texture;
+        [EntityTypeSetting("texture")]
+        public TextureRegion Texture;
         
-        public TreeType(TextureRegion tex)
+        public TreeType()
         {
-            this.texture = tex;
         }
         
         public override void Create(Entity entity)
         {
             base.Create(entity);
 
-            entity.Transform.Origin = OriginFactory.GetOrigin(OriginPosition.BottomCenter, texture);
+            entity.Transform.Origin = OriginFactory.GetOrigin(OriginPosition.BottomCenter, Texture);
 
-            var sprite = entity.AddComponent(new Sprite(texture));
+            var sprite = entity.AddComponent(new Sprite(Texture));
 
             var collider = entity.AddComponent(new Collider());
             collider.Mask = Masks.Solid;

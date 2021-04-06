@@ -3,9 +3,11 @@ using Anchored.Assets;
 using Anchored.Debug;
 using Anchored.World;
 using Anchored.World.Components;
+using Arch.Graphics;
 using Arch.State;
 using Arch.World;
 using Arch.World.Components;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Anchored.State
@@ -18,16 +20,15 @@ namespace Anchored.State
 
 		public override void Load(SpriteBatch sb)
 		{
+			Camera.Main = new Camera(Game1.WindowWidth / 4, Game1.WindowHeight / 4);
+			Camera.Main.Origin = new Vector2(Game1.WindowWidth / 4 / 2, Game1.WindowHeight / 4 / 2);
+
 			world = new EntityWorld();
 			DebugConsole.World = world;
 
 			currentArea = new DebugArea(world);
 			currentArea.Load(sb);
-			camera = currentArea.Camera;
-
-			Editor editor = new Editor();
-			editor.Camera = camera;
-			editor.World = world;
+			camera = Camera.Main;
 		}
 
 		public override void Unload()

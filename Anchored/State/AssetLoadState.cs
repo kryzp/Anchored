@@ -20,6 +20,7 @@ using Arch.Graphics.Animating;
 using Anchored.UI.Constraints;
 using Anchored.UI.Elements;
 using Anchored.Assets.Maps;
+using Anchored.Assets.Textures;
 
 namespace Anchored.State
 {
@@ -38,8 +39,6 @@ namespace Anchored.State
         public override void Load(SpriteBatch sb)
         {
             //SetupUI();
-
-            Options.Load(SaveManager.GetOptionsFilePath());
 
             var thread = new Thread(() =>
             {
@@ -82,8 +81,7 @@ namespace Anchored.State
         {
             if (ready)
 			{
-                Game1.ChangeState(new PlayingState());
-                UIManager.Container.Clear();
+                Game1.ChangeState(new EditorState());
 			}
         }
 

@@ -3,7 +3,7 @@ using ImGuiNET;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
-using Arch.World.Components;
+using Arch.Graphics;
 
 namespace Arch
 {
@@ -231,13 +231,13 @@ namespace Arch
 			else if (button == MouseButton.Middle)
 			{
 				return (
-					mouseState.LeftButton == ButtonState.Pressed
+					mouseState.MiddleButton == ButtonState.Pressed
 				) && (ignoreGui || !guiBlocksMouse);
 			}
 			else if (button == MouseButton.Right)
 			{
 				return (
-					mouseState.LeftButton == ButtonState.Pressed
+					mouseState.RightButton == ButtonState.Pressed
 				) && (ignoreGui || !guiBlocksMouse);
 			}
 

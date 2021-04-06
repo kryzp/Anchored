@@ -19,6 +19,13 @@ using Arch.UI;
 using Arch.Assets.Maps.Serialization;
 using Newtonsoft.Json;
 using Anchored.Assets.Maps;
+using Anchored.Assets.Textures;
+using Anchored.UI.Elements;
+using Arch.Assets.Textures;
+using Arch.Util;
+using Anchored.UI.Constraints;
+using Arch.World.Components;
+using Arch.Graphics;
 
 namespace Anchored
 {
@@ -27,7 +34,7 @@ namespace Anchored
 		public static Entity Player;
 
 		public Game1()
-			: base("Anchored", 1280, 720)
+			: base("Anchored", 1920, 1080)
 		{
 		}
 
@@ -40,19 +47,28 @@ namespace Anchored
 		{
 			base.LoadContent();
 
-			SaveManager.Init();
+			Options.Load(SaveManager.GetOptionsFilePath());
+
+			Camera.Main = new Camera(WindowWidth, WindowHeight);
+			Camera.Main.Origin = Vector2.Zero;
+
 			ChangeState(new AssetLoadState());
+			SaveManager.Init();
 		}
 
 		protected override void UnloadContent()
 		{
+			base.UnloadContent();
+
 			MapManager.Destroy();
 			AssetManager.Destroy();
+			TextureBoundManager.Destroy();
 		}
 
 		protected override void Update(GameTime gt)
 		{
 			base.Update(gt);
+			Camera.Main?.Update();
 		}
 
 		protected override void Draw(GameTime gt)

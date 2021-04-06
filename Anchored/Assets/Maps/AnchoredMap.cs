@@ -6,18 +6,20 @@ using System.Text;
 
 namespace Anchored.Assets.Maps
 {
-	public class AnchoredMap
+	public class AnchoredMap : Map
 	{
-		public Map Map;
-
 		public List<MapEntity> Entities = new List<MapEntity>();
 
 		public AnchoredMap(Map map)
+			: base(map.Data)
 		{
-			this.Map = map;
-
 			foreach (var d in map.Data.Entities)
 				Entities.Add(new AnchoredMapEntity(d));
+		}
+
+		public AnchoredMap(MapJson data)
+			: base(data)
+		{
 		}
 	}
 }

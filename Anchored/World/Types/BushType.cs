@@ -1,4 +1,5 @@
-﻿using Anchored.Util;
+﻿using Anchored.Assets.Textures;
+using Anchored.Util;
 using Anchored.World.Components;
 using Arch;
 using Arch.Math;
@@ -13,11 +14,14 @@ namespace Anchored.World.Types
 {
 	public class BushType : EntityType
 	{
-		private TextureRegion texture;
+		[EntityTypeSetting("sheet")]
+		public string Sheet;
 
-		public BushType(TextureRegion texture)
+		[EntityTypeSetting("texture")]
+		public string Texture;
+
+		public BushType()
 		{
-			this.texture = texture;
 		}
 
 		public override void Create(Entity entity)
@@ -25,7 +29,7 @@ namespace Anchored.World.Types
 			base.Create(entity);
 			entity.Transform.Origin = new Vector2(8, 16);
 
-			var sprite = entity.AddComponent(new Sprite(texture));
+			var sprite = entity.AddComponent(new Sprite(TextureBoundManager.Get(Sheet, Texture)));
 
 			var depth = entity.AddComponent(new DepthSorter(sprite));
 

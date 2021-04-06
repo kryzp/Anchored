@@ -1,5 +1,6 @@
 ﻿using Arch;
 using Arch.World;
+using Arch.World.Components;
 
 namespace Anchored.World.Components
 {
@@ -27,7 +28,7 @@ namespace Anchored.World.Components
         {
             float position = Entity.Transform.Position.Y;
             float bottom = graphicsComponent.Texture.Texture.Bounds.Bottom + position;
-            float layer = bottom / Constants.LAYER_DEPTH_DIVIDER;
+            float layer = bottom / ARCH_CONSTANTS.LAYER_DEPTH_DIVIDER;
             graphicsComponent.LayerDepth = layer;
         }
     }

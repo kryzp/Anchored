@@ -45,11 +45,11 @@ namespace Arch.Assets.Maps
 			}
 		}
 		
-		public void Draw(SpriteBatch sb)
+		public void Draw(SpriteBatch sb, float scale = 1f)
 		{
 			foreach (var layer in Layers.OrderBy(x => x.Height))
 			{
-				layer.Draw(sb);
+				layer.Draw(sb, scale);
 			}
 		}
 

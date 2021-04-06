@@ -17,10 +17,12 @@ namespace Anchored.UI.Elements
 		protected bool hasPressedAndHoldingDown = false;
 		
 		public Action OnClicked = null;
+		public Action OnDown = null;
 		public Action OnReleased = null;
 		public Action OnHovering = null;
 
 		public bool Clicked;
+		public bool Down;
 		public bool Released;
 		public bool Hovering;
 
@@ -104,6 +106,7 @@ namespace Anchored.UI.Elements
 			base.Update();
 
 			bool mousePressed = Input.IsPressed("select", true);
+			bool mouseDown = Input.IsDown("select", true);
 			bool mouseReleased = Input.IsReleased("select", true);
 
 			UpdateVariables();
@@ -127,11 +130,18 @@ namespace Anchored.UI.Elements
 					uiTexture.Texture = TextureHov;
 			}
 
-			if ((mousePressed && Hovering))
+			if (mousePressed && Hovering)
 			{
 				Clicked = true;
 				if (OnClicked != null)
 					OnClicked();
+			}
+
+			if (mouseDown && Hovering)
+			{
+				Down = true;
+				if (OnDown != null)
+					OnDown();
 
 				if (hasPressedAndHoldingDown)
 				{
@@ -144,9 +154,12 @@ namespace Anchored.UI.Elements
 
 			if (mouseReleased)
 			{
-				Released = true;
-				if (OnReleased != null)
-					OnReleased();
+				if (Hovering)
+				{
+					Released = true;
+					if (OnReleased != null)
+						OnReleased();
+				}
 
 				hasPressedAndHoldingDown = false;
 			}

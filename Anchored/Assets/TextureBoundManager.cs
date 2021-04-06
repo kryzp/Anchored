@@ -4,12 +4,14 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Arch.Streams;
+using Arch;
+using Arch.Assets.Textures;
 
-namespace Arch.Assets.Textures
+namespace Anchored.Assets.Textures
 {
 	public static class TextureBoundManager
 	{
-		public class TextureBounds
+		public class TextureBoundJson
 		{
 			[JsonProperty("sheet")]
 			public string Sheet;
@@ -24,12 +26,17 @@ namespace Arch.Assets.Textures
 				{
 					Bounds = Utility.ConvertStringToRectangle(value);
 				}
+
+				get
+				{
+					return Utility.ConvertRectangleToString(Bounds);
+				}
 			}
 			
 			public Rectangle Bounds;
 		}
 		
-		private static Dictionary<string, List<TextureBounds>> textureBounds = new Dictionary<string, List<TextureBounds>>();
+		private static Dictionary<string, List<TextureBoundJson>> textureBounds = new Dictionary<string, List<TextureBoundJson>>();
 
 		public static void Load()
 		{
@@ -43,15 +50,18 @@ namespace Arch.Assets.Textures
 			
 			string json = file.ReadAll();
 			LoadFromJson(json);
+		}
 
-			Console.WriteLine("");
+		public static void Destroy()
+		{
+			textureBounds.Clear();
 		}
 
 		public static void Add(string sheet, string texture, Rectangle bounds)
 		{
 			if (!textureBounds.ContainsKey(sheet))
-				textureBounds.Add(sheet, new List<TextureBounds>());
-			textureBounds[sheet].Add(new TextureBounds()
+				textureBounds.Add(sheet, new List<TextureBoundJson>());
+			textureBounds[sheet].Add(new TextureBoundJson()
 			{
 				Sheet = sheet,
 				Texture = texture,
@@ -73,7 +83,7 @@ namespace Arch.Assets.Textures
 		{
 			try
 			{
-				var bounds = JsonConvert.DeserializeObject<List<TextureBounds>>(json);
+				var bounds = JsonConvert.DeserializeObject<List<TextureBoundJson>>(json);
 
 				foreach (var bound in bounds)
 					Add(bound.Sheet, bound.Texture, bound.Bounds);

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using Anchored.World.Components;
-using Arch.World.Components;
+﻿using Arch.Graphics;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Arch.Assets

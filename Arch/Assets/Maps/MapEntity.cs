@@ -2,6 +2,7 @@
 using Arch.World;
 using Microsoft.Xna.Framework;
 using System;
+using System.Collections.Generic;
 
 namespace Arch.Assets.Maps
 {
@@ -9,8 +10,12 @@ namespace Arch.Assets.Maps
     {
         public string Name;
         public EntityType Type;
-        public Transform Transform;
         public int Level;
+
+        public Vector2 Position;
+        public float Z;
+
+        public Dictionary<string, object> Settings = new Dictionary<string, object>();
 
         public MapEntity()
 		{
@@ -18,12 +23,12 @@ namespace Arch.Assets.Maps
 
         public MapEntity(MapEntityJson data)
 		{
-            Name = data.Name;
-            Type = Load(data.Type);
-            Level = data.Level;
-            Transform = new Transform();
-            Transform.Position = new Vector2(data.X, data.Y);
-            Transform.Z = data.Z;
+            this.Name = data.Name;
+            this.Type = Load(data.Type);
+            this.Level = data.Level;
+            this.Position = new Vector2(data.X, data.Y);
+            this.Z = data.Z;
+            this.Settings = data.Settings;
         }
 
         protected virtual EntityType Load(string type)

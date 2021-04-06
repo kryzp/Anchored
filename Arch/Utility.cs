@@ -3,12 +3,48 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 
 namespace Arch
 {
 	public static class Utility
 	{
+		public static T FromByteArray<T>(byte[] data)
+		{
+			if (data == null)
+				return default(T);
+			BinaryFormatter bf = new BinaryFormatter();
+			using (var ms = new MemoryStream(data))
+			{
+				object obj = bf.Deserialize(ms);
+				return (T)obj;
+			}
+		}
+
+		public static object FromByteArray(Type type, byte[] data)
+		{
+			BinaryFormatter bf = new BinaryFormatter();
+			using (var ms = new MemoryStream(data))
+			{
+				object obj = bf.Deserialize(ms);
+				return Convert.ChangeType(obj, type);
+			}
+		}
+
+		public static byte[] ToByteArray<T>(T obj)
+		{
+			if (obj == null)
+				return null;
+			BinaryFormatter bf = new BinaryFormatter();
+			using (MemoryStream ms = new MemoryStream())
+			{
+				bf.Serialize(ms, obj);
+				return ms.ToArray();
+			}
+		}
+
 		public static string WordWrap(SpriteFont font, string text, float maxLineWidth)
 		{
 			string[] words = text.Split(' ');
@@ -104,24 +140,35 @@ namespace Arch
 			sb.Draw(rect, coor, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, layer);
 		}
 		
-		public static void DrawRectangleOutline(RectangleF rectangle, Color color, float thickness = 1f, float layer = 0.95f, SpriteBatch sb = null)
+		public static void DrawRectangleOutline(RectangleF rectangle, Color color, float t = 1f, float layer = 0.95f, SpriteBatch sb = null)
 		{
 			if (sb == null)
 				sb = Engine.SpriteBatch;
-			DrawLine(rectangle.TopLeft, rectangle.TopRight, color, thickness, layer, sb);
-			DrawLine(rectangle.TopRight, rectangle.BottomRight, color, thickness, layer, sb);
-			DrawLine(rectangle.BottomRight, rectangle.BottomLeft, color, thickness, layer, sb);
-			DrawLine(rectangle.BottomLeft, rectangle.TopLeft, color, thickness, layer, sb);
+
+			var tl = new Vector2(rectangle.Left, rectangle.Top - t);
+			var tr = new Vector2(rectangle.Right, rectangle.Top);
+			var bl = new Vector2(rectangle.Left, rectangle.Bottom);
+			var br = new Vector2(rectangle.Right, rectangle.Bottom);
+
+			var top    = new Line(new Vector2(rectangle.Left,  rectangle.Top),          new Vector2(rectangle.Right, rectangle.Top));
+			var right  = new Line(new Vector2(rectangle.Right, rectangle.Top-(t/2)),    new Vector2(rectangle.Right, rectangle.Bottom+(t/2)));
+			var bottom = new Line(new Vector2(rectangle.Right, rectangle.Bottom),       new Vector2(rectangle.Left,  rectangle.Bottom));
+			var left   = new Line(new Vector2(rectangle.Left,  rectangle.Bottom+(t/2)), new Vector2(rectangle.Left,  rectangle.Top-(t/2)));
+
+			DrawLine(top, color, t, layer, sb);
+			DrawLine(left, color, t, layer, sb);
+			DrawLine(right, color, t, layer, sb);
+			DrawLine(bottom, color, t, layer, sb);
 		}
 
-		public static void DrawLine(Line line, Color color, float thickness = 1f, float layer = 0.98f, SpriteBatch sb = null)
+		public static void DrawLine(Line line, Color color, float thickness = 1f, float layer = 0.95f, SpriteBatch sb = null)
 		{
 			if (sb == null)
 				sb = Engine.SpriteBatch;
 			DrawLine(line.A, line.B, color, thickness, layer, sb);
 		}
 
-		public static void DrawLine(Vector2 point1, Vector2 point2, Color color, float thickness = 1f, float Layer = 0.98f, SpriteBatch sb = null)
+		public static void DrawLine(Vector2 point1, Vector2 point2, Color color, float thickness = 1f, float Layer = 0.95f, SpriteBatch sb = null)
 		{
 			if (sb == null)
 				sb = Engine.SpriteBatch;
@@ -130,7 +177,7 @@ namespace Arch
 			DrawLine(point1, distance, angle, color, thickness, Layer, sb);
 		}
 
-		public static void DrawLine(Vector2 point, float length, float angle, Color color, float thickness = 1f, float layer = 0.98f, SpriteBatch sb = null)
+		public static void DrawLine(Vector2 point, float length, float angle, Color color, float thickness = 1f, float layer = 0.95f, SpriteBatch sb = null)
 		{
 			if (sb == null)
 				sb = Engine.SpriteBatch;

@@ -50,6 +50,8 @@ namespace Arch.Assets.Maps
 				e.X = reader.ReadInt32();
 				e.Y = reader.ReadInt32();
 				e.Z = reader.ReadInt32();
+				e.Settings = ReadSettings(reader);
+
 				result.Add(e);
 			}
 
@@ -93,6 +95,23 @@ namespace Arch.Assets.Maps
 				}
 
 				result.Add(l);
+			}
+
+			return result;
+		}
+
+		private Dictionary<string, object> ReadSettings(ContentReader reader)
+		{
+			Int32 length = reader.ReadInt32();
+			Dictionary<string, object> result = new Dictionary<string, object>();
+
+			for (int ii = 0; ii < length; ii++)
+			{
+				string s = reader.ReadString();
+				Int32 bytes = reader.ReadInt32();
+				object o = reader.ReadBytes(bytes);
+
+				result.Add(s, o);
 			}
 
 			return result;

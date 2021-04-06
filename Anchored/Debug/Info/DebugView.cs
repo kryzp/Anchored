@@ -7,6 +7,7 @@ using Anchored.World.Components;
 using Microsoft.Xna.Framework.Input;
 using Arch;
 using Arch.World.Components;
+using Arch.Graphics;
 
 namespace Anchored.Debug.Info
 {
@@ -59,16 +60,16 @@ namespace Anchored.Debug.Info
 				
 				Input.EnableGuiFocus = true;
 
-				if (Input.IsDown("player_move_up", true))
+				if (Input.IsDown(Keys.W, true))
 					my -= 1;
 
-				if (Input.IsDown("player_move_down", true))
+				if (Input.IsDown(Keys.S, true))
 					my += 1;
 
-				if (Input.IsDown("player_move_left", true))
+				if (Input.IsDown(Keys.A, true))
 					mx -= 1;
 				
-				if (Input.IsDown("player_move_right", true))
+				if (Input.IsDown(Keys.D, true))
 					mx += 1;
 
 				camera.Position.X += mspd * mx;

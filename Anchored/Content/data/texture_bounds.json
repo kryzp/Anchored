@@ -1,16 +1,16 @@
 [
     {
-        "sheet": "tilesheets\\decor",
+        "sheet": "sheets\\decor",
         "texture": "bush1",
         "bounds": "0 0 16 16"
     },
     {
-        "sheet": "tilesheets\\decor",
+        "sheet": "sheets\\decor",
         "texture": "bush2",
         "bounds": "16 0 16 16"
     },
     {
-        "sheet": "tilesheets\\decor",
+        "sheet": "sheets\\decor",
         "texture": "large_rock1",
         "bounds": "32 0 48 32"
     }
